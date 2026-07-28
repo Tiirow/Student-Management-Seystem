@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>DevSearch</title>
+  </head>
+
+  <body>
+    <h1>My App</h1>
+
+    {% include 'navbar.html' %} {% if messages %} {% for message in messages %}
+
+    <p>{{ message }}</p>
+
+    {% endfor %} {% endif %} {% block content %} {% endblock content %}
+
+    <p>I'm grateful for your visit and for coming to see me</p>
+    <p>Welcome to my app!</p>
+  </body>
+</html>

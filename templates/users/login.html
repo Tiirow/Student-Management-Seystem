@@ -1,0 +1,27 @@
+{% extends 'main.html' %} {% block content %}
+
+<h1>Login</h1>
+
+<form method="POST">
+  {% csrf_token %}
+
+  <input
+    type="text"
+    name="username"
+    placeholder="Username"
+    autocomplete="username"
+    required
+  />
+
+  <input
+    type="password"
+    name="password"
+    placeholder="Password"
+    autocomplete="current-password"
+    required
+  />
+
+  <button type="submit">Login</button>
+</form>
+
+{% endblock content %}
