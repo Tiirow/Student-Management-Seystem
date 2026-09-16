@@ -1,0 +1,1760 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | Student Management System</title>
+
+    <style>
+
+        /* =========================================================
+           RESET
+        ========================================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(154, 82, 67, 0.10),
+                    transparent 35%
+                ),
+                #f5f7fa;
+
+            color: #1f2937;
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================================
+           PAGE
+        ========================================================= */
+
+        .page {
+            min-height: 100vh;
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 28px;
+        }
+
+
+        /* =========================================================
+           AUTH CONTAINER
+        ========================================================= */
+
+        .auth-container {
+            width: min(1120px, 100%);
+            min-height: 680px;
+
+            display: grid;
+            grid-template-columns: 0.95fr 1.05fr;
+
+            background: #ffffff;
+
+            border-radius: 28px;
+            overflow: hidden;
+
+            box-shadow:
+                0 25px 70px rgba(31, 41, 55, 0.12),
+                0 8px 25px rgba(31, 41, 55, 0.06);
+
+            border: 1px solid rgba(255, 255, 255, 0.8);
+
+            animation: containerAppear 0.65s ease both;
+        }
+
+
+        @keyframes containerAppear {
+
+            from {
+                opacity: 0;
+                transform: translateY(18px) scale(0.985);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+        }
+
+
+        /* =========================================================
+           LEFT BRANDING PANEL
+        ========================================================= */
+
+        .brand-panel {
+
+            position: relative;
+            overflow: hidden;
+
+            padding: 55px 48px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            color: #ffffff;
+
+            background:
+                radial-gradient(
+                    circle at 85% 10%,
+                    rgba(255, 255, 255, 0.16),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 10% 90%,
+                    rgba(0, 0, 0, 0.16),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    145deg,
+                    #a85b4b 0%,
+                    #9a5243 45%,
+                    #71382e 100%
+                );
+        }
+
+
+        .brand-panel::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 300px;
+            height: 300px;
+
+            border-radius: 50%;
+
+            top: -130px;
+            right: -120px;
+
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+
+        .brand-panel::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 230px;
+            height: 230px;
+
+            border-radius: 50%;
+
+            bottom: -120px;
+            left: -100px;
+
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+
+        .brand-content,
+        .brand-footer {
+
+            position: relative;
+            z-index: 2;
+        }
+
+
+        /* =========================================================
+           BRAND
+        ========================================================= */
+
+        .brand {
+
+            display: flex;
+            align-items: center;
+
+            gap: 14px;
+        }
+
+
+        .brand-icon {
+
+            width: 48px;
+            height: 48px;
+
+            border-radius: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(255, 255, 255, 0.15);
+
+            border: 1px solid rgba(255, 255, 255, 0.20);
+
+            backdrop-filter: blur(10px);
+
+            font-size: 21px;
+            font-weight: 800;
+
+            box-shadow:
+                0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+
+
+        .brand-text {
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 3px;
+        }
+
+
+        .brand-text strong {
+
+            font-size: 15px;
+            font-weight: 800;
+
+            letter-spacing: 0.2px;
+        }
+
+
+        .brand-text span {
+
+            font-size: 11px;
+
+            opacity: 0.78;
+
+            letter-spacing: 0.8px;
+
+            text-transform: uppercase;
+        }
+
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+
+        .brand-hero {
+
+            margin-top: 60px;
+
+            max-width: 440px;
+        }
+
+
+        .eyebrow {
+
+            display: inline-flex;
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 8px 12px;
+
+            border-radius: 999px;
+
+            background: rgba(255, 255, 255, 0.11);
+
+            border: 1px solid rgba(255, 255, 255, 0.14);
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 0.7px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 22px;
+        }
+
+
+        .eyebrow-dot {
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 0 0 4px rgba(255, 255, 255, 0.10);
+        }
+
+
+        .brand-hero h1 {
+
+            font-size: clamp(34px, 4vw, 52px);
+
+            line-height: 1.08;
+
+            letter-spacing: -1.5px;
+
+            font-weight: 800;
+
+            margin-bottom: 20px;
+        }
+
+
+        .brand-hero p {
+
+            font-size: 15px;
+
+            line-height: 1.75;
+
+            color: rgba(255, 255, 255, 0.82);
+
+            max-width: 390px;
+        }
+
+
+        /* =========================================================
+           FEATURES
+        ========================================================= */
+
+        .features {
+
+            margin-top: 34px;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 15px;
+        }
+
+
+        .feature {
+
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            font-size: 13px;
+
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+
+        .feature-icon {
+
+            width: 30px;
+            height: 30px;
+
+            flex: 0 0 30px;
+
+            border-radius: 9px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(255, 255, 255, 0.12);
+
+            border: 1px solid rgba(255, 255, 255, 0.13);
+
+            font-size: 12px;
+        }
+
+
+        /* =========================================================
+           LEFT FOOTER
+        ========================================================= */
+
+        .brand-footer {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding-top: 30px;
+
+            font-size: 11px;
+
+            color: rgba(255, 255, 255, 0.62);
+        }
+
+
+        .secure-badge {
+
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+        }
+
+
+        /* =========================================================
+           RIGHT FORM PANEL
+        ========================================================= */
+
+        .form-panel {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 55px 65px;
+
+            background: #ffffff;
+        }
+
+
+        .form-wrapper {
+
+            width: min(430px, 100%);
+        }
+
+
+        /* =========================================================
+           FORM HEADER
+        ========================================================= */
+
+        .form-header {
+
+            margin-bottom: 30px;
+        }
+
+
+        .form-header h2 {
+
+            font-size: 29px;
+
+            color: #171717;
+
+            font-weight: 800;
+
+            letter-spacing: -0.7px;
+
+            margin-bottom: 9px;
+        }
+
+
+        .form-header p {
+
+            color: #7b8492;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================================================
+           ERROR ALERT
+        ========================================================= */
+
+        .alert {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            padding: 13px 14px;
+
+            margin-bottom: 20px;
+
+            border-radius: 12px;
+
+            background: #fff4f3;
+
+            border: 1px solid #f3d2ce;
+
+            color: #9a3f34;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        .alert-icon {
+
+            font-weight: 800;
+        }
+
+
+        /* =========================================================
+           FORM GROUP
+        ========================================================= */
+
+        .form-group {
+
+            margin-bottom: 19px;
+        }
+
+
+        .form-label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #343a40;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.1px;
+        }
+
+
+        .required {
+
+            color: #9a5243;
+        }
+
+
+        /* =========================================================
+           INPUT
+        ========================================================= */
+
+        .input-wrapper {
+
+            position: relative;
+        }
+
+
+        .input-icon {
+
+            position: absolute;
+
+            left: 15px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            width: 18px;
+
+            color: #a0a8b3;
+
+            font-size: 14px;
+
+            pointer-events: none;
+
+            text-align: center;
+
+            transition: color 0.2s ease;
+        }
+
+
+        .form-input {
+
+            width: 100%;
+
+            height: 51px;
+
+            padding: 0 45px;
+
+            border: 1px solid #e2e6eb;
+
+            border-radius: 12px;
+
+            background: #fafbfc;
+
+            color: #1f2937;
+
+            outline: none;
+
+            font-size: 13px;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .form-input::placeholder {
+
+            color: #adb4be;
+        }
+
+
+        .form-input:hover {
+
+            border-color: #d4d9df;
+
+            background: #ffffff;
+        }
+
+
+        .form-input:focus {
+
+            background: #ffffff;
+
+            border-color: #9a5243;
+
+            box-shadow:
+                0 0 0 4px rgba(154, 82, 67, 0.09);
+        }
+
+
+        .input-wrapper:focus-within .input-icon {
+
+            color: #9a5243;
+        }
+
+
+        /* =========================================================
+           PASSWORD TOGGLE
+        ========================================================= */
+
+        .password-toggle {
+
+            position: absolute;
+
+            right: 13px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            width: 31px;
+            height: 31px;
+
+            border: none;
+
+            background: transparent;
+
+            color: #9099a5;
+
+            cursor: pointer;
+
+            border-radius: 8px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 13px;
+
+            transition:
+                color 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .password-toggle:hover {
+
+            color: #9a5243;
+
+            background: rgba(154, 82, 67, 0.07);
+        }
+
+
+        /* =========================================================
+           PASSWORD HINT
+        ========================================================= */
+
+        .password-hint {
+
+            margin-top: 7px;
+
+            font-size: 10.5px;
+
+            color: #9aa2ad;
+        }
+
+
+        /* =========================================================
+           PASSWORD MATCH STATUS
+        ========================================================= */
+
+        .match-status {
+
+            display: none;
+
+            margin-top: 7px;
+
+            font-size: 10.5px;
+
+            font-weight: 600;
+        }
+
+
+        .match-status.success {
+
+            display: block;
+
+            color: #2f7d50;
+        }
+
+
+        .match-status.error {
+
+            display: block;
+
+            color: #a33d32;
+        }
+
+
+        /* =========================================================
+           SUBMIT
+        ========================================================= */
+
+        .submit-button {
+
+            width: 100%;
+
+            height: 53px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            margin-top: 7px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #a85b4b,
+                    #9a5243 55%,
+                    #814336
+                );
+
+            color: #ffffff;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.2px;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 10px;
+
+            box-shadow:
+                0 10px 22px rgba(154, 82, 67, 0.22);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                filter 0.2s ease;
+        }
+
+
+        .submit-button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 15px 28px rgba(154, 82, 67, 0.28);
+
+            filter: brightness(1.03);
+        }
+
+
+        .submit-button:active {
+
+            transform: translateY(0);
+        }
+
+
+        .submit-button.loading {
+
+            pointer-events: none;
+
+            opacity: 0.82;
+        }
+
+
+        .arrow {
+
+            font-size: 17px;
+
+            transition:
+                transform 0.2s ease;
+        }
+
+
+        .submit-button:hover .arrow {
+
+            transform: translateX(4px);
+        }
+
+
+        .spinner {
+
+            width: 15px;
+            height: 15px;
+
+            border: 2px solid rgba(255, 255, 255, 0.35);
+
+            border-top-color: #ffffff;
+
+            border-radius: 50%;
+
+            animation: spin 0.7s linear infinite;
+        }
+
+
+        @keyframes spin {
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        /* =========================================================
+           LOGIN
+        ========================================================= */
+
+        .login-section {
+
+            margin-top: 24px;
+
+            padding-top: 22px;
+
+            border-top: 1px solid #edf0f3;
+
+            text-align: center;
+        }
+
+
+        .login-section p {
+
+            color: #8b939e;
+
+            font-size: 12px;
+        }
+
+
+        .login-link {
+
+            color: #9a5243;
+
+            font-weight: 800;
+
+            text-decoration: none;
+
+            margin-left: 4px;
+
+            transition: color 0.2s ease;
+        }
+
+
+        .login-link:hover {
+
+            color: #71382e;
+
+            text-decoration: underline;
+        }
+
+
+        /* =========================================================
+           COPYRIGHT
+        ========================================================= */
+
+        .copyright {
+
+            text-align: center;
+
+            margin-top: 25px;
+
+            font-size: 10.5px;
+
+            color: #a0a7b0;
+        }
+
+
+        /* =========================================================
+           TABLET
+        ========================================================= */
+
+        @media (max-width: 950px) {
+
+            .page {
+                padding: 20px;
+            }
+
+
+            .auth-container {
+
+                grid-template-columns:
+                    0.85fr 1.15fr;
+
+                min-height: 650px;
+            }
+
+
+            .brand-panel {
+
+                padding: 42px 35px;
+            }
+
+
+            .form-panel {
+
+                padding: 42px 40px;
+            }
+
+
+            .brand-hero h1 {
+
+                font-size: 38px;
+            }
+
+        }
+
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 760px) {
+
+            body {
+
+                background: #f7f8fa;
+            }
+
+
+            .page {
+
+                min-height: 100vh;
+
+                padding: 0;
+
+                align-items: stretch;
+            }
+
+
+            .auth-container {
+
+                width: 100%;
+
+                min-height: 100vh;
+
+                display: flex;
+
+                flex-direction: column;
+
+                border-radius: 0;
+
+                box-shadow: none;
+
+                border: none;
+            }
+
+
+            .brand-panel {
+
+                min-height: 310px;
+
+                padding: 30px 25px;
+
+                flex: none;
+            }
+
+
+            .brand-hero {
+
+                margin-top: 38px;
+            }
+
+
+            .brand-hero h1 {
+
+                font-size: 32px;
+            }
+
+
+            .brand-hero p {
+
+                font-size: 13px;
+            }
+
+
+            .features {
+
+                display: none;
+            }
+
+
+            .brand-footer {
+
+                padding-top: 20px;
+            }
+
+
+            .form-panel {
+
+                flex: 1;
+
+                padding: 38px 25px 30px;
+
+                align-items: flex-start;
+            }
+
+
+            .form-header h2 {
+
+                font-size: 26px;
+            }
+
+
+            .form-wrapper {
+
+                width: 100%;
+            }
+
+        }
+
+
+        /* =========================================================
+           SMALL MOBILE
+        ========================================================= */
+
+        @media (max-width: 420px) {
+
+            .brand-panel {
+
+                min-height: 285px;
+
+                padding: 25px 20px;
+            }
+
+
+            .brand-hero {
+
+                margin-top: 30px;
+            }
+
+
+            .brand-hero h1 {
+
+                font-size: 29px;
+            }
+
+
+            .form-panel {
+
+                padding: 32px 20px 25px;
+            }
+
+
+            .brand-icon {
+
+                width: 44px;
+
+                height: 44px;
+            }
+
+
+            .form-input {
+
+                height: 49px;
+            }
+
+
+            .submit-button {
+
+                height: 51px;
+            }
+
+        }
+
+
+        /* =========================================================
+           REDUCED MOTION
+        ========================================================= */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+
+                animation-duration: 0.01ms !important;
+
+                animation-iteration-count: 1 !important;
+
+                transition-duration: 0.01ms !important;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+    <main class="auth-container">
+
+
+        <!-- =====================================================
+             LEFT PANEL
+        ====================================================== -->
+
+        <section class="brand-panel">
+
+            <div class="brand-content">
+
+
+                <!-- BRAND -->
+
+                <div class="brand">
+
+                    <div class="brand-icon">
+                        🎓
+                    </div>
+
+                    <div class="brand-text">
+
+                        <strong>
+                            Student Management
+                        </strong>
+
+                        <span>
+                            Academic Management System
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- HERO -->
+
+                <div class="brand-hero">
+
+                    <div class="eyebrow">
+
+                        <span class="eyebrow-dot"></span>
+
+                        Student Portal
+
+                    </div>
+
+
+                    <h1>
+                        Create your account.
+                    </h1>
+
+
+                    <p>
+
+                        Join the academic management platform
+                        and access your student services through
+                        one secure and modern system.
+
+                    </p>
+
+
+                    <!-- FEATURES -->
+
+                    <div class="features">
+
+
+                        <div class="feature">
+
+                            <div class="feature-icon">
+                                ✓
+                            </div>
+
+                            <span>
+                                Secure account management
+                            </span>
+
+                        </div>
+
+
+                        <div class="feature">
+
+                            <div class="feature-icon">
+                                ✓
+                            </div>
+
+                            <span>
+                                Easy access to academic information
+                            </span>
+
+                        </div>
+
+
+                        <div class="feature">
+
+                            <div class="feature-icon">
+                                ✓
+                            </div>
+
+                            <span>
+                                Modern and responsive dashboard
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- LEFT FOOTER -->
+
+            <div class="brand-footer">
+
+                <span>
+                    © 2026 Student Management System
+                </span>
+
+                <span class="secure-badge">
+                    🔒 Secure
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             RIGHT FORM
+        ====================================================== -->
+
+        <section class="form-panel">
+
+            <div class="form-wrapper">
+
+
+                <!-- FORM HEADER -->
+
+                <div class="form-header">
+
+                    <h2>
+                        Create account
+                    </h2>
+
+                    <p>
+                        Enter your details below to create your
+                        student account.
+                    </p>
+
+                </div>
+
+
+                <!-- ERROR -->
+
+                {% if error %}
+
+                    <div class="alert">
+
+                        <span class="alert-icon">
+                            !
+                        </span>
+
+                        <span>
+                            {{ error }}
+                        </span>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- REGISTER FORM -->
+
+                <form
+                    method="POST"
+                    action="{% url 'users:register' %}"
+                    id="registerForm"
+                    autocomplete="on"
+                >
+
+                    {% csrf_token %}
+
+
+                    <!-- =================================================
+                         USERNAME
+                    ================================================== -->
+
+                    <div class="form-group">
+
+                        <label
+                            class="form-label"
+                            for="username"
+                        >
+
+                            Username
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                👤
+                            </span>
+
+
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                class="form-input"
+                                placeholder="Enter your username"
+                                value="{{ username|default:'' }}"
+                                autocomplete="username"
+                                minlength="3"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         EMAIL
+                    ================================================== -->
+
+                    <div class="form-group">
+
+                        <label
+                            class="form-label"
+                            for="email"
+                        >
+
+                            Email address
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                ✉
+                            </span>
+
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="form-input"
+                                placeholder="Enter your email address"
+                                value="{{ email|default:'' }}"
+                                autocomplete="email"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         PASSWORD
+                    ================================================== -->
+
+                    <div class="form-group">
+
+                        <label
+                            class="form-label"
+                            for="password"
+                        >
+
+                            Password
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                🔒
+                            </span>
+
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                class="form-input"
+                                placeholder="Create a password"
+                                autocomplete="new-password"
+                                minlength="8"
+                                required
+                            >
+
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                onclick="togglePassword('password', this)"
+                                aria-label="Show password"
+                            >
+                                ◉
+                            </button>
+
+                        </div>
+
+
+                        <div class="password-hint">
+
+                            Use at least 8 characters for
+                            a stronger password.
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         CONFIRM PASSWORD
+                    ================================================== -->
+
+                    <div class="form-group">
+
+                        <label
+                            class="form-label"
+                            for="confirm_password"
+                        >
+
+                            Confirm password
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                🔐
+                            </span>
+
+
+                            <input
+                                type="password"
+                                id="confirm_password"
+                                name="confirm_password"
+                                class="form-input"
+                                placeholder="Confirm your password"
+                                autocomplete="new-password"
+                                minlength="8"
+                                required
+                            >
+
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                onclick="togglePassword('confirm_password', this)"
+                                aria-label="Show password"
+                            >
+                                ◉
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            id="matchStatus"
+                            class="match-status"
+                        ></div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         SUBMIT
+                    ================================================== -->
+
+                    <button
+                        type="submit"
+                        class="submit-button"
+                        id="submitButton"
+                    >
+
+                        <span id="buttonText">
+                            Create account
+                        </span>
+
+                        <span
+                            class="arrow"
+                            id="buttonArrow"
+                        >
+                            →
+                        </span>
+
+                    </button>
+
+                </form>
+
+
+                <!-- =================================================
+                     LOGIN
+                ================================================== -->
+
+                <div class="login-section">
+
+                    <p>
+
+                        Already have an account?
+
+                        <a
+                            href="{% url 'users:login' %}"
+                            class="login-link"
+                        >
+                            Sign in
+                        </a>
+
+                    </p>
+
+                </div>
+
+
+                <!-- COPYRIGHT -->
+
+                <div class="copyright">
+
+                    Student Management System · 2026
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    /* =============================================================
+       PASSWORD SHOW / HIDE
+    ============================================================= */
+
+    function togglePassword(fieldId, button) {
+
+        const field =
+            document.getElementById(fieldId);
+
+        if (!field) {
+            return;
+        }
+
+        if (field.type === "password") {
+
+            field.type = "text";
+
+            button.setAttribute(
+                "aria-label",
+                "Hide password"
+            );
+
+        } else {
+
+            field.type = "password";
+
+            button.setAttribute(
+                "aria-label",
+                "Show password"
+            );
+
+        }
+
+    }
+
+
+    /* =============================================================
+       PASSWORD MATCH
+    ============================================================= */
+
+    const password =
+        document.getElementById("password");
+
+    const confirmPassword =
+        document.getElementById("confirm_password");
+
+    const matchStatus =
+        document.getElementById("matchStatus");
+
+
+    function validatePasswords() {
+
+        if (
+            !password ||
+            !confirmPassword ||
+            !matchStatus
+        ) {
+            return;
+        }
+
+
+        if (!confirmPassword.value) {
+
+            matchStatus.className =
+                "match-status";
+
+            matchStatus.textContent = "";
+
+            confirmPassword.setCustomValidity("");
+
+            return;
+        }
+
+
+        if (
+            password.value ===
+            confirmPassword.value
+        ) {
+
+            matchStatus.className =
+                "match-status success";
+
+            matchStatus.textContent =
+                "✓ Passwords match.";
+
+            confirmPassword.setCustomValidity("");
+
+        } else {
+
+            matchStatus.className =
+                "match-status error";
+
+            matchStatus.textContent =
+                "✕ Passwords do not match.";
+
+            confirmPassword.setCustomValidity(
+                "Passwords do not match."
+            );
+
+        }
+
+    }
+
+
+    if (password && confirmPassword) {
+
+        password.addEventListener(
+            "input",
+            validatePasswords
+        );
+
+        confirmPassword.addEventListener(
+            "input",
+            validatePasswords
+        );
+
+    }
+
+
+    /* =============================================================
+       FORM SUBMIT LOADING
+    ============================================================= */
+
+    const registerForm =
+        document.getElementById("registerForm");
+
+    const submitButton =
+        document.getElementById("submitButton");
+
+    const buttonText =
+        document.getElementById("buttonText");
+
+    const buttonArrow =
+        document.getElementById("buttonArrow");
+
+
+    if (registerForm) {
+
+        registerForm.addEventListener(
+            "submit",
+            function () {
+
+                validatePasswords();
+
+
+                if (!registerForm.checkValidity()) {
+                    return;
+                }
+
+
+                submitButton.classList.add(
+                    "loading"
+                );
+
+
+                buttonText.textContent =
+                    "Creating account...";
+
+
+                buttonArrow.innerHTML =
+                    '<span class="spinner"></span>';
+
+            }
+        );
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1408 @@
+{% extends "students/student_base.html" %}
+
+{% block title %}
+My Attendance
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ============================================================
+   STUDENT ATTENDANCE PAGE
+============================================================ */
+
+.attendance-page {
+    width: 100%;
+    min-width: 0;
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.attendance-header {
+    position: relative;
+    overflow: hidden;
+
+    margin-bottom: 20px;
+    padding: 28px 30px;
+
+    border-radius: 20px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #172033 0%,
+            #24304a 65%,
+            #9a5243 145%
+        );
+
+    box-shadow:
+        0 15px 35px rgba(23,32,51,0.14);
+}
+
+.attendance-header::after {
+    content: "📅";
+
+    position: absolute;
+
+    top: 15px;
+    right: 30px;
+
+    font-size: 80px;
+
+    opacity: 0.08;
+}
+
+.attendance-header-content {
+    position: relative;
+    z-index: 2;
+}
+
+.attendance-header-label {
+    margin-bottom: 6px;
+
+    color:
+        rgba(255,255,255,0.55);
+
+    font-size: 9px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+}
+
+.attendance-header h1 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 27px;
+    font-weight: 850;
+}
+
+.attendance-header p {
+    margin: 7px 0 0;
+
+    max-width: 680px;
+
+    color:
+        rgba(255,255,255,0.68);
+
+    font-size: 10px;
+
+    line-height: 1.6;
+}
+
+.attendance-meta {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 15px;
+}
+
+.attendance-meta span {
+    display: inline-flex;
+
+    align-items: center;
+
+    min-height: 28px;
+
+    padding: 0 10px;
+
+    border-radius: 8px;
+
+    background:
+        rgba(255,255,255,0.08);
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    color:
+        rgba(255,255,255,0.82);
+
+    font-size: 8px;
+
+    font-weight: 750;
+}
+
+
+/* ============================================================
+   SUMMARY CARDS
+============================================================ */
+
+.attendance-summary {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 13px;
+
+    margin-bottom: 20px;
+}
+
+.summary-card {
+    padding: 17px;
+
+    background: #ffffff;
+
+    border:
+        1px solid #e8ebf1;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 6px 20px rgba(31,41,55,0.035);
+}
+
+.summary-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    font-size: 17px;
+}
+
+.summary-present .summary-icon {
+    background: #e8f7ee;
+}
+
+.summary-absent .summary-icon {
+    background: #fff0ef;
+}
+
+.summary-late .summary-icon {
+    background: #fff5df;
+}
+
+.summary-rate .summary-icon {
+    background: #eef3ff;
+}
+
+.summary-label {
+    margin-top: 11px;
+
+    color: #929aa8;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.6px;
+}
+
+.summary-value {
+    margin-top: 4px;
+
+    color: #202735;
+
+    font-size: 20px;
+
+    font-weight: 850;
+}
+
+
+/* ============================================================
+   MAIN GRID
+============================================================ */
+
+.attendance-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 0.9fr)
+        minmax(0, 1.5fr);
+
+    gap: 18px;
+
+    align-items: start;
+}
+
+
+/* ============================================================
+   CARD
+============================================================ */
+
+.attendance-card {
+    overflow: hidden;
+
+    margin-bottom: 18px;
+
+    background: #ffffff;
+
+    border:
+        1px solid #e8ebf1;
+
+    border-radius: 17px;
+
+    box-shadow:
+        0 6px 20px rgba(31,41,55,0.035);
+}
+
+.attendance-card:last-child {
+    margin-bottom: 0;
+}
+
+.card-header {
+    padding:
+        18px 20px;
+
+    border-bottom:
+        1px solid #edf0f3;
+}
+
+.card-header h2 {
+    margin: 0;
+
+    color: #29313e;
+
+    font-size: 15px;
+
+    font-weight: 850;
+}
+
+.card-header p {
+    margin: 4px 0 0;
+
+    color: #969eac;
+
+    font-size: 8px;
+
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   RATE
+============================================================ */
+
+.rate-content {
+    padding: 24px 20px 22px;
+}
+
+.rate-display {
+    margin-bottom: 20px;
+
+    text-align: center;
+}
+
+.rate-circle {
+    width: 125px;
+    height: 125px;
+
+    margin:
+        0 auto 15px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #eaf7ef;
+
+    border:
+        12px solid #d4efde;
+}
+
+.rate-circle-inner {
+    text-align: center;
+}
+
+.rate-circle-inner strong {
+    display: block;
+
+    color: #22824a;
+
+    font-size: 23px;
+
+    font-weight: 850;
+}
+
+.rate-circle-inner span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #738090;
+
+    font-size: 7px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+}
+
+.rate-title {
+    color: #303846;
+
+    font-size: 12px;
+
+    font-weight: 850;
+}
+
+.rate-description {
+    margin-top: 4px;
+
+    color: #969eac;
+
+    font-size: 8px;
+
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   DISTRIBUTION
+============================================================ */
+
+.distribution {
+    margin-top: 15px;
+}
+
+.distribution-row {
+    margin-bottom: 14px;
+}
+
+.distribution-row:last-child {
+    margin-bottom: 0;
+}
+
+.distribution-top {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 6px;
+}
+
+.distribution-name {
+    color: #555f6e;
+
+    font-size: 8px;
+
+    font-weight: 800;
+}
+
+.distribution-value {
+    color: #303846;
+
+    font-size: 8px;
+
+    font-weight: 850;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 7px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background: #edf0f3;
+}
+
+.progress-fill {
+    width: 0;
+    height: 100%;
+
+    border-radius: 10px;
+
+    transition:
+        width 0.6s ease;
+}
+
+.progress-present {
+    background: #22824a;
+}
+
+.progress-absent {
+    background: #b42318;
+}
+
+.progress-late {
+    background: #d39b2c;
+}
+
+
+/* ============================================================
+   ATTENDANCE HISTORY
+============================================================ */
+
+.history-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+.attendance-table {
+    width: 100%;
+
+    min-width: 650px;
+
+    border-collapse: collapse;
+}
+
+.attendance-table th {
+    padding:
+        13px 18px;
+
+    background: #fafbfc;
+
+    color: #8d96a4;
+
+    border-bottom:
+        1px solid #edf0f3;
+
+    text-align: left;
+
+    font-size: 8px;
+
+    font-weight: 850;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.6px;
+}
+
+.attendance-table td {
+    padding:
+        13px 18px;
+
+    color: #4f5968;
+
+    border-bottom:
+        1px solid #f0f2f5;
+
+    font-size: 9px;
+}
+
+.attendance-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.attendance-table tbody tr:hover {
+    background: #fcfaf9;
+}
+
+
+/* ============================================================
+   SUBJECT
+============================================================ */
+
+.subject-cell {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+.subject-icon {
+    width: 32px;
+    height: 32px;
+
+    min-width: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #eef3ff;
+
+    font-size: 13px;
+}
+
+.subject-name {
+    color: #343c49;
+
+    font-size: 9px;
+
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   STATUS
+============================================================ */
+
+.status-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    min-height: 25px;
+
+    padding:
+        0 8px;
+
+    border-radius: 7px;
+
+    font-size: 7px;
+
+    font-weight: 850;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+}
+
+.status-present {
+    color: #22824a;
+
+    background: #e8f7ee;
+}
+
+.status-present .status-dot {
+    background: #22824a;
+}
+
+.status-absent {
+    color: #b42318;
+
+    background: #fff0ef;
+}
+
+.status-absent .status-dot {
+    background: #b42318;
+}
+
+.status-late {
+    color: #9a6200;
+
+    background: #fff5df;
+}
+
+.status-late .status-dot {
+    background: #d39b2c;
+}
+
+.status-excused {
+    color: #3159b7;
+
+    background: #eef3ff;
+}
+
+.status-excused .status-dot {
+    background: #3159b7;
+}
+
+.status-recorded {
+    color: #697386;
+
+    background: #f0f2f5;
+}
+
+.status-recorded .status-dot {
+    background: #697386;
+}
+
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+
+.empty-state {
+    padding:
+        55px 20px;
+
+    text-align: center;
+}
+
+.empty-icon {
+    width: 62px;
+    height: 62px;
+
+    margin:
+        0 auto 13px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 17px;
+
+    background: #f5e9e6;
+
+    font-size: 26px;
+}
+
+.empty-state h3 {
+    margin: 0;
+
+    color: #343c49;
+
+    font-size: 16px;
+
+    font-weight: 850;
+}
+
+.empty-state p {
+    max-width: 450px;
+
+    margin:
+        7px auto 0;
+
+    color: #969eac;
+
+    font-size: 9px;
+
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   EXCUSED
+============================================================ */
+
+.excused-box {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 18px;
+
+    padding: 12px;
+
+    border:
+        1px solid #dbe4f7;
+
+    border-radius: 9px;
+
+    background: #f5f8ff;
+}
+
+.excused-icon {
+    width: 31px;
+    height: 31px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #e7efff;
+
+    font-size: 13px;
+}
+
+.excused-text strong {
+    display: block;
+
+    color: #3159b7;
+
+    font-size: 8px;
+
+    font-weight: 850;
+}
+
+.excused-text span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #7d8aa0;
+
+    font-size: 7px;
+}
+
+
+/* ============================================================
+   DARK MODE
+============================================================ */
+
+body.dark-mode .summary-card,
+body.dark-mode .attendance-card {
+    background: #181c2a;
+
+    border-color: #292e3d;
+}
+
+body.dark-mode .summary-value,
+body.dark-mode .card-header h2,
+body.dark-mode .rate-title,
+body.dark-mode .distribution-value,
+body.dark-mode .subject-name,
+body.dark-mode .empty-state h3 {
+    color: #f2f4f8;
+}
+
+body.dark-mode .summary-label,
+body.dark-mode .card-header p,
+body.dark-mode .rate-description,
+body.dark-mode .distribution-name,
+body.dark-mode .empty-state p {
+    color: #929bad;
+}
+
+body.dark-mode .progress-bar {
+    background: #303545;
+}
+
+body.dark-mode .attendance-table th {
+    background: #202431;
+
+    color: #929bad;
+
+    border-color: #303545;
+}
+
+body.dark-mode .attendance-table td {
+    color: #d5d9e2;
+
+    border-color: #292e3d;
+}
+
+body.dark-mode .attendance-table tbody tr:hover {
+    background: #202431;
+}
+
+body.dark-mode .excused-box {
+    background: #202a3d;
+
+    border-color: #303f59;
+}
+
+body.dark-mode .excused-text span {
+    color: #9ba8bd;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 1000px) {
+
+    .attendance-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 850px) {
+
+    .attendance-summary {
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .attendance-header {
+        padding:
+            23px 20px;
+    }
+
+    .attendance-header h1 {
+        font-size: 23px;
+    }
+
+    .attendance-summary {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+
+<div class="attendance-page">
+
+
+    <!-- ========================================================
+         HEADER
+    ========================================================= -->
+
+    <section class="attendance-header">
+
+        <div class="attendance-header-content">
+
+            <div class="attendance-header-label">
+                STUDENT PORTAL
+            </div>
+
+            <h1>
+                📅 My Attendance
+            </h1>
+
+            <p>
+                Track your attendance record, attendance rate,
+                and recent attendance history.
+            </p>
+
+
+            <div class="attendance-meta">
+
+                <span>
+                    👤 {{ student.student_id }}
+                </span>
+
+                <span>
+                    🎓
+                    {{ student.first_name }}
+                    {{ student.last_name }}
+                </span>
+
+
+                {% if student.class_room %}
+
+                    <span>
+                        🏫 {{ student.class_room.name }}
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================================
+         SUMMARY
+    ========================================================= -->
+
+    <div class="attendance-summary">
+
+
+        <div class="summary-card summary-present">
+
+            <div class="summary-icon">
+                ✅
+            </div>
+
+            <div class="summary-label">
+                Present
+            </div>
+
+            <div class="summary-value">
+                {{ attendance_present|default:"0" }}
+            </div>
+
+        </div>
+
+
+        <div class="summary-card summary-absent">
+
+            <div class="summary-icon">
+                ❌
+            </div>
+
+            <div class="summary-label">
+                Absent
+            </div>
+
+            <div class="summary-value">
+                {{ attendance_absent|default:"0" }}
+            </div>
+
+        </div>
+
+
+        <div class="summary-card summary-late">
+
+            <div class="summary-icon">
+                ⏰
+            </div>
+
+            <div class="summary-label">
+                Late
+            </div>
+
+            <div class="summary-value">
+                {{ attendance_late|default:"0" }}
+            </div>
+
+        </div>
+
+
+        <div class="summary-card summary-rate">
+
+            <div class="summary-icon">
+                📈
+            </div>
+
+            <div class="summary-label">
+                Attendance Rate
+            </div>
+
+            <div class="summary-value">
+                {{ attendance_percentage|default:"0" }}%
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ========================================================
+         MAIN GRID
+    ========================================================= -->
+
+    <div class="attendance-grid">
+
+
+        <!-- ====================================================
+             LEFT COLUMN
+        ===================================================== -->
+
+        <div>
+
+
+            <section class="attendance-card">
+
+                <div class="card-header">
+
+                    <h2>
+                        📈 Attendance Rate
+                    </h2>
+
+                    <p>
+                        Your overall attendance performance.
+                    </p>
+
+                </div>
+
+
+                <div class="rate-content">
+
+
+                    <div class="rate-display">
+
+                        <div class="rate-circle">
+
+                            <div class="rate-circle-inner">
+
+                                <strong>
+                                    {{ attendance_percentage|default:"0" }}%
+                                </strong>
+
+                                <span>
+                                    Attendance
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="rate-title">
+                            Overall Attendance
+                        </div>
+
+                        <div class="rate-description">
+                            Based on recorded attendance.
+                        </div>
+
+                    </div>
+
+
+                    <!-- PRESENT -->
+
+                    <div class="distribution">
+
+                        <div class="distribution-row">
+
+                            <div class="distribution-top">
+
+                                <span class="distribution-name">
+                                    Present
+                                </span>
+
+                                <span class="distribution-value">
+                                    {{ attendance_present|default:"0" }}
+                                </span>
+
+                            </div>
+
+
+                            <div class="progress-bar">
+
+                                <div
+                                    id="present-progress"
+                                    class="progress-fill progress-present"
+                                    data-percentage="{{ present_percentage|default:0 }}"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ABSENT -->
+
+                        <div class="distribution-row">
+
+                            <div class="distribution-top">
+
+                                <span class="distribution-name">
+                                    Absent
+                                </span>
+
+                                <span class="distribution-value">
+                                    {{ attendance_absent|default:"0" }}
+                                </span>
+
+                            </div>
+
+
+                            <div class="progress-bar">
+
+                                <div
+                                    id="absent-progress"
+                                    class="progress-fill progress-absent"
+                                    data-percentage="{{ absent_percentage|default:0 }}"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- LATE -->
+
+                        <div class="distribution-row">
+
+                            <div class="distribution-top">
+
+                                <span class="distribution-name">
+                                    Late
+                                </span>
+
+                                <span class="distribution-value">
+                                    {{ attendance_late|default:"0" }}
+                                </span>
+
+                            </div>
+
+
+                            <div class="progress-bar">
+
+                                <div
+                                    id="late-progress"
+                                    class="progress-fill progress-late"
+                                    data-percentage="{{ late_percentage|default:0 }}"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- EXCUSED -->
+
+                    {% if attendance_excused %}
+
+                        <div class="excused-box">
+
+                            <div class="excused-icon">
+                                ℹ️
+                            </div>
+
+                            <div class="excused-text">
+
+                                <strong>
+                                    Excused Absences
+                                </strong>
+
+                                <span>
+                                    {{ attendance_excused }}
+                                    attendance record{{ attendance_excused|pluralize }}
+                                    marked as excused.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+
+        <!-- ====================================================
+             RIGHT COLUMN
+        ===================================================== -->
+
+        <div>
+
+
+            <section class="attendance-card">
+
+                <div class="card-header">
+
+                    <h2>
+                        📋 Attendance History
+                    </h2>
+
+                    <p>
+                        Your recent attendance records.
+                    </p>
+
+                </div>
+
+
+                {% if attendance_records %}
+
+
+                    <div class="history-wrapper">
+
+                        <table class="attendance-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Date
+                                    </th>
+
+                                    <th>
+                                        Subject
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                {% for record in attendance_records %}
+
+                                    <tr>
+
+                                        <td>
+
+                                            {% if record.date %}
+
+                                                {{ record.date|date:"M d, Y" }}
+
+                                            {% else %}
+
+                                                —
+
+                                            {% endif %}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <div class="subject-cell">
+
+                                                <div class="subject-icon">
+                                                    📚
+                                                </div>
+
+                                                <span class="subject-name">
+                                                    {{ record.subject_name }}
+                                                </span>
+
+                                            </div>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {% if record.status == "Present" %}
+
+                                                <span class="status-badge status-present">
+
+                                                    <span class="status-dot"></span>
+
+                                                    Present
+
+                                                </span>
+
+
+                                            {% elif record.status == "Absent" %}
+
+                                                <span class="status-badge status-absent">
+
+                                                    <span class="status-dot"></span>
+
+                                                    Absent
+
+                                                </span>
+
+
+                                            {% elif record.status == "Late" %}
+
+                                                <span class="status-badge status-late">
+
+                                                    <span class="status-dot"></span>
+
+                                                    Late
+
+                                                </span>
+
+
+                                            {% elif record.status == "Excused" %}
+
+                                                <span class="status-badge status-excused">
+
+                                                    <span class="status-dot"></span>
+
+                                                    Excused
+
+                                                </span>
+
+
+                                            {% else %}
+
+                                                <span class="status-badge status-recorded">
+
+                                                    <span class="status-dot"></span>
+
+                                                    {{ record.status }}
+
+                                                </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+                                    </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                {% else %}
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            📅
+                        </div>
+
+                        <h3>
+                            No Attendance Records
+                        </h3>
+
+                        <p>
+                            No attendance records have been
+                            recorded for your account yet.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+
+            </section>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+/* ============================================================
+   PROGRESS BAR SETUP
+============================================================ */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const progressBars = document.querySelectorAll(
+            ".progress-fill"
+        );
+
+        progressBars.forEach(
+            function (bar) {
+
+                let percentage = Number(
+                    bar.dataset.percentage
+                );
+
+                if (
+                    Number.isNaN(percentage)
+                ) {
+                    percentage = 0;
+                }
+
+                if (percentage < 0) {
+                    percentage = 0;
+                }
+
+                if (percentage > 100) {
+                    percentage = 100;
+                }
+
+                bar.style.width =
+                    percentage + "%";
+            }
+        );
+    }
+);
+
+</script>
+
+{% endblock content %}
+

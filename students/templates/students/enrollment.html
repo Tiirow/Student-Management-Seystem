@@ -1,0 +1,1954 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Enrollment | Student Management System</title>
+
+    <style>
+        /* =========================================================
+           GLOBAL RESET
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+        /* =========================================================
+           FIXED SIDEBAR
+        ========================================================= */
+
+        :root {
+            --sidebar-width: 285px;
+            --primary: #9A5243;
+            --primary-dark: #7d4035;
+            --sidebar-bg: #17191d;
+            --sidebar-bg-2: #202328;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            width: 285px !important;
+            min-width: 285px !important;
+            max-width: 285px !important;
+
+            height: 100vh;
+
+            z-index: 9999;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #17191d 0%,
+                    #1b1e23 45%,
+                    #15171b 100%
+                );
+
+            border-right: 1px solid rgba(255, 255, 255, 0.06);
+
+            box-shadow:
+                8px 0 30px rgba(15, 23, 42, 0.10);
+
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.18) transparent;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.18);
+            border-radius: 10px;
+        }
+
+
+        /* =========================================================
+           SIDEBAR BRAND
+        ========================================================= */
+
+        .sidebar-brand {
+            height: 86px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 22px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.07);
+        }
+
+        .brand-icon {
+            width: 44px;
+            height: 44px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #9A5243,
+                    #6f382f
+                );
+
+            color: #ffffff;
+
+            font-size: 21px;
+
+            box-shadow:
+                0 8px 22px rgba(154,82,67,0.25);
+        }
+
+        .brand-text {
+            margin-left: 12px;
+            min-width: 0;
+        }
+
+        .brand-title {
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 800;
+            line-height: 1.2;
+
+            white-space: nowrap;
+        }
+
+        .brand-subtitle {
+            margin-top: 4px;
+
+            color: #9ca3af;
+
+            font-size: 10px;
+            font-weight: 600;
+
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+
+            white-space: nowrap;
+        }
+
+
+        /* =========================================================
+           SIDEBAR NAV
+        ========================================================= */
+
+        .sidebar-nav {
+            padding: 20px 13px 24px;
+        }
+
+        .nav-section {
+            margin-bottom: 22px;
+        }
+
+        .nav-section-title {
+            padding: 0 13px;
+            margin-bottom: 9px;
+
+            color: #6b7280;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 1.1px;
+            text-transform: uppercase;
+        }
+
+        .nav-link {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            width: 100%;
+            min-height: 48px;
+
+            margin-bottom: 4px;
+            padding: 0 13px;
+
+            border-radius: 12px;
+
+            color: #aeb4bf;
+
+            font-size: 13px;
+            font-weight: 650;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+
+            background:
+                rgba(255,255,255,0.065);
+
+            transform: translateX(2px);
+        }
+
+        .nav-link.active {
+            color: #ffffff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(154,82,67,0.95),
+                    rgba(125,64,53,0.92)
+                );
+
+            box-shadow:
+                0 8px 20px rgba(0,0,0,0.16);
+        }
+
+        .nav-link.active::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            top: 9px;
+            bottom: 9px;
+
+            width: 3px;
+
+            border-radius: 0 4px 4px 0;
+
+            background: #ffffff;
+        }
+
+        .nav-icon {
+            width: 22px;
+            min-width: 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-right: 11px;
+
+            font-size: 16px;
+        }
+
+        .nav-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+
+        /* =========================================================
+           SIDEBAR USER
+        ========================================================= */
+
+        .sidebar-user {
+            margin: 8px 13px 18px;
+            padding: 14px;
+
+            display: flex;
+            align-items: center;
+
+            border:
+                1px solid rgba(255,255,255,0.07);
+
+            border-radius: 15px;
+
+            background:
+                rgba(255,255,255,0.035);
+        }
+
+        .user-avatar {
+            width: 39px;
+            height: 39px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #9A5243,
+                    #6f382f
+                );
+
+            color: #ffffff;
+
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .user-info {
+            min-width: 0;
+            margin-left: 10px;
+        }
+
+        .user-name {
+            color: #ffffff;
+
+            font-size: 12px;
+            font-weight: 750;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-role {
+            margin-top: 2px;
+
+            color: #8f96a3;
+
+            font-size: 10px;
+            font-weight: 600;
+
+            text-transform: capitalize;
+        }
+
+
+        /* =========================================================
+           LOGOUT
+        ========================================================= */
+
+        .logout-section {
+            padding: 0 13px 22px;
+        }
+
+        .logout-link {
+            width: 100%;
+            min-height: 45px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 13px;
+
+            border:
+                1px solid rgba(255,255,255,0.07);
+
+            border-radius: 12px;
+
+            color: #aeb4bf;
+
+            background:
+                rgba(255,255,255,0.025);
+
+            font-size: 13px;
+            font-weight: 650;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .logout-link:hover {
+            color: #ffffff;
+            background:
+                rgba(239,68,68,0.12);
+            border-color:
+                rgba(239,68,68,0.18);
+        }
+
+
+        /* =========================================================
+           MAIN WRAPPER
+        ========================================================= */
+
+        .main-wrapper {
+            margin-left: 285px !important;
+
+            width: calc(100% - 285px) !important;
+
+            min-height: 100vh;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================================
+           ENROLLMENT PAGE
+        ========================================================= */
+
+        .enrollment-page {
+            width: 100%;
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            padding: 40px 24px 60px;
+        }
+
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            margin: 0 0 8px;
+
+            font-size: 32px;
+            font-weight: 800;
+
+            color: #1f2937;
+        }
+
+        .page-header p {
+            margin: 0;
+
+            color: #6b7280;
+
+            font-size: 15px;
+        }
+
+
+        /* =========================================================
+           CARD
+        ========================================================= */
+
+        .card {
+            background: #ffffff;
+
+            border:
+                1px solid #e5e7eb;
+
+            border-radius: 20px;
+
+            padding: 28px;
+
+            margin-bottom: 24px;
+
+            box-shadow:
+                0 15px 40px rgba(15,23,42,0.07);
+        }
+
+        .card-title {
+            margin-bottom: 20px;
+
+            color: #1f2937;
+
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+
+        /* =========================================================
+           FORM
+        ========================================================= */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #374151;
+
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .form-select {
+            width: 100%;
+            min-height: 50px;
+
+            padding: 12px 14px;
+
+            border:
+                1px solid #d1d5db;
+
+            border-radius: 12px;
+
+            background: #ffffff;
+
+            font-size: 15px;
+            color: #374151;
+
+            cursor: pointer;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .form-select:focus {
+            outline: none;
+
+            border-color: #9A5243;
+
+            box-shadow:
+                0 0 0 3px rgba(154,82,67,0.12);
+        }
+
+        .form-select:hover {
+            border-color: #9A5243;
+        }
+
+
+        /* =========================================================
+           SELECTED STUDENT
+        ========================================================= */
+
+        .selected-info {
+            background:
+                linear-gradient(
+                    135deg,
+                    #9A5243,
+                    #6f382f
+                );
+
+            color: white;
+
+            padding: 24px;
+
+            border-radius: 18px;
+
+            margin-bottom: 24px;
+
+            box-shadow:
+                0 15px 30px rgba(154,82,67,0.18);
+        }
+
+        .selected-info h3 {
+            margin: 0 0 8px;
+
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .selected-info p {
+            margin: 0;
+
+            opacity: 0.9;
+
+            font-size: 14px;
+        }
+
+        .selected-info strong {
+            font-weight: 800;
+        }
+
+
+        /* =========================================================
+           SUBJECT LIST
+        ========================================================= */
+
+        .subject-list {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 14px;
+        }
+
+        .subject-item {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 16px;
+
+            border:
+                1px solid #e5e7eb;
+
+            border-radius: 14px;
+
+            background: #fafafa;
+
+            cursor: pointer;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .subject-item:hover {
+            border-color: #9A5243;
+
+            background: #fffaf8;
+
+            transform: translateY(-1px);
+        }
+
+        .subject-item input {
+            width: 19px;
+            height: 19px;
+
+            flex-shrink: 0;
+
+            accent-color: #9A5243;
+
+            cursor: pointer;
+        }
+
+        .subject-name {
+            color: #374151;
+
+            font-weight: 700;
+        }
+
+
+        /* =========================================================
+           ACTIONS
+        ========================================================= */
+
+        .actions {
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 12px;
+
+            margin-top: 28px;
+        }
+
+        .btn {
+            min-height: 46px;
+
+            padding: 0 22px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            text-decoration: none;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: #9A5243;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #7d4035;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+
+        /* =========================================================
+           EMPTY STATE
+        ========================================================= */
+
+        .empty-state {
+            text-align: center;
+
+            padding: 40px 20px;
+
+            background: #f8fafc;
+
+            border-radius: 14px;
+
+            color: #64748b;
+        }
+
+        .empty-state-icon {
+            margin-bottom: 10px;
+
+            font-size: 42px;
+        }
+
+        .empty-state strong {
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #374151;
+
+            font-size: 16px;
+        }
+
+        .empty-state p {
+            margin: 0;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+           CURRENT ENROLLMENT
+        ========================================================= */
+
+        .current-enrollment {
+            margin-top: 25px;
+        }
+
+        .table-wrapper {
+            width: 100%;
+
+            overflow-x: auto;
+
+            border:
+                1px solid #eef2f7;
+
+            border-radius: 14px;
+        }
+
+        .student-table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 600px;
+        }
+
+        .student-table th {
+            padding: 15px;
+
+            text-align: left;
+
+            background: #f8fafc;
+
+            color: #64748b;
+
+            font-size: 13px;
+            font-weight: 800;
+
+            border-bottom:
+                1px solid #e5e7eb;
+        }
+
+        .student-table td {
+            padding: 15px;
+
+            color: #374151;
+
+            font-size: 14px;
+
+            border-bottom:
+                1px solid #eef2f7;
+        }
+
+        .student-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .student-table tbody tr:hover {
+            background: #fafafa;
+        }
+
+
+        /* =========================================================
+           STATUS
+        ========================================================= */
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+
+            padding: 5px 11px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .status-active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-dropped {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-completed {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+
+        /* =========================================================
+           MESSAGES
+        ========================================================= */
+
+        .message {
+            padding: 14px 18px;
+
+            border-radius: 12px;
+
+            margin-bottom: 15px;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .message.success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .message.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .message.warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .message.info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+
+        /* =========================================================
+           LOGOUT MODAL
+        ========================================================= */
+
+        .logout-modal {
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 20000;
+
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                rgba(15,23,42,0.58);
+
+            backdrop-filter: blur(5px);
+        }
+
+        .logout-modal.show {
+            display: flex;
+        }
+
+        .logout-modal-card {
+            width: 100%;
+            max-width: 410px;
+
+            padding: 30px;
+
+            border-radius: 20px;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 25px 70px rgba(15,23,42,0.25);
+
+            text-align: center;
+        }
+
+        .logout-modal-icon {
+            width: 58px;
+            height: 58px;
+
+            margin: 0 auto 16px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #fef2f2;
+
+            font-size: 25px;
+        }
+
+        .logout-modal-card h3 {
+            margin-bottom: 8px;
+
+            color: #1f2937;
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .logout-modal-card p {
+            margin-bottom: 24px;
+
+            color: #6b7280;
+
+            font-size: 14px;
+        }
+
+        .logout-modal-actions {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 10px;
+        }
+
+        .modal-btn {
+            min-width: 110px;
+            min-height: 43px;
+
+            padding: 0 18px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .modal-cancel {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .modal-confirm {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 285px !important;
+                min-width: 285px !important;
+                max-width: 285px !important;
+            }
+
+            .main-wrapper {
+                margin-left: 285px !important;
+                width: calc(100% - 285px) !important;
+            }
+
+            .subject-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 750px) {
+
+            .enrollment-page {
+                padding:
+                    25px 14px 40px;
+            }
+
+            .page-header h1 {
+                font-size: 26px;
+            }
+
+            .card {
+                padding: 20px;
+
+                border-radius: 16px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .selected-info h3 {
+                font-size: 19px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     FIXED SIDEBAR
+========================================================= -->
+
+<aside class="sidebar">
+
+    <!-- BRAND -->
+    <div class="sidebar-brand">
+
+        <div class="brand-icon">
+            🎓
+        </div>
+
+        <div class="brand-text">
+
+            <div class="brand-title">
+                Student Management
+            </div>
+
+            <div class="brand-subtitle">
+                Management System
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+    <nav class="sidebar-nav">
+
+        <!-- MAIN -->
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                Main
+            </div>
+
+
+            <!-- DASHBOARD -->
+            <a
+                href="{% url 'student-home' %}"
+                class="nav-link"
+            >
+                <span class="nav-icon">🏠</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+
+
+            <!-- STUDENTS -->
+            <a
+                href="{% url 'student-list' %}"
+                class="nav-link"
+            >
+                <span class="nav-icon">👨‍🎓</span>
+                <span class="nav-text">Students</span>
+            </a>
+
+
+            <!-- TEACHERS -->
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                <a
+                    href="{% url 'teacherapp:teacher-list' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">👨‍🏫</span>
+                    <span class="nav-text">Teachers</span>
+                </a>
+
+            {% elif request.user.profile.role == "Teacher" %}
+
+                <a
+                    href="{% url 'teacherapp:teacher-dashboard' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">👨‍🏫</span>
+                    <span class="nav-text">Teachers</span>
+                </a>
+
+            {% endif %}
+
+
+            <!-- CLASSES -->
+            <a
+                href="{% url 'class-list' %}"
+                class="nav-link"
+            >
+                <span class="nav-icon">🏫</span>
+                <span class="nav-text">Classes</span>
+            </a>
+
+
+            <!-- SUBJECTS -->
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                <a
+                    href="{% url 'subject-list' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">📚</span>
+                    <span class="nav-text">Subjects</span>
+                </a>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- ACADEMIC -->
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                Academic
+            </div>
+
+
+            <!-- ENROLLMENT -->
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                <a
+                    href="{% url 'student-enrollment' %}"
+                    class="nav-link active"
+                >
+                    <span class="nav-icon">📝</span>
+                    <span class="nav-text">Enrollment</span>
+                </a>
+
+            {% endif %}
+
+
+            <!-- ASSIGNMENTS -->
+            {% if request.user.profile.role == "Teacher" %}
+
+                <a
+                    href="{% url 'teacherapp:assignment-list' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">📋</span>
+                    <span class="nav-text">Assignments</span>
+                </a>
+
+            {% endif %}
+
+
+            <!-- ATTENDANCE -->
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Teacher" %}
+
+                <a
+                    href="{% url 'attendance-list' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">✅</span>
+                    <span class="nav-text">Attendance</span>
+                </a>
+
+            {% endif %}
+
+
+            <!-- GRADES -->
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Teacher" %}
+
+                <a
+                    href="{% url 'grade-list' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Grades</span>
+                </a>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- SYSTEM -->
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                System
+            </div>
+
+
+            <!-- SYSTEM LOGS -->
+            <a
+                href="/dashboard/logs/"
+                class="nav-link"
+            >
+                <span class="nav-icon">🛡️</span>
+                <span class="nav-text">System Logs</span>
+            </a>
+
+
+            <!-- CONVERSATIONS -->
+            <a
+                href="/conversations/"
+                class="nav-link"
+            >
+                <span class="nav-icon">💬</span>
+                <span class="nav-text">Conversations</span>
+            </a>
+
+
+            <!-- MANAGE USERS -->
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" %}
+
+                <a
+                    href="{% url 'users:manage-users' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">👥</span>
+                    <span class="nav-text">Manage Users</span>
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </nav>
+
+
+    <!-- USER -->
+    <div class="sidebar-user">
+
+        <div class="user-avatar">
+
+            {% if request.user.first_name %}
+                {{ request.user.first_name|first|upper }}
+            {% else %}
+                {{ request.user.username|first|upper }}
+            {% endif %}
+
+        </div>
+
+
+        <div class="user-info">
+
+            <div class="user-name">
+
+                {% if request.user.first_name or request.user.last_name %}
+
+                    {{ request.user.get_full_name }}
+
+                {% else %}
+
+                    {{ request.user.username }}
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="user-role">
+
+                {% if request.user.is_superuser %}
+
+                    Administrator
+
+                {% elif request.user.profile.role %}
+
+                    {{ request.user.profile.role }}
+
+                {% else %}
+
+                    User
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- LOGOUT -->
+    <div class="logout-section">
+
+        <button
+            type="button"
+            class="logout-link"
+            onclick="openLogoutModal()"
+        >
+            <span class="nav-icon">🚪</span>
+            <span class="nav-text">Logout</span>
+        </button>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =========================================================
+     MAIN WRAPPER
+========================================================= -->
+
+<div class="main-wrapper">
+
+    <div class="enrollment-page">
+
+
+        <!-- =====================================================
+             HEADER
+        ====================================================== -->
+
+        <div class="page-header">
+
+            <h1>
+                📚 Student Enrollment
+            </h1>
+
+            <p>
+                Assign subjects to students according to their class.
+            </p>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             MESSAGES
+        ====================================================== -->
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="message
+                    {% if message.tags %}
+                        {{ message.tags }}
+                    {% endif %}
+                ">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+
+
+        <!-- =====================================================
+             SELECT CLASS
+        ====================================================== -->
+
+        <div class="card">
+
+            <div class="card-title">
+                🏫 Select Class
+            </div>
+
+
+            <form method="GET">
+
+                <div class="form-group">
+
+                    <label
+                        class="form-label"
+                        for="class_id"
+                    >
+                        Class
+                    </label>
+
+
+                    <select
+                        id="class_id"
+                        name="class_id"
+                        class="form-select"
+                        onchange="this.form.submit()"
+                    >
+
+                        <option value="">
+                            -- Select Class --
+                        </option>
+
+
+                        {% for classroom in classes %}
+
+                            <option
+                                value="{{ classroom.id }}"
+                                {% if selected_class_id == classroom.id|stringformat:"s" %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ classroom.name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             STUDENTS
+        ====================================================== -->
+
+        {% if selected_class_id %}
+
+            <div class="card">
+
+                <div class="card-title">
+                    👨‍🎓 Select Student
+                </div>
+
+
+                {% if students %}
+
+                    <form method="GET">
+
+                        <input
+                            type="hidden"
+                            name="class_id"
+                            value="{{ selected_class_id }}"
+                        >
+
+
+                        <div class="form-group">
+
+                            <label
+                                class="form-label"
+                                for="student_id"
+                            >
+                                Student
+                            </label>
+
+
+                            <select
+                                id="student_id"
+                                name="student_id"
+                                class="form-select"
+                                onchange="this.form.submit()"
+                                required
+                            >
+
+                                <option value="">
+                                    -- Select Student --
+                                </option>
+
+
+                                {% for student in students %}
+
+                                    <option
+                                        value="{{ student.id }}"
+                                        {% if selected_student_id == student.id|stringformat:"s" %}
+                                            selected
+                                        {% endif %}
+                                    >
+
+                                        {{ student.first_name }}
+                                        {{ student.last_name }}
+                                        —
+                                        {{ student.student_id }}
+
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+                    </form>
+
+
+                {% else %}
+
+                    <div class="empty-state">
+
+                        <div class="empty-state-icon">
+                            👨‍🎓
+                        </div>
+
+                        <strong>
+                            No students found in this class.
+                        </strong>
+
+                        <p>
+                            Please make sure students have been
+                            assigned to this class.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+
+
+        <!-- =====================================================
+             SELECTED STUDENT
+        ====================================================== -->
+
+        {% if selected_student_id and students %}
+
+            {% for student in students %}
+
+                {% if student.id|stringformat:"s" == selected_student_id %}
+
+                    <div class="selected-info">
+
+                        <h3>
+                            👨‍🎓
+                            {{ student.first_name }}
+                            {{ student.last_name }}
+                        </h3>
+
+
+                        <p>
+
+                            Student ID:
+
+                            <strong>
+                                {{ student.student_id }}
+                            </strong>
+
+                            &nbsp; • &nbsp;
+
+                            Class:
+
+                            <strong>
+                                {{ student.class_room.name }}
+                            </strong>
+
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+
+
+            <!-- =================================================
+                 SUBJECT ENROLLMENT
+            ================================================== -->
+
+            <div class="card">
+
+                <div class="card-title">
+                    📖 Select Subjects
+                </div>
+
+
+                {% if subjects %}
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+
+                        <!-- CLASS -->
+
+                        <input
+                            type="hidden"
+                            name="class_id"
+                            value="{{ selected_class_id }}"
+                        >
+
+
+                        <!-- STUDENT -->
+
+                        <input
+                            type="hidden"
+                            name="student_id"
+                            value="{{ selected_student_id }}"
+                        >
+
+
+                        <!-- SUBJECTS -->
+
+                        <div class="subject-list">
+
+                            {% for subject in subjects %}
+
+                                <label class="subject-item">
+
+                                    <input
+                                        type="checkbox"
+                                        name="subjects"
+                                        value="{{ subject.id }}"
+
+                                        {% for enrollment in current_enrollments %}
+
+                                            {% if enrollment.subject.id == subject.id and enrollment.status == "Active" %}
+                                                checked
+                                            {% endif %}
+
+                                        {% endfor %}
+                                    >
+
+
+                                    <span class="subject-name">
+
+                                        📘
+                                        {{ subject.name }}
+
+                                    </span>
+
+                                </label>
+
+                            {% endfor %}
+
+                        </div>
+
+
+
+                        <!-- =================================================
+                             ACTIONS
+                        ================================================== -->
+
+                        <div class="actions">
+
+                            <a
+                                href="{% url 'student-enrollment' %}"
+                                class="btn btn-secondary"
+                            >
+                                ↩ Reset
+                            </a>
+
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
+                                💾 Save Enrollment
+                            </button>
+
+                        </div>
+
+                    </form>
+
+
+                {% else %}
+
+                    <div class="empty-state">
+
+                        <div class="empty-state-icon">
+                            📚
+                        </div>
+
+                        <strong>
+                            No active subjects found.
+                        </strong>
+
+                        <p>
+                            Please create and activate subjects first.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- =================================================
+                 CURRENT ENROLLMENTS
+            ================================================== -->
+
+            {% if current_enrollments %}
+
+                <div class="card current-enrollment">
+
+                    <div class="card-title">
+                        📋 Current Enrollments
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table class="student-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Subject
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                    <th>
+                                        Enrolled At
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                {% for enrollment in current_enrollments %}
+
+                                    <tr>
+
+                                        <td>
+
+                                            <span class="subject-name">
+
+                                                📘
+                                                {{ enrollment.subject.name }}
+
+                                            </span>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {% if enrollment.status == "Active" %}
+
+                                                <span
+                                                    class="status status-active"
+                                                >
+                                                    Active
+                                                </span>
+
+                                            {% elif enrollment.status == "Dropped" %}
+
+                                                <span
+                                                    class="status status-dropped"
+                                                >
+                                                    Dropped
+                                                </span>
+
+                                            {% else %}
+
+                                                <span
+                                                    class="status status-completed"
+                                                >
+                                                    Completed
+                                                </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {{ enrollment.enrolled_at|date:"M d, Y" }}
+
+                                        </td>
+
+                                    </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     LOGOUT MODAL
+========================================================= -->
+
+<div
+    id="logoutModal"
+    class="logout-modal"
+>
+
+    <div class="logout-modal-card">
+
+        <div class="logout-modal-icon">
+            🚪
+        </div>
+
+        <h3>
+            Logout?
+        </h3>
+
+        <p>
+            Are you sure you want to logout from the
+            Student Management System?
+        </p>
+
+
+        <div class="logout-modal-actions">
+
+            <button
+                type="button"
+                class="modal-btn modal-cancel"
+                onclick="closeLogoutModal()"
+            >
+                Cancel
+            </button>
+
+
+            <a
+                href="{% url 'users:logout' %}"
+                class="modal-btn modal-confirm"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    function openLogoutModal() {
+
+        const modal =
+            document.getElementById("logoutModal");
+
+        if (modal) {
+            modal.classList.add("show");
+        }
+    }
+
+
+    function closeLogoutModal() {
+
+        const modal =
+            document.getElementById("logoutModal");
+
+        if (modal) {
+            modal.classList.remove("show");
+        }
+    }
+
+
+    /* Close modal when clicking outside */
+
+    document.addEventListener(
+        "click",
+        function(event) {
+
+            const modal =
+                document.getElementById("logoutModal");
+
+            if (
+                modal &&
+                event.target === modal
+            ) {
+                closeLogoutModal();
+            }
+
+        }
+    );
+
+
+    /* Close modal with Escape */
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Escape") {
+                closeLogoutModal();
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,1402 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+<style>
+/* ============================================================
+   ASSIGN SUBJECT TO CLASS PAGE
+============================================================ */
+
+.assign-page {
+    min-height: calc(100vh - 70px);
+    background: #f5f7fa;
+    padding: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.assign-container {
+    max-width: 1150px;
+    margin: 0 auto;
+}
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.assign-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.assign-header-left h1 {
+    margin: 0;
+    color: #182033;
+    font-size: 29px;
+    font-weight: 850;
+}
+
+.assign-header-left p {
+    margin: 7px 0 0;
+    color: #7d8799;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 38px;
+    padding: 0 13px;
+    border-radius: 9px;
+    background: #ffffff;
+    border: 1px solid #e3e7ec;
+    color: #687386;
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 800;
+    transition: 0.2s ease;
+}
+
+.back-button:hover {
+    color: #9a5243;
+    border-color: #dfcbc6;
+    background: #fffaf8;
+}
+
+/* ============================================================
+   MESSAGES
+============================================================ */
+
+.messages-area {
+    margin-bottom: 18px;
+}
+
+.message {
+    padding: 11px 14px;
+    margin-bottom: 8px;
+    border-radius: 9px;
+    font-size: 9px;
+    font-weight: 750;
+}
+
+.message.success {
+    background: #e8f7ee;
+    border: 1px solid #cdebd8;
+    color: #22824a;
+}
+
+.message.error {
+    background: #fff0ef;
+    border: 1px solid #f2d1ce;
+    color: #b42318;
+}
+
+.message.info {
+    background: #eef3ff;
+    border: 1px solid #d9e3ff;
+    color: #3159b7;
+}
+
+/* ============================================================
+   MAIN GRID
+============================================================ */
+
+.assign-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.8fr);
+    gap: 20px;
+    align-items: start;
+}
+
+/* ============================================================
+   CARD
+============================================================ */
+
+.assign-card {
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e8ebf1;
+    border-radius: 17px;
+    box-shadow: 0 7px 22px rgba(31, 41, 55, 0.04);
+}
+
+.assign-card-header {
+    padding: 19px 21px;
+    border-bottom: 1px solid #edf0f3;
+}
+
+.assign-card-header h2 {
+    margin: 0;
+    color: #29313e;
+    font-size: 16px;
+    font-weight: 850;
+}
+
+.assign-card-header p {
+    margin: 5px 0 0;
+    color: #969eac;
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+/* ============================================================
+   FORM
+============================================================ */
+
+.assign-form {
+    padding: 22px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 7px;
+    color: #3a4351;
+    font-size: 10px;
+    font-weight: 850;
+}
+
+.form-help {
+    margin-top: 5px;
+    color: #98a0ad;
+    font-size: 8px;
+    line-height: 1.5;
+}
+
+.form-select {
+    width: 100%;
+    min-height: 44px;
+    padding: 0 12px;
+    border: 1px solid #dfe3e8;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #29313e;
+    font-size: 11px;
+    font-weight: 650;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+    box-sizing: border-box;
+}
+
+.form-select:hover {
+    border-color: #cfd4db;
+}
+
+.form-select:focus {
+    border-color: #9a5243;
+    box-shadow: 0 0 0 3px rgba(154, 82, 67, 0.10);
+}
+
+.form-select:disabled {
+    background: #f3f4f6;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+/* ============================================================
+   LOADING STATE
+============================================================ */
+
+.subject-loading {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    color: #7d8799;
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.subject-loading.active {
+    display: flex;
+}
+
+.loading-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #9a5243;
+    animation: loadingPulse 0.9s infinite alternate;
+}
+
+@keyframes loadingPulse {
+    from {
+        opacity: 0.35;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ============================================================
+   ASSIGN BUTTON
+============================================================ */
+
+.assign-button {
+    width: 100%;
+    min-height: 45px;
+    border: none;
+    border-radius: 10px;
+    background: #9a5243;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 850;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.assign-button:hover:not(:disabled) {
+    background: #7f4236;
+    transform: translateY(-1px);
+    box-shadow: 0 7px 18px rgba(154, 82, 67, 0.18);
+}
+
+.assign-button:disabled {
+    background: #c7cbd1;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* ============================================================
+   SELECTION STATUS
+============================================================ */
+
+.selection-status {
+    margin-top: 12px;
+    padding: 12px 13px;
+    border: 1px solid #edf0f3;
+    border-radius: 10px;
+    background: #fafbfc;
+    color: #7f8794;
+    font-size: 9px;
+    line-height: 1.6;
+}
+
+.selection-status strong {
+    color: #9a5243;
+}
+
+/* ============================================================
+   INFO PANEL
+============================================================ */
+
+.info-panel {
+    padding: 22px;
+}
+
+.info-box {
+    padding: 16px;
+    margin-bottom: 12px;
+    border: 1px solid #edf0f3;
+    border-radius: 12px;
+    background: #fafbfc;
+}
+
+.info-box:last-child {
+    margin-bottom: 0;
+}
+
+.info-box-icon {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background: #f5e9e6;
+    font-size: 17px;
+}
+
+.info-box h3 {
+    margin: 0;
+    color: #343c49;
+    font-size: 11px;
+    font-weight: 850;
+}
+
+.info-box p {
+    margin: 5px 0 0;
+    color: #929aa8;
+    font-size: 8px;
+    line-height: 1.6;
+}
+
+/* ============================================================
+   CURRENT ASSIGNMENTS
+============================================================ */
+
+.assignments-card {
+    margin-top: 20px;
+}
+
+.assignment-list {
+    padding: 5px 21px 15px;
+}
+
+.assignment-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 13px 0;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.assignment-row:last-child {
+    border-bottom: none;
+}
+
+.assignment-left {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+}
+
+.assignment-icon {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #eef3ff;
+    font-size: 15px;
+}
+
+.assignment-info {
+    min-width: 0;
+}
+
+.assignment-class {
+    display: block;
+    color: #343c49;
+    font-size: 10px;
+    font-weight: 850;
+}
+
+.assignment-subject {
+    display: block;
+    margin-top: 3px;
+    color: #969eac;
+    font-size: 8px;
+}
+
+.assignment-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 8px;
+    border-radius: 7px;
+    background: #e8f7ee;
+    color: #22824a;
+    font-size: 7px;
+    font-weight: 850;
+    text-transform: uppercase;
+}
+
+.assignment-status-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #22824a;
+}
+
+/* ============================================================
+   EMPTY
+============================================================ */
+
+.empty-assignments {
+    padding: 35px 20px;
+    text-align: center;
+}
+
+.empty-assignments-icon {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: #f5e9e6;
+    font-size: 21px;
+}
+
+.empty-assignments h3 {
+    margin: 0;
+    color: #343c49;
+    font-size: 12px;
+    font-weight: 850;
+}
+
+.empty-assignments p {
+    margin: 5px 0 0;
+    color: #969eac;
+    font-size: 8px;
+    line-height: 1.5;
+}
+
+/* ============================================================
+   DARK MODE
+============================================================ */
+
+body.dark-mode .assign-page {
+    background: #111521;
+}
+
+body.dark-mode .assign-header-left h1 {
+    color: #f2f4f8;
+}
+
+body.dark-mode .assign-header-left p {
+    color: #929bad;
+}
+
+body.dark-mode .back-button {
+    background: #181c2a;
+    border-color: #303545;
+    color: #cbd0db;
+}
+
+body.dark-mode .back-button:hover {
+    background: #202431;
+    color: #ffb19f;
+}
+
+body.dark-mode .assign-card {
+    background: #181c2a;
+    border-color: #292e3d;
+}
+
+body.dark-mode .assign-card-header {
+    border-color: #303545;
+}
+
+body.dark-mode .assign-card-header h2,
+body.dark-mode .form-label,
+body.dark-mode .info-box h3 {
+    color: #f2f4f8;
+}
+
+body.dark-mode .assign-card-header p,
+body.dark-mode .form-help,
+body.dark-mode .info-box p,
+body.dark-mode .assignment-subject,
+body.dark-mode .empty-assignments p,
+body.dark-mode .selection-status,
+body.dark-mode .subject-loading {
+    color: #929bad;
+}
+
+body.dark-mode .form-select {
+    background: #202431;
+    border-color: #303545;
+    color: #f2f4f8;
+}
+
+body.dark-mode .form-select:disabled {
+    background: #181c2a;
+    color: #777f91;
+}
+
+body.dark-mode .selection-status {
+    background: #202431;
+    border-color: #303545;
+}
+
+body.dark-mode .info-box {
+    background: #202431;
+    border-color: #303545;
+}
+
+body.dark-mode .assignment-row {
+    border-color: #292e3d;
+}
+
+body.dark-mode .assignment-class,
+body.dark-mode .empty-assignments h3 {
+    color: #f2f4f8;
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 850px) {
+    .assign-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 650px) {
+    .assign-page {
+        padding: 20px 13px;
+    }
+
+    .assign-header {
+        flex-direction: column;
+    }
+
+    .back-button {
+        width: 100%;
+    }
+
+    .assignment-status {
+        display: none;
+    }
+
+    .assignment-row {
+        align-items: flex-start;
+    }
+}
+</style>
+
+<div class="assign-page">
+
+```
+<div class="assign-container">
+
+    <!-- ====================================================
+         HEADER
+    ===================================================== -->
+
+    <div class="assign-header">
+
+        <div class="assign-header-left">
+
+            <h1>
+                📚 Assign Subject to Class
+            </h1>
+
+            <p>
+                Select a class and the system will instantly
+                load only available active subjects.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'subject-list' %}"
+            class="back-button"
+        >
+            ← Back to Subjects
+        </a>
+
+    </div>
+
+
+    <!-- ====================================================
+         MESSAGES
+    ===================================================== -->
+
+    {% if messages %}
+
+        <div class="messages-area">
+
+            {% for message in messages %}
+
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- ====================================================
+         MAIN GRID
+    ===================================================== -->
+
+    <div class="assign-grid">
+
+        <!-- ==================================================
+             ASSIGN FORM
+        =================================================== -->
+
+        <section class="assign-card">
+
+            <div class="assign-card-header">
+
+                <h2>
+                    Assign Existing Subject
+                </h2>
+
+                <p>
+                    Choose a class first. Available subjects
+                    will load automatically without refreshing
+                    the page.
+                </p>
+
+            </div>
+
+
+            <form
+                method="POST"
+                action="{% url 'subject-assign-class' %}"
+                class="assign-form"
+                id="assignForm"
+            >
+
+                {% csrf_token %}
+
+
+                <!-- ========================================
+                     CLASS
+                ========================================= -->
+
+                <div class="form-group">
+
+                    <label
+                        for="class_id"
+                        class="form-label"
+                    >
+                        Select Class
+                    </label>
+
+                    <select
+                        name="class_id"
+                        id="class_id"
+                        class="form-select"
+                        required
+                    >
+
+                        <option value="">
+                            -- Select Class --
+                        </option>
+
+                        {% for classroom in classes %}
+
+                            <option
+                                value="{{ classroom.id }}"
+                                {% if selected_class_id|stringformat:"s" == classroom.id|stringformat:"s" %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ classroom.name }}
+                            </option>
+
+                        {% empty %}
+
+                            <option
+                                value=""
+                                disabled
+                            >
+                                No active classes available
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                    <div class="form-help">
+                        Select the class that should receive
+                        the subject.
+                    </div>
+
+                </div>
+
+
+                <!-- ========================================
+                     SUBJECT
+                ========================================= -->
+
+                <div class="form-group">
+
+                    <label
+                        for="subject_id"
+                        class="form-label"
+                    >
+                        Select Subject
+                    </label>
+
+                    <select
+                        name="subject_id"
+                        id="subject_id"
+                        class="form-select"
+                        required
+                        disabled
+                    >
+
+                        <option value="">
+                            -- Select Class First --
+                        </option>
+
+                    </select>
+
+
+                    <!-- LOADING -->
+
+                    <div
+                        class="subject-loading"
+                        id="subjectLoading"
+                    >
+
+                        <span class="loading-dot"></span>
+
+                        Loading available subjects...
+
+                    </div>
+
+
+                    <div class="form-help">
+                        Only active subjects that are not already
+                        assigned to the selected class will appear.
+                    </div>
+
+                </div>
+
+
+                <!-- ========================================
+                     STATUS
+                ========================================= -->
+
+                <div
+                    class="selection-status"
+                    id="selectionStatus"
+                >
+
+                    <strong>Step 1:</strong>
+                    Select a class.
+
+                    <br>
+
+                    <strong>Step 2:</strong>
+                    Available subjects will appear automatically.
+
+                    <br>
+
+                    <strong>Step 3:</strong>
+                    Select a subject and assign it.
+
+                </div>
+
+
+                <!-- ========================================
+                     ASSIGN BUTTON
+                ========================================= -->
+
+                <button
+                    type="submit"
+                    class="assign-button"
+                    id="assignButton"
+                    disabled
+                >
+                    ➕ Assign Subject to Class
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- ==================================================
+             HOW IT WORKS
+        =================================================== -->
+
+        <aside class="assign-card">
+
+            <div class="assign-card-header">
+
+                <h2>
+                    How It Works
+                </h2>
+
+                <p>
+                    Manage the Subject Catalog and class
+                    curriculum separately.
+                </p>
+
+            </div>
+
+
+            <div class="info-panel">
+
+                <div class="info-box">
+
+                    <div class="info-box-icon">
+                        📘
+                    </div>
+
+                    <h3>
+                        1. Subject Catalog
+                    </h3>
+
+                    <p>
+                        Subjects are created once in the
+                        central Subject Catalog.
+                    </p>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="info-box-icon">
+                        🏫
+                    </div>
+
+                    <h3>
+                        2. Select Class
+                    </h3>
+
+                    <p>
+                        Choose the specific active class
+                        that should receive the subject.
+                    </p>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="info-box-icon">
+                        ✅
+                    </div>
+
+                    <h3>
+                        3. Assign Subject
+                    </h3>
+
+                    <p>
+                        The selected subject becomes part
+                        of that class's official curriculum.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+
+    <!-- ====================================================
+         CURRENT ASSIGNMENTS
+    ===================================================== -->
+
+    <section class="assign-card assignments-card">
+
+        <div class="assign-card-header">
+
+            <h2>
+                📋 Current Class Curriculum Assignments
+            </h2>
+
+            <p>
+                Active subjects currently assigned to school classes.
+            </p>
+
+        </div>
+
+
+        {% if current_assignments %}
+
+            <div class="assignment-list">
+
+                {% for assignment in current_assignments %}
+
+                    <div class="assignment-row">
+
+                        <div class="assignment-left">
+
+                            <div class="assignment-icon">
+                                📚
+                            </div>
+
+                            <div class="assignment-info">
+
+                                <span class="assignment-class">
+                                    {{ assignment.class_room.name }}
+                                </span>
+
+                                <span class="assignment-subject">
+                                    {{ assignment.subject.code }}
+                                    ·
+                                    {{ assignment.subject.name }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="assignment-status">
+
+                            <span class="assignment-status-dot"></span>
+
+                            Active
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-assignments">
+
+                <div class="empty-assignments-icon">
+                    📚
+                </div>
+
+                <h3>
+                    No Class Assignments Yet
+                </h3>
+
+                <p>
+                    No subjects have been assigned to a
+                    class curriculum yet.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+```
+
+</div>
+
+<script>
+/* ============================================================
+   ASSIGN SUBJECT - AJAX
+============================================================ */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const classSelect =
+        document.getElementById("class_id");
+
+    const subjectSelect =
+        document.getElementById("subject_id");
+
+    const assignButton =
+        document.getElementById("assignButton");
+
+    const loading =
+        document.getElementById("subjectLoading");
+
+    const statusBox =
+        document.getElementById("selectionStatus");
+
+    if (
+        !classSelect ||
+        !subjectSelect ||
+        !assignButton
+    ) {
+        return;
+    }
+
+
+    /* ========================================================
+       AJAX URL
+    ======================================================== */
+
+    const availableSubjectsUrl =
+        "{% url 'available-subjects-for-class' %}";
+
+
+    /* ========================================================
+       RESET SUBJECT SELECT
+    ======================================================== */
+
+    function resetSubjectSelect(message) {
+
+        subjectSelect.innerHTML = "";
+
+        const option =
+            document.createElement("option");
+
+        option.value = "";
+        option.textContent = message;
+
+        subjectSelect.appendChild(option);
+
+        subjectSelect.disabled = true;
+
+        assignButton.disabled = true;
+    }
+
+
+    /* ========================================================
+       LOAD SUBJECTS WITHOUT PAGE REFRESH
+    ======================================================== */
+
+    async function loadAvailableSubjects(classId) {
+
+        /* ----------------------------------------------------
+           No class selected
+        ---------------------------------------------------- */
+
+        if (!classId) {
+
+            resetSubjectSelect(
+                "-- Select Class First --"
+            );
+
+            statusBox.innerHTML =
+                "<strong>Step 1:</strong> Select a class." +
+                "<br>" +
+                "<strong>Step 2:</strong> Available subjects will appear automatically." +
+                "<br>" +
+                "<strong>Step 3:</strong> Select a subject and assign it.";
+
+            return;
+        }
+
+
+        /* ----------------------------------------------------
+           Loading state
+        ---------------------------------------------------- */
+
+        subjectSelect.disabled = true;
+
+        assignButton.disabled = true;
+
+        subjectSelect.innerHTML = "";
+
+        const loadingOption =
+            document.createElement("option");
+
+        loadingOption.value = "";
+
+        loadingOption.textContent =
+            "Loading available subjects...";
+
+        subjectSelect.appendChild(
+            loadingOption
+        );
+
+        loading.classList.add("active");
+
+
+        statusBox.innerHTML =
+            "<strong>Loading...</strong> " +
+            "Finding subjects available for this class.";
+
+
+        try {
+
+            /* ------------------------------------------------
+               AJAX REQUEST
+
+               IMPORTANT:
+               This does NOT reload the page.
+            ------------------------------------------------ */
+
+            const response =
+                await fetch(
+                    availableSubjectsUrl +
+                    "?class_id=" +
+                    encodeURIComponent(classId),
+                    {
+                        method: "GET",
+
+                        headers: {
+                            "X-Requested-With":
+                                "XMLHttpRequest",
+
+                            "Accept":
+                                "application/json",
+                        },
+                    }
+                );
+
+
+            /* ------------------------------------------------
+               HTTP ERROR
+            ------------------------------------------------ */
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "HTTP " + response.status
+                );
+            }
+
+
+            /* ------------------------------------------------
+               JSON
+            ------------------------------------------------ */
+
+            const data =
+                await response.json();
+
+
+            /* ------------------------------------------------
+               STOP LOADING
+            ------------------------------------------------ */
+
+            loading.classList.remove(
+                "active"
+            );
+
+
+            /* ------------------------------------------------
+               CLEAR
+            ------------------------------------------------ */
+
+            subjectSelect.innerHTML = "";
+
+
+            /* ------------------------------------------------
+               SERVER ERROR
+            ------------------------------------------------ */
+
+            if (!data.success) {
+
+                throw new Error(
+                    data.error ||
+                    "Unable to load subjects."
+                );
+            }
+
+
+            /* ------------------------------------------------
+               NO SUBJECTS
+            ------------------------------------------------ */
+
+            if (
+                !data.subjects ||
+                data.subjects.length === 0
+            ) {
+
+                const option =
+                    document.createElement("option");
+
+                option.value = "";
+
+                option.textContent =
+                    "No available subjects for this class";
+
+                subjectSelect.appendChild(
+                    option
+                );
+
+                subjectSelect.disabled = true;
+
+                assignButton.disabled = true;
+
+                statusBox.innerHTML =
+                    "<strong>Class selected.</strong> " +
+                    "There are currently no active subjects " +
+                    "available to assign to this class.";
+
+                return;
+            }
+
+
+            /* ------------------------------------------------
+               DEFAULT OPTION
+            ------------------------------------------------ */
+
+            const defaultOption =
+                document.createElement("option");
+
+            defaultOption.value = "";
+
+            defaultOption.textContent =
+                "-- Select Subject --";
+
+            subjectSelect.appendChild(
+                defaultOption
+            );
+
+
+            /* ------------------------------------------------
+               ADD SUBJECTS
+            ------------------------------------------------ */
+
+            data.subjects.forEach(
+                function (subject) {
+
+                    const option =
+                        document.createElement("option");
+
+                    option.value =
+                        subject.id;
+
+                    option.textContent =
+                        subject.code +
+                        " — " +
+                        subject.name;
+
+                    subjectSelect.appendChild(
+                        option
+                    );
+                }
+            );
+
+
+            /* ------------------------------------------------
+               ENABLE
+            ------------------------------------------------ */
+
+            subjectSelect.disabled =
+                false;
+
+            assignButton.disabled =
+                true;
+
+
+            /* ------------------------------------------------
+               STATUS
+            ------------------------------------------------ */
+
+            statusBox.innerHTML =
+                "<strong>Class selected.</strong> " +
+                data.subjects.length +
+                " available subject" +
+                (
+                    data.subjects.length === 1
+                        ? ""
+                        : "s"
+                ) +
+                " found. Select one to continue.";
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Subject loading error:",
+                error
+            );
+
+            loading.classList.remove(
+                "active"
+            );
+
+            resetSubjectSelect(
+                "Unable to load subjects"
+            );
+
+            statusBox.innerHTML =
+                "<strong>Error:</strong> " +
+                "The subjects could not be loaded. " +
+                "Please try selecting the class again.";
+
+        }
+
+    }
+
+
+    /* ========================================================
+       CLASS CHANGE
+
+       IMPORTANT:
+       NO window.location.href
+       NO page refresh
+    ======================================================== */
+
+    classSelect.addEventListener(
+        "change",
+        function () {
+
+            const classId =
+                this.value;
+
+            loadAvailableSubjects(
+                classId
+            );
+
+        }
+    );
+
+
+    /* ========================================================
+       SUBJECT CHANGE
+    ======================================================== */
+
+    subjectSelect.addEventListener(
+        "change",
+        function () {
+
+            const hasClass =
+                Boolean(
+                    classSelect.value
+                );
+
+            const hasSubject =
+                Boolean(
+                    subjectSelect.value
+                );
+
+            assignButton.disabled =
+                !(
+                    hasClass &&
+                    hasSubject
+                );
+
+
+            if (
+                hasClass &&
+                hasSubject
+            ) {
+
+                statusBox.innerHTML =
+                    "<strong>Ready.</strong> " +
+                    "The selected subject can now be assigned " +
+                    "to this class.";
+
+            }
+
+        }
+    );
+
+
+    /* ========================================================
+       INITIAL STATE
+
+       If the page was opened with ?class_id=...
+       load subjects automatically without redirecting.
+    ======================================================== */
+
+    if (classSelect.value) {
+
+        loadAvailableSubjects(
+            classSelect.value
+        );
+
+    } else {
+
+        resetSubjectSelect(
+            "-- Select Class First --"
+        );
+
+    }
+
+});
+</script>
+
+{% endblock content %}

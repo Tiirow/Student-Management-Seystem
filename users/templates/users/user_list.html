@@ -1,0 +1,1506 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Users | Student Management System</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+
+        /* =========================================================
+           GLOBAL
+        ========================================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #9A5243;
+            --primary-dark: #7e4035;
+            --primary-light: #f5e8e4;
+
+            --background: #f7f8fa;
+            --card: #ffffff;
+
+            --text: #1f2937;
+            --muted: #6b7280;
+
+            --border: #e5e7eb;
+
+            --success: #16845b;
+            --success-light: #e8f7f0;
+
+            --blue: #3b82f6;
+            --blue-light: #eaf2ff;
+
+            --orange: #f59e0b;
+            --orange-light: #fff5df;
+
+            --purple: #7c3aed;
+            --purple-light: #f1eaff;
+
+            --danger: #dc2626;
+            --danger-light: #fef2f2;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+
+        /* =========================================================
+           PAGE
+        ========================================================= */
+
+        .page {
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1450px;
+            margin: 0 auto;
+        }
+
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        .page-header {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-icon {
+            width: 52px;
+            height: 52px;
+
+            border-radius: 14px;
+
+            background: var(--primary-light);
+            color: var(--primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 21px;
+        }
+
+        .header-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .header-subtitle {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .add-user-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            padding: 11px 17px;
+
+            border-radius: 10px;
+
+            background: var(--primary);
+            color: white;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            transition: all .2s ease;
+
+            white-space: nowrap;
+        }
+
+        .add-user-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================================
+           MESSAGES
+        ========================================================= */
+
+        .messages {
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 13px 16px;
+
+            border-radius: 10px;
+
+            margin-bottom: 9px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            font-size: 12px;
+        }
+
+        .message.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .message.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .message.warning {
+            border-left: 4px solid var(--orange);
+        }
+
+        .message.info {
+            border-left: 4px solid var(--blue);
+        }
+
+
+        /* =========================================================
+           STAT CARDS
+        ========================================================= */
+
+        .stats-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 17px;
+
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            padding: 19px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+
+            border-radius: 13px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 19px;
+        }
+
+        .total-icon {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .active-icon {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .manager-icon {
+            background: var(--orange-light);
+            color: var(--orange);
+        }
+
+        .teacher-icon {
+            background: var(--blue-light);
+            color: var(--blue);
+        }
+
+        .stat-label {
+            display: block;
+
+            font-size: 10px;
+            font-weight: 600;
+
+            color: var(--muted);
+
+            margin-bottom: 4px;
+        }
+
+        .stat-number {
+            font-size: 23px;
+
+            font-weight: 800;
+
+            color: #111827;
+        }
+
+
+        /* =========================================================
+           FILTER PANEL
+        ========================================================= */
+
+        .filter-panel {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            padding: 18px;
+
+            margin-bottom: 22px;
+        }
+
+        .filter-form {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                190px
+                auto;
+
+            gap: 10px;
+
+            align-items: end;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .field-label {
+            font-size: 10px;
+
+            font-weight: 700;
+
+            color: #6b7280;
+        }
+
+        .field-input,
+        .field-select {
+            width: 100%;
+
+            padding: 11px 13px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            color: #374151;
+
+            font-size: 12px;
+
+            outline: none;
+
+            transition: all .2s ease;
+        }
+
+        .field-input:focus,
+        .field-select:focus {
+            border-color: var(--primary);
+
+            box-shadow:
+                0 0 0 3px rgba(154, 82, 67, .08);
+        }
+
+        .filter-button {
+            height: 40px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            padding: 0 17px;
+
+            background: var(--primary);
+
+            color: white;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+        }
+
+        .filter-button:hover {
+            background: var(--primary-dark);
+        }
+
+
+        /* =========================================================
+           TABLE
+        ========================================================= */
+
+        .table-panel {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 18px 20px;
+
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+        }
+
+        .table-title {
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .table-count {
+            font-size: 10px;
+
+            color: var(--muted);
+
+            background: #f3f4f6;
+
+            padding: 5px 9px;
+
+            border-radius: 999px;
+        }
+
+        .table-wrapper {
+            width: 100%;
+
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            min-width: 900px;
+
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #fafafa;
+        }
+
+        th {
+            text-align: left;
+
+            padding: 13px 17px;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: .4px;
+
+            color: #9ca3af;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 14px 17px;
+
+            font-size: 11px;
+
+            border-bottom: 1px solid #f1f2f4;
+
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background: #fcfcfc;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        /* =========================================================
+           USER
+        ========================================================= */
+
+        .user-cell {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+
+            border-radius: 10px;
+
+            flex-shrink: 0;
+
+            background: var(--primary-light);
+
+            color: var(--primary);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .user-name {
+            font-size: 11px;
+
+            font-weight: 700;
+
+            color: #1f2937;
+        }
+
+        .user-username {
+            font-size: 9px;
+
+            color: var(--muted);
+
+            margin-top: 2px;
+        }
+
+
+        /* =========================================================
+           ROLE BADGES
+        ========================================================= */
+
+        .role-badge {
+            display: inline-flex;
+
+            align-items: center;
+
+            padding: 5px 9px;
+
+            border-radius: 999px;
+
+            font-size: 9px;
+
+            font-weight: 700;
+        }
+
+        .role-administrator {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .role-manager {
+            background: var(--orange-light);
+            color: #b45309;
+        }
+
+        .role-teacher {
+            background: var(--blue-light);
+            color: #2563eb;
+        }
+
+        .role-student {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+
+        /* =========================================================
+           STATUS
+        ========================================================= */
+
+        .status-badge {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            font-size: 9px;
+
+            font-weight: 700;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+        }
+
+        .status-active {
+            color: var(--success);
+        }
+
+        .status-active .status-dot {
+            background: var(--success);
+        }
+
+        .status-inactive {
+            color: var(--danger);
+        }
+
+        .status-inactive .status-dot {
+            background: var(--danger);
+        }
+
+
+        /* =========================================================
+           ACTIONS
+        ========================================================= */
+
+        .actions {
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+        }
+
+        .action-button {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 6px;
+
+            padding: 7px 9px;
+
+            border-radius: 8px;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            border: 1px solid var(--border);
+
+            background: white;
+
+            color: #4b5563;
+
+            transition: all .2s ease;
+        }
+
+        .action-button:hover {
+            border-color: var(--primary);
+
+            color: var(--primary);
+
+            background: var(--primary-light);
+        }
+
+        .action-delete:hover {
+            border-color: #fca5a5;
+
+            color: var(--danger);
+
+            background: var(--danger-light);
+        }
+
+
+        /* =========================================================
+           EMPTY STATE
+        ========================================================= */
+
+        .empty-state {
+            padding: 60px 20px;
+
+            text-align: center;
+
+            color: var(--muted);
+        }
+
+        .empty-icon {
+            width: 62px;
+            height: 62px;
+
+            margin: 0 auto 14px;
+
+            border-radius: 16px;
+
+            background: #f3f4f6;
+
+            color: #9ca3af;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 25px;
+        }
+
+        .empty-title {
+            font-size: 14px;
+
+            font-weight: 800;
+
+            color: #374151;
+
+            margin-bottom: 5px;
+        }
+
+        .empty-text {
+            font-size: 11px;
+
+            color: var(--muted);
+        }
+
+
+        /* =========================================================
+           BACK
+        ========================================================= */
+
+        .back-link {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            margin-top: 18px;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            color: var(--primary);
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 1000px) {
+
+            .stats-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .filter-form {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+            .filter-button {
+                width: 100%;
+            }
+        }
+
+
+        @media (max-width: 700px) {
+
+            .page {
+                padding: 16px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .add-user-button {
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+    <div class="container">
+
+
+        <!-- =====================================================
+             HEADER
+        ====================================================== -->
+
+        <div class="page-header">
+
+            <div class="header-left">
+
+                <div class="header-icon">
+
+                    <i class="fa-solid fa-users-gear"></i>
+
+                </div>
+
+                <div>
+
+                    <div class="header-title">
+                        Manage Users
+                    </div>
+
+                    <div class="header-subtitle">
+                        Manage system accounts, roles and access
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="{% url 'users:add-user' %}"
+                class="add-user-button"
+            >
+
+                <i class="fa-solid fa-user-plus"></i>
+
+                Add User
+
+            </a>
+
+        </div>
+
+
+        <!-- =====================================================
+             MESSAGES
+        ====================================================== -->
+
+        {% if messages %}
+
+            <div class="messages">
+
+                {% for message in messages %}
+
+                    <div class="message {{ message.tags }}">
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- =====================================================
+             STATISTICS
+        ====================================================== -->
+
+        <div class="stats-grid">
+
+
+            <!-- TOTAL -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon total-icon">
+
+                    <i class="fa-solid fa-users"></i>
+
+                </div>
+
+                <div>
+
+                    <span class="stat-label">
+                        Total Users
+                    </span>
+
+                    <div class="stat-number">
+                        {{ total_users|default:0 }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIVE -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon active-icon">
+
+                    <i class="fa-solid fa-user-check"></i>
+
+                </div>
+
+                <div>
+
+                    <span class="stat-label">
+                        Active Users
+                    </span>
+
+                    <div class="stat-number">
+                        {{ active_users|default:0 }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MANAGERS -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon manager-icon">
+
+                    <i class="fa-solid fa-user-tie"></i>
+
+                </div>
+
+                <div>
+
+                    <span class="stat-label">
+                        Managers
+                    </span>
+
+                    <div class="stat-number">
+                        {{ manager_count|default:0 }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- TEACHERS -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon teacher-icon">
+
+                    <i class="fa-solid fa-chalkboard-user"></i>
+
+                </div>
+
+                <div>
+
+                    <span class="stat-label">
+                        Teachers
+                    </span>
+
+                    <div class="stat-number">
+                        {{ teacher_count|default:0 }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             SEARCH / FILTER
+        ====================================================== -->
+
+        <div class="filter-panel">
+
+            <form
+                method="get"
+                class="filter-form"
+            >
+
+
+                <div class="field-group">
+
+                    <label
+                        for="search"
+                        class="field-label"
+                    >
+                        Search Users
+                    </label>
+
+                    <input
+                        type="text"
+                        id="search"
+                        name="search"
+                        value="{{ search|default:'' }}"
+                        class="field-input"
+                        placeholder="Search by username, name or email..."
+                    >
+
+                </div>
+
+
+                <div class="field-group">
+
+                    <label
+                        for="role"
+                        class="field-label"
+                    >
+                        Role
+                    </label>
+
+                    <select
+                        id="role"
+                        name="role"
+                        class="field-select"
+                    >
+
+                        <option value="">
+                            All Roles
+                        </option>
+
+                        <option
+                            value="Administrator"
+                            {% if role_filter == "Administrator" %}
+                                selected
+                            {% endif %}
+                        >
+                            Administrator
+                        </option>
+
+                        <option
+                            value="Manager"
+                            {% if role_filter == "Manager" %}
+                                selected
+                            {% endif %}
+                        >
+                            Manager
+                        </option>
+
+                        <option
+                            value="Teacher"
+                            {% if role_filter == "Teacher" %}
+                                selected
+                            {% endif %}
+                        >
+                            Teacher
+                        </option>
+
+                        <option
+                            value="Student"
+                            {% if role_filter == "Student" %}
+                                selected
+                            {% endif %}
+                        >
+                            Student
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="filter-button"
+                >
+
+                    <i class="fa-solid fa-filter"></i>
+
+                    Filter
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- =====================================================
+             USER TABLE
+        ====================================================== -->
+
+        <div class="table-panel">
+
+
+            <div class="table-header">
+
+                <div class="table-title">
+                    System Users
+                </div>
+
+                <div class="table-count">
+
+                    {{ users|length }}
+
+                    user{{ users|length|pluralize }}
+
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                {% if users %}
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    User
+                                </th>
+
+                                <th>
+                                    Email
+                                </th>
+
+                                <th>
+                                    Role
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Joined
+                                </th>
+
+                                <th>
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for user in users %}
+
+                                <tr>
+
+
+                                    <!-- USER -->
+
+                                    <td>
+
+                                        <div class="user-cell">
+
+                                            <div class="user-avatar">
+
+                                                {% if user.first_name %}
+
+                                                    {{ user.first_name|first|upper }}
+
+                                                {% elif user.username %}
+
+                                                    {{ user.username|first|upper }}
+
+                                                {% else %}
+
+                                                    U
+
+                                                {% endif %}
+
+                                            </div>
+
+
+                                            <div>
+
+                                                <div class="user-name">
+
+                                                    {% if user.get_full_name %}
+
+                                                        {{ user.get_full_name }}
+
+                                                    {% else %}
+
+                                                        {{ user.username }}
+
+                                                    {% endif %}
+
+                                                </div>
+
+
+                                                <div class="user-username">
+
+                                                    @{{ user.username }}
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- EMAIL -->
+
+                                    <td>
+
+                                        {{ user.email|default:"—" }}
+
+                                    </td>
+
+
+                                    <!-- ROLE -->
+
+                                    <td>
+
+                                        {% if user.is_superuser %}
+
+                                            <span class="role-badge role-administrator">
+
+                                                Administrator
+
+                                            </span>
+
+                                        {% elif user.profile.role == "Administrator" %}
+
+                                            <span class="role-badge role-administrator">
+
+                                                Administrator
+
+                                            </span>
+
+                                        {% elif user.profile.role == "Manager" %}
+
+                                            <span class="role-badge role-manager">
+
+                                                Manager
+
+                                            </span>
+
+                                        {% elif user.profile.role == "Teacher" %}
+
+                                            <span class="role-badge role-teacher">
+
+                                                Teacher
+
+                                            </span>
+
+                                        {% elif user.profile.role == "Student" %}
+
+                                            <span class="role-badge role-student">
+
+                                                Student
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="role-badge role-student">
+
+                                                User
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+                                        {% if user.is_active %}
+
+                                            <span class="status-badge status-active">
+
+                                                <span class="status-dot"></span>
+
+                                                Active
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="status-badge status-inactive">
+
+                                                <span class="status-dot"></span>
+
+                                                Inactive
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- JOINED -->
+
+                                    <td>
+
+                                        {{ user.date_joined|date:"M d, Y" }}
+
+                                    </td>
+
+
+                                    <!-- ACTIONS -->
+
+                                    <td>
+
+                                        <div class="actions">
+
+
+                                            <!-- EDIT ROLE -->
+
+                                            {% if not user.is_superuser and user.id != request.user.id %}
+
+                                                <a
+                                                    href="{% url 'users:edit-user-permissions' user.id %}"
+                                                    class="action-button"
+                                                    title="Edit Role & Permissions"
+                                                >
+
+                                                    <i class="fa-solid fa-user-shield"></i>
+
+                                                    Access
+
+                                                </a>
+
+                                            {% endif %}
+
+
+                                            <!-- VIEW USER -->
+
+                                            {% if not user.is_superuser %}
+
+                                                <a
+                                                    href="{% url 'users:user-detail' user.id %}"
+                                                    class="action-button"
+                                                    title="View User"
+                                                >
+
+                                                    <i class="fa-solid fa-eye"></i>
+
+                                                    View
+
+                                                </a>
+
+                                            {% endif %}
+
+
+                                            <!-- ACTIVATE / DEACTIVATE -->
+
+                                            {% if not user.is_superuser and user.id != request.user.id %}
+
+                                                <a
+                                                    href="{% url 'users:toggle-user-status' user.id %}"
+                                                    class="action-button"
+                                                >
+
+                                                    {% if user.is_active %}
+
+                                                        <i class="fa-solid fa-user-slash"></i>
+
+                                                        Disable
+
+                                                    {% else %}
+
+                                                        <i class="fa-solid fa-user-check"></i>
+
+                                                        Enable
+
+                                                    {% endif %}
+
+                                                </a>
+
+                                            {% endif %}
+
+
+                                            <!-- DELETE -->
+
+                                            {% if not user.is_superuser and user.id != request.user.id %}
+
+                                                <a
+                                                    href="{% url 'users:delete-user' user.id %}"
+                                                    class="action-button action-delete"
+                                                    onclick="
+                                                        return confirm(
+                                                            'Are you sure you want to delete this user?'
+                                                        );
+                                                    "
+                                                >
+
+                                                    <i class="fa-solid fa-trash"></i>
+
+                                                    Delete
+
+                                                </a>
+
+                                            {% endif %}
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                {% else %}
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+
+                            <i class="fa-solid fa-users-slash"></i>
+
+                        </div>
+
+                        <div class="empty-title">
+                            No users found
+                        </div>
+
+                        <div class="empty-text">
+                            There are no users matching your current search or filter.
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             BACK TO DASHBOARD
+        ====================================================== -->
+
+        <a
+            href="{% url 'student-home' %}"
+            class="back-link"
+        >
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
+

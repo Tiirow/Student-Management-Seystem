@@ -1,17 +1,75 @@
+
 from django.urls import path
 from . import views
 
 
 urlpatterns = [
+    
+    path(
+    'project/abc/',
+    views.test_error,
+    name='test_error'
+),
 
-    path('', views.projects, name='projects'),
+    # ============================================================
+    # DASHBOARD
+    # ============================================================
 
-    path('project/<str:pk>/', views.project, name='project'),
+    path(
+        '',
+        views.dashboard,
+        name='dashboard'
+    ),
 
-    path('create-project/', views.createProject, name='create-project'),
+    # ============================================================
+    # PROJECTS
+    # ============================================================
 
-    path('update-project/<str:pk>/', views.updateProject, name='update-project'),
+    path(
+        'projects/',
+        views.projects,
+        name='projects'
+    ),
 
-    path('delete-project/<str:pk>/', views.deleteProject, name='delete-project'),
+    # ============================================================
+    # PROJECT DETAIL
+    # ============================================================
+
+    path(
+        'project/<str:pk>/',
+        views.project,
+        name='project'
+    ),
+
+    # ============================================================
+    # CREATE PROJECT
+    # ============================================================
+
+    path(
+        'create-project/',
+        views.createProject,
+        name='create-project'
+    ),
+
+    # ============================================================
+    # UPDATE PROJECT
+    # ============================================================
+
+    path(
+        'update-project/<str:pk>/',
+        views.updateProject,
+        name='update-project'
+    ),
+
+    # ============================================================
+    # DELETE PROJECT
+    # ============================================================
+
+    path(
+        'delete-project/<str:pk>/',
+        views.deleteProject,
+        name='delete-project'
+    ),
 
 ]
+

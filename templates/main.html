@@ -1,22 +1,73 @@
-<!doctype html>
+{% load static %}
+
+<!DOCTYPE html>
+
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>DevSearch</title>
-  </head>
+    <title>{% block title %}Student Management System{% endblock %}</title>
 
-  <body>
-    <h1>My App</h1>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    {% include 'navbar.html' %} {% if messages %} {% for message in messages %}
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f6f8;
+            color: #1f2937;
+            min-height: 100vh;
+        }
 
-    <p>{{ message }}</p>
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-    {% endfor %} {% endif %} {% block content %} {% endblock content %}
+        .page-container {
+            min-height: 100vh;
+        }
 
-    <p>I'm grateful for your visit and for coming to see me</p>
-    <p>Welcome to my app!</p>
-  </body>
+        .main-content {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .content-wrapper {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .content-wrapper {
+                padding: 16px;
+            }
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+<div class="page-container">
+
+    <main class="main-content">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+</div>
+
+{% block extra_js %}{% endblock %}
+
+</body>
 </html>

@@ -1,0 +1,1185 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+<style>
+
+/* ============================================================
+   SUBJECT DETAIL PAGE
+============================================================ */
+
+.subject-detail-page {
+    min-height: calc(100vh - 70px);
+    background: #f5f6f8;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.subject-detail-container {
+    max-width: 1150px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+
+/* ============================================================
+   BACK LINK
+============================================================ */
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 20px;
+    color: #697386;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 800;
+    transition: all 0.2s ease;
+}
+
+.back-link:hover {
+    color: #9a5243;
+    transform: translateX(-2px);
+}
+
+
+/* ============================================================
+   HERO
+============================================================ */
+
+.subject-hero {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 22px;
+    padding: 28px;
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #172033 0%,
+            #24304a 65%,
+            #8a493d 140%
+        );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 15px 38px rgba(23, 32, 51, 0.14);
+}
+
+.subject-hero::before {
+    content: "";
+    position: absolute;
+    width: 190px;
+    height: 190px;
+    right: -70px;
+    top: -95px;
+    border-radius: 50%;
+    background: rgba(214, 168, 95, 0.13);
+}
+
+.subject-hero-left {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.subject-icon {
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.17);
+    font-size: 27px;
+}
+
+.subject-hero-text h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 850;
+    letter-spacing: -0.5px;
+}
+
+.subject-hero-text p {
+    margin: 6px 0 0;
+    color: rgba(255,255,255,0.70);
+    font-size: 12px;
+}
+
+.hero-actions {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.hero-btn {
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: 9px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-size: 10px;
+    font-weight: 800;
+    transition: all 0.2s ease;
+}
+
+.hero-edit {
+    background: rgba(255,255,255,0.13);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: #ffffff;
+}
+
+.hero-edit:hover {
+    background: rgba(255,255,255,0.21);
+    color: #ffffff;
+}
+
+
+/* ============================================================
+   STATISTICS
+============================================================ */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 15px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+}
+
+.stat-icon {
+    width: 47px;
+    height: 47px;
+    min-width: 47px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.icon-students {
+    background: #eaf2ff;
+}
+
+.icon-classes {
+    background: #f5e9e6;
+}
+
+.icon-hours {
+    background: #fff3df;
+}
+
+.stat-info span {
+    display: block;
+    color: #888888;
+    font-size: 10px;
+    margin-bottom: 5px;
+}
+
+.stat-info strong {
+    display: block;
+    color: #222222;
+    font-size: 22px;
+    font-weight: 850;
+}
+
+
+/* ============================================================
+   INFORMATION CARD
+============================================================ */
+
+.info-card {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 16px;
+    margin-bottom: 22px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+}
+
+.card-header {
+    padding: 19px 21px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.card-header h2 {
+    margin: 0;
+    color: #292929;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.card-header p {
+    margin: 5px 0 0;
+    color: #999999;
+    font-size: 11px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.info-item {
+    padding: 18px 21px;
+    border-bottom: 1px solid #f0f1f3;
+}
+
+.info-item:nth-last-child(-n+2) {
+    border-bottom: none;
+}
+
+.info-label {
+    color: #9298a3;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.info-value {
+    color: #333333;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.description-box {
+    padding: 18px 21px;
+    border-top: 1px solid #f0f1f3;
+}
+
+.description-box p {
+    margin: 0;
+    color: #626b79;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+
+/* ============================================================
+   STATUS
+============================================================ */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.status-active {
+    color: #22824a;
+    background: #eaf8ef;
+}
+
+.status-inactive {
+    color: #6b7280;
+    background: #f3f4f6;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+
+/* ============================================================
+   CLASS OVERVIEW
+============================================================ */
+
+.class-card-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    padding: 20px;
+}
+
+.class-card {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 13px;
+    padding: 17px;
+    transition: all 0.2s ease;
+}
+
+.class-card:hover {
+    transform: translateY(-3px);
+    border-color: #ead8d4;
+    box-shadow: 0 9px 22px rgba(0,0,0,0.06);
+}
+
+.class-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.class-icon {
+    width: 39px;
+    height: 39px;
+    min-width: 39px;
+    border-radius: 10px;
+    background: #f5e9e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+}
+
+.class-name {
+    color: #333333;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.class-status {
+    margin-top: 3px;
+    color: #999999;
+    font-size: 10px;
+}
+
+.class-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 15px;
+    padding-top: 12px;
+    border-top: 1px solid #f1f1f1;
+}
+
+.class-count-label {
+    color: #999999;
+    font-size: 9px;
+}
+
+.class-count-number {
+    margin-top: 3px;
+    color: #9a5243;
+    font-size: 22px;
+    font-weight: 850;
+}
+
+
+/* ============================================================
+   STUDENT TABLE
+============================================================ */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.student-table {
+    width: 100%;
+    min-width: 700px;
+    border-collapse: collapse;
+}
+
+.student-table th {
+    padding: 13px 18px;
+    background: #fafafa;
+    color: #888888;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    text-align: left;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.student-table td {
+    padding: 14px 18px;
+    color: #555555;
+    font-size: 12px;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.student-table tbody tr:hover {
+    background: #fcfaf9;
+}
+
+.student-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.student-avatar {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    border-radius: 50%;
+    background: #9a5243;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.student-info strong {
+    display: block;
+    color: #333333;
+    font-size: 11px;
+}
+
+.student-info span {
+    display: block;
+    margin-top: 3px;
+    color: #999999;
+    font-size: 9px;
+}
+
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+
+.empty-state {
+    padding: 45px 20px;
+    text-align: center;
+}
+
+.empty-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 13px;
+    border-radius: 50%;
+    background: #f6ebe8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+}
+
+.empty-state h3 {
+    margin: 0 0 6px;
+    color: #333333;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.empty-state p {
+    max-width: 480px;
+    margin: 0 auto;
+    color: #999999;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 900px) {
+
+    .subject-detail-container {
+        padding: 22px 16px;
+    }
+
+    .subject-hero {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hero-actions {
+        width: 100%;
+    }
+
+    .hero-btn {
+        flex: 1;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .class-card-list {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .subject-hero-text h1 {
+        font-size: 23px;
+    }
+
+    .stats-grid,
+    .info-grid,
+    .class-card-list {
+        grid-template-columns: 1fr;
+    }
+
+    .info-item:nth-last-child(-n+2) {
+        border-bottom: 1px solid #f0f1f3;
+    }
+
+    .info-item:last-child {
+        border-bottom: none;
+    }
+}
+
+
+/* ============================================================
+   DARK MODE
+============================================================ */
+
+body.dark-mode .subject-detail-page {
+    background: #111521;
+}
+
+body.dark-mode .stat-card,
+body.dark-mode .info-card,
+body.dark-mode .class-card {
+    background: #181c2a;
+    border-color: #292e3d;
+}
+
+body.dark-mode .stat-info strong,
+body.dark-mode .card-header h2,
+body.dark-mode .info-value,
+body.dark-mode .class-name,
+body.dark-mode .student-info strong,
+body.dark-mode .empty-state h3 {
+    color: #f2f4f8;
+}
+
+body.dark-mode .stat-info span,
+body.dark-mode .card-header p,
+body.dark-mode .info-label,
+body.dark-mode .class-status,
+body.dark-mode .student-info span,
+body.dark-mode .empty-state p {
+    color: #929bad;
+}
+
+body.dark-mode .info-item,
+body.dark-mode .description-box,
+body.dark-mode .class-bottom {
+    border-color: #292e3d;
+}
+
+body.dark-mode .description-box p,
+body.dark-mode .student-table td {
+    color: #d5d9e2;
+}
+
+body.dark-mode .student-table th {
+    background: #202431;
+    color: #929bad;
+    border-color: #303545;
+}
+
+body.dark-mode .student-table td {
+    border-color: #292e3d;
+}
+
+body.dark-mode .student-table tbody tr:hover {
+    background: #202431;
+}
+
+</style>
+
+
+<div class="subject-detail-page">
+
+    <div class="subject-detail-container">
+
+
+        <!-- ====================================================
+             BACK
+        ==================================================== -->
+
+        <a
+            href="{% url 'subject-list' %}"
+            class="back-link"
+        >
+            ← Back to Subjects
+        </a>
+
+
+        <!-- ====================================================
+             HERO
+        ==================================================== -->
+
+        <section class="subject-hero">
+
+            <div class="subject-hero-left">
+
+                <div class="subject-icon">
+                    📚
+                </div>
+
+                <div class="subject-hero-text">
+
+                    <h1>
+                        {{ subject.name }}
+                    </h1>
+
+                    <p>
+                        Subject Code:
+                        <strong>
+                            {{ subject.code }}
+                        </strong>
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="hero-actions">
+
+                {% if request.user.is_superuser or request.user.profile.can_manage_subjects %}
+
+                    <a
+                        href="{% url 'subject-update' subject.id %}"
+                        class="hero-btn hero-edit"
+                    >
+                        ✏ Edit Subject
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- ====================================================
+             STATISTICS
+        ==================================================== -->
+
+        <div class="stats-grid">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon icon-students">
+                    👨‍🎓
+                </div>
+
+                <div class="stat-info">
+
+                    <span>
+                        Enrolled Students
+                    </span>
+
+                    <strong>
+                        {{ student_count|default:0 }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon icon-classes">
+                    🏫
+                </div>
+
+                <div class="stat-info">
+
+                    <span>
+                        Classes
+                    </span>
+
+                    <strong>
+                        {{ class_count|default:0 }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon icon-hours">
+                    ⏱️
+                </div>
+
+                <div class="stat-info">
+
+                    <span>
+                        Credit Hours
+                    </span>
+
+                    <strong>
+                        {{ subject.credit_hours|default:0 }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ====================================================
+             SUBJECT INFORMATION
+        ==================================================== -->
+
+        <section class="info-card">
+
+            <div class="card-header">
+
+                <h2>
+                    📖 Subject Information
+                </h2>
+
+                <p>
+                    Basic information about this subject.
+                </p>
+
+            </div>
+
+
+            <div class="info-grid">
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Subject Code
+                    </div>
+
+                    <div class="info-value">
+                        {{ subject.code }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Subject Name
+                    </div>
+
+                    <div class="info-value">
+                        {{ subject.name }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Credit Hours
+                    </div>
+
+                    <div class="info-value">
+                        {{ subject.credit_hours }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Status
+                    </div>
+
+                    <div class="info-value">
+
+                        {% if subject.status == "Active" %}
+
+                            <span class="status-badge status-active">
+
+                                <span class="status-dot"></span>
+
+                                Active
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="status-badge status-inactive">
+
+                                <span class="status-dot"></span>
+
+                                {{ subject.status }}
+
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Created
+                    </div>
+
+                    <div class="info-value">
+                        {{ subject.created_at|date:"M d, Y" }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Updated
+                    </div>
+
+                    <div class="info-value">
+                        {{ subject.updated_at|date:"M d, Y" }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="description-box">
+
+                <div class="info-label">
+                    Description
+                </div>
+
+                <p>
+
+                    {% if subject.description %}
+
+                        {{ subject.description }}
+
+                    {% else %}
+
+                        No description available for this subject.
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ====================================================
+             CLASS OVERVIEW
+        ==================================================== -->
+
+        <section class="info-card">
+
+            <div class="card-header">
+
+                <h2>
+                    🏫 Classes Teaching This Subject
+                </h2>
+
+                <p>
+                    Classes whose students are currently enrolled
+                    in this subject.
+                </p>
+
+            </div>
+
+
+            {% if classes %}
+
+                <div class="class-card-list">
+
+                    {% for classroom in classes %}
+
+                        <div class="class-card">
+
+
+                            <div class="class-top">
+
+                                <div class="class-icon">
+                                    🎓
+                                </div>
+
+                                <div>
+
+                                    <div class="class-name">
+                                        {{ classroom.name }}
+                                    </div>
+
+                                    <div class="class-status">
+
+                                        {% if classroom.status == "Active" %}
+                                            Active Class
+                                        {% else %}
+                                            {{ classroom.status }}
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="class-bottom">
+
+                                <div>
+
+                                    <div class="class-count-label">
+                                        Students in Class
+                                    </div>
+
+                                    <div class="class-count-number">
+                                        {{ classroom.class_student_count|default:0 }}
+                                    </div>
+
+                                </div>
+
+
+                                <a
+                                    href="{% url 'class-view' classroom.id %}"
+                                    class="action-btn view-btn"
+                                >
+                                    👁 View
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        🏫
+                    </div>
+
+                    <h3>
+                        No Classes Assigned
+                    </h3>
+
+                    <p>
+                        No students from any class are currently
+                        enrolled in this subject.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- ====================================================
+             ENROLLED STUDENTS
+        ==================================================== -->
+
+        <section class="info-card">
+
+            <div class="card-header">
+
+                <h2>
+                    👨‍🎓 Enrolled Students
+                </h2>
+
+                <p>
+                    Students currently enrolled in this subject.
+                </p>
+
+            </div>
+
+
+            {% if enrollments %}
+
+                <div class="table-wrapper">
+
+                    <table class="student-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Student
+                                </th>
+
+                                <th>
+                                    Student ID
+                                </th>
+
+                                <th>
+                                    Class
+                                </th>
+
+                                <th>
+                                    Enrollment Status
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for enrollment in enrollments %}
+
+                                <tr>
+
+                                    <td>
+
+                                        <div class="student-cell">
+
+                                            <div class="student-avatar">
+
+                                                {{ enrollment.student.first_name|first|upper }}{{ enrollment.student.last_name|first|upper }}
+
+                                            </div>
+
+                                            <div class="student-info">
+
+                                                <strong>
+
+                                                    {{ enrollment.student.first_name }}
+                                                    {{ enrollment.student.last_name }}
+
+                                                </strong>
+
+                                                <span>
+                                                    {{ enrollment.student.email }}
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <td>
+                                        {{ enrollment.student.student_id }}
+                                    </td>
+
+
+                                    <td>
+
+                                        {% if enrollment.student.class_room %}
+
+                                            {{ enrollment.student.class_room.name }}
+
+                                        {% else %}
+
+                                            —
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <td>
+
+                                        {% if enrollment.status == "Active" %}
+
+                                            <span class="status-badge status-active">
+
+                                                <span class="status-dot"></span>
+
+                                                Active
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="status-badge status-inactive">
+
+                                                <span class="status-dot"></span>
+
+                                                {{ enrollment.status }}
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        👨‍🎓
+                    </div>
+
+                    <h3>
+                        No Students Enrolled
+                    </h3>
+
+                    <p>
+                        No students have been enrolled in this subject yet.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+    </div>
+
+</div>
+
+{% endblock content %}
+

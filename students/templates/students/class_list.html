@@ -1,0 +1,2548 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Class | Student Management System</title>
+
+    <style>
+
+        /* ============================================================
+           GLOBAL RESET
+        ============================================================ */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f6f7f9;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #222;
+            overflow-x: auto;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+
+        /* ============================================================
+           FIXED SIDEBAR
+           EXACTLY 285PX
+        ============================================================ */
+
+        .sidebar {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+
+            width: 285px !important;
+            height: 100vh !important;
+
+            min-width: 285px !important;
+            max-width: 285px !important;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #17191d 0%,
+                    #121418 100%
+                ) !important;
+
+            color: #ffffff;
+
+            z-index: 99999 !important;
+
+            display: flex !important;
+            flex-direction: column !important;
+
+            overflow: hidden !important;
+
+            border-right:
+                1px solid rgba(255, 255, 255, 0.06);
+
+            box-shadow:
+                8px 0 30px rgba(0, 0, 0, 0.12);
+
+            transform: none !important;
+        }
+
+
+        /* ============================================================
+           SIDEBAR BRAND
+        ============================================================ */
+
+        .sidebar-brand {
+            height: 92px;
+
+            min-height: 92px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 24px;
+
+            border-bottom:
+                1px solid rgba(255, 255, 255, 0.07);
+
+            flex-shrink: 0;
+        }
+
+        .brand-logo {
+            width: 46px;
+            height: 46px;
+
+            min-width: 46px;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #9a5243,
+                    #c17865
+                );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+
+            box-shadow:
+                0 8px 22px
+                rgba(154, 82, 67, 0.30);
+
+            flex-shrink: 0;
+        }
+
+        .brand-content {
+            margin-left: 13px;
+            min-width: 0;
+        }
+
+        .brand-title {
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 16px;
+            font-weight: 800;
+
+            letter-spacing: 0.2px;
+
+            white-space: nowrap;
+        }
+
+        .brand-subtitle {
+            margin-top: 4px;
+
+            color: #8d929b;
+
+            font-size: 11px;
+            font-weight: 500;
+
+            white-space: nowrap;
+        }
+
+
+        /* ============================================================
+           SIDEBAR USER
+        ============================================================ */
+
+        .sidebar-user {
+            margin: 18px 15px 10px;
+
+            padding: 14px;
+
+            border-radius: 13px;
+
+            background:
+                rgba(255, 255, 255, 0.045);
+
+            border:
+                1px solid rgba(255, 255, 255, 0.06);
+
+            display: flex;
+            align-items: center;
+
+            flex-shrink: 0;
+
+            width: calc(100% - 30px);
+        }
+
+        .sidebar-user-avatar {
+            width: 42px;
+            height: 42px;
+
+            min-width: 42px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #9a5243,
+                    #b76a59
+                );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #ffffff;
+
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .sidebar-user-info {
+            min-width: 0;
+
+            margin-left: 11px;
+
+            overflow: hidden;
+        }
+
+        .sidebar-user-name {
+            color: #ffffff;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-user-role {
+            margin-top: 4px;
+
+            color: #9297a0;
+
+            font-size: 10px;
+            font-weight: 600;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.5px;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
+        /* ============================================================
+           SIDEBAR NAVIGATION
+        ============================================================ */
+
+        .sidebar-navigation {
+            flex: 1;
+
+            min-height: 0;
+
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+
+            padding: 8px 13px 18px;
+        }
+
+        .sidebar-navigation::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .sidebar-navigation::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-navigation::-webkit-scrollbar-thumb {
+            background:
+                rgba(255, 255, 255, 0.10);
+
+            border-radius: 10px;
+        }
+
+        .nav-section-title {
+            padding: 15px 11px 8px;
+
+            color: #686d76;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 1.2px;
+
+            text-transform: uppercase;
+        }
+
+        .nav-link {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            width: 100%;
+
+            min-height: 46px;
+
+            padding: 0 12px;
+
+            margin-bottom: 4px;
+
+            border-radius: 10px;
+
+            color: #aeb2ba;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            transition:
+                background 0.20s ease,
+                color 0.20s ease,
+                transform 0.20s ease;
+        }
+
+        .nav-link:hover {
+            background:
+                rgba(255, 255, 255, 0.055);
+
+            color: #ffffff;
+
+            transform:
+                translateX(2px);
+        }
+
+        .nav-link.active {
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(154, 82, 67, 0.28),
+                    rgba(154, 82, 67, 0.10)
+                );
+
+            color: #ffffff;
+
+            box-shadow:
+                inset 3px 0 0 #9a5243;
+        }
+
+        .nav-icon {
+            width: 32px;
+            min-width: 32px;
+            height: 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background:
+                rgba(255, 255, 255, 0.035);
+
+            font-size: 15px;
+
+            margin-right: 9px;
+        }
+
+        .nav-link.active .nav-icon {
+            background:
+                rgba(154, 82, 67, 0.25);
+        }
+
+        .nav-text {
+            flex: 1;
+
+            white-space: nowrap;
+        }
+
+        .nav-arrow {
+            color: #686d76;
+
+            font-size: 11px;
+
+            flex-shrink: 0;
+        }
+
+
+        /* ============================================================
+           SIDEBAR FOOTER
+        ============================================================ */
+
+        .sidebar-footer {
+            padding: 13px;
+
+            border-top:
+                1px solid rgba(255, 255, 255, 0.07);
+
+            flex-shrink: 0;
+        }
+
+        .logout-button {
+            width: 100%;
+
+            min-height: 44px;
+
+            border: 0;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255, 255, 255, 0.045);
+
+            color: #aeb2ba;
+
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 12px;
+
+            font-family: inherit;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .logout-button:hover {
+            background:
+                rgba(180, 50, 40, 0.15);
+
+            color: #ffaaa3;
+        }
+
+        .logout-icon {
+            width: 32px;
+            min-width: 32px;
+            height: 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 15px;
+        }
+
+
+        /* ============================================================
+           MAIN WRAPPER
+        ============================================================ */
+
+        .main-wrapper {
+            margin-left: 285px !important;
+
+            width:
+                calc(100% - 285px) !important;
+
+            min-height: 100vh;
+
+            position: relative;
+        }
+
+
+        /* ============================================================
+           PAGE
+        ============================================================ */
+
+        .student-class-page {
+            min-height: 100vh;
+
+            padding: 30px;
+
+            background: #f5f6f8;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+        }
+
+        .student-class-container {
+            width: 100%;
+
+            max-width: 1200px;
+
+            margin: 0 auto;
+        }
+
+
+        /* ============================================================
+           BACK
+        ============================================================ */
+
+        .back-link {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 24px;
+
+            color: #697386;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                all 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #9a5243;
+
+            transform:
+                translateX(-3px);
+        }
+
+
+        /* ============================================================
+           PAGE HEADER
+        ============================================================ */
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            margin: 0 0 7px;
+
+            color: #202738;
+
+            font-size: 30px;
+
+            font-weight: 850;
+        }
+
+        .page-header p {
+            margin: 0;
+
+            color: #858d9f;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+
+        /* ============================================================
+           CLASS HERO
+        ============================================================ */
+
+        .class-hero {
+            position: relative;
+
+            overflow: hidden;
+
+            margin-bottom: 25px;
+
+            padding: 30px;
+
+            color: #ffffff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #5752c8,
+                    #7664e8
+                );
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 16px 35px
+                rgba(87, 82, 200, 0.20);
+        }
+
+        .class-hero::after {
+            content: "🏫";
+
+            position: absolute;
+
+            right: 35px;
+            bottom: 5px;
+
+            font-size: 100px;
+
+            opacity: 0.10;
+        }
+
+        .class-hero-content {
+            position: relative;
+
+            z-index: 2;
+        }
+
+        .class-icon {
+            width: 52px;
+            height: 52px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 15px;
+
+            border-radius: 14px;
+
+            background:
+                rgba(255, 255, 255, 0.14);
+
+            font-size: 25px;
+        }
+
+        .class-hero h2 {
+            margin: 0 0 20px;
+
+            font-size: 30px;
+
+            font-weight: 850;
+        }
+
+        .class-details {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+        }
+
+        .class-detail {
+            padding: 13px 15px;
+
+            border-radius: 11px;
+
+            background:
+                rgba(255, 255, 255, 0.08);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.09);
+        }
+
+        .class-detail-label {
+            margin-bottom: 5px;
+
+            color:
+                rgba(255, 255, 255, 0.60);
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+        }
+
+        .class-detail-value {
+            color: #ffffff;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+        .class-status {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #7df2a7;
+        }
+
+
+        /* ============================================================
+           SECTION HEADER
+        ============================================================ */
+
+        .section-header {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 14px;
+        }
+
+        .section-title {
+            margin: 0;
+
+            color: #20283a;
+
+            font-size: 18px;
+
+            font-weight: 850;
+        }
+
+
+        /* ============================================================
+           SEMESTER SELECTOR
+        ============================================================ */
+
+        .semester-form {
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+        }
+
+        .semester-form label {
+            color: #737d90;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .semester-select {
+            min-width: 170px;
+
+            min-height: 40px;
+
+            padding: 0 12px;
+
+            color: #30394c;
+
+            background: #ffffff;
+
+            border:
+                1px solid #dfe3ea;
+
+            border-radius: 9px;
+
+            outline: none;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .semester-select:focus {
+            border-color: #7568e8;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(117, 104, 232, 0.10);
+        }
+
+
+        /* ============================================================
+           RESULTS CARD
+        ============================================================ */
+
+        .results-card {
+            margin-bottom: 22px;
+
+            padding: 23px;
+
+            background: #ffffff;
+
+            border:
+                1px solid #e8ebf1;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(31, 41, 55, 0.04);
+        }
+
+
+        /* ============================================================
+           TABLE
+        ============================================================ */
+
+        .table-wrapper {
+            width: 100%;
+
+            overflow-x: auto;
+        }
+
+        .results-table {
+            width: 100%;
+
+            min-width: 700px;
+
+            border-collapse: collapse;
+        }
+
+        .results-table th {
+            padding: 12px;
+
+            color: #8a93a5;
+
+            background: #fafbfc;
+
+            border-bottom:
+                1px solid #e9ecf1;
+
+            text-align: left;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.6px;
+        }
+
+        .results-table td {
+            padding: 15px 12px;
+
+            color: #3b4558;
+
+            border-bottom:
+                1px solid #f0f1f4;
+
+            font-size: 12px;
+        }
+
+        .results-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .results-table tbody tr:hover {
+            background: #fafaff;
+        }
+
+        .subject-name {
+            color: #252d40 !important;
+
+            font-weight: 800;
+        }
+
+        .score {
+            font-weight: 800;
+        }
+
+
+        /* ============================================================
+           GRADE BADGE
+        ============================================================ */
+
+        .grade-badge {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-width: 38px;
+
+            padding: 6px 9px;
+
+            border-radius: 8px;
+
+            background: #eef9f2;
+
+            color: #27804b;
+
+            font-size: 11px;
+
+            font-weight: 850;
+        }
+
+        .grade-d {
+            background: #fff7df;
+
+            color: #9a6700;
+        }
+
+        .grade-f {
+            background: #fff0ef;
+
+            color: #b42318;
+        }
+
+
+        /* ============================================================
+           RESULT BADGE
+        ============================================================ */
+
+        .result-badge {
+            display: inline-flex;
+
+            align-items: center;
+
+            padding: 6px 10px;
+
+            border-radius: 8px;
+
+            font-size: 10px;
+
+            font-weight: 850;
+        }
+
+        .result-pass {
+            background: #edf9f1;
+
+            color: #237a45;
+        }
+
+        .result-reexam {
+            background: #fff7df;
+
+            color: #9a6700;
+        }
+
+        .result-fail {
+            background: #fff0ef;
+
+            color: #b42318;
+        }
+
+
+        /* ============================================================
+           SUMMARY
+        ============================================================ */
+
+        .summary-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 16px;
+
+            margin-bottom: 24px;
+        }
+
+        .summary-card {
+            padding: 21px;
+
+            background: #ffffff;
+
+            border:
+                1px solid #e8ebf1;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 7px 22px
+                rgba(31, 41, 55, 0.035);
+        }
+
+        .summary-label {
+            margin-bottom: 8px;
+
+            color: #8992a5;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+        }
+
+        .summary-value {
+            color: #252d40;
+
+            font-size: 24px;
+
+            font-weight: 850;
+        }
+
+        .summary-average {
+            color: #5752c8;
+        }
+
+        .summary-grade {
+            color: #27804b;
+        }
+
+        .summary-result {
+            color: #27804b;
+        }
+
+        .summary-reexam {
+            color: #9a6700;
+        }
+
+        .summary-fail {
+            color: #b42318;
+        }
+
+
+        /* ============================================================
+           ENROLLED SUBJECTS
+        ============================================================ */
+
+        .subjects-card {
+            padding: 23px;
+
+            background: #ffffff;
+
+            border:
+                1px solid #e8ebf1;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(31, 41, 55, 0.04);
+        }
+
+        .subjects-list {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 10px;
+
+            margin-top: 15px;
+        }
+
+        .subject-item {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            padding: 13px 15px;
+
+            background: #fafbfc;
+
+            border:
+                1px solid #eef0f4;
+
+            border-radius: 10px;
+        }
+
+        .subject-name-item {
+            color: #30394c;
+
+            font-size: 12px;
+
+            font-weight: 750;
+        }
+
+        .subject-status {
+            color: #27804b;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+        }
+
+
+        /* ============================================================
+           EMPTY
+        ============================================================ */
+
+        .empty-card {
+            padding: 45px 20px;
+
+            text-align: center;
+        }
+
+        .empty-icon {
+            width: 60px;
+            height: 60px;
+
+            margin: 0 auto 13px;
+
+            border-radius: 50%;
+
+            background: #f6ebe8;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 27px;
+        }
+
+        .empty-card h3 {
+            margin: 0 0 7px;
+
+            color: #333333;
+
+            font-size: 17px;
+
+            font-weight: 800;
+        }
+
+        .empty-card p {
+            margin: 0;
+
+            color: #999999;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+
+        /* ============================================================
+           NO CLASS
+        ============================================================ */
+
+        .no-class-card {
+            padding: 55px 25px;
+
+            background: #ffffff;
+
+            border:
+                1px solid #e8ebf1;
+
+            border-radius: 18px;
+
+            text-align: center;
+
+            box-shadow:
+                0 8px 25px
+                rgba(31, 41, 55, 0.04);
+        }
+
+        .no-class-card .no-class-icon {
+            margin-bottom: 15px;
+
+            font-size: 50px;
+        }
+
+        .no-class-card h2 {
+            margin: 0 0 8px;
+
+            color: #252d40;
+
+            font-size: 20px;
+
+            font-weight: 850;
+        }
+
+        .no-class-card p {
+            max-width: 500px;
+
+            margin: 0 auto;
+
+            color: #8992a5;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        /* ============================================================
+           DARK MODE
+        ============================================================ */
+
+        body.dark-mode .student-class-page {
+            background: #111521;
+        }
+
+        body.dark-mode .page-header h1,
+        body.dark-mode .section-title,
+        body.dark-mode .subject-name,
+        body.dark-mode .summary-value,
+        body.dark-mode .subject-name-item,
+        body.dark-mode .empty-card h3,
+        body.dark-mode .no-class-card h2 {
+            color: #f2f4f8 !important;
+        }
+
+        body.dark-mode .page-header p,
+        body.dark-mode .semester-form label,
+        body.dark-mode .summary-label,
+        body.dark-mode .empty-card p,
+        body.dark-mode .no-class-card p {
+            color: #929bad;
+        }
+
+        body.dark-mode .semester-select {
+            color: #e6e9ef;
+
+            background: #181c2a;
+
+            border-color: #303545;
+        }
+
+        body.dark-mode .results-card,
+        body.dark-mode .summary-card,
+        body.dark-mode .subjects-card,
+        body.dark-mode .no-class-card {
+            background: #181c2a;
+
+            border-color: #292e3d;
+        }
+
+        body.dark-mode .results-table th {
+            color: #929bad;
+
+            background: #202431;
+
+            border-color: #303545;
+        }
+
+        body.dark-mode .results-table td {
+            color: #d5d9e2;
+
+            border-color: #292e3d;
+        }
+
+        body.dark-mode .results-table tbody tr:hover {
+            background: #202431;
+        }
+
+        body.dark-mode .subject-item {
+            background: #202431;
+
+            border-color: #303545;
+        }
+
+        body.dark-mode .subject-name-item {
+            color: #e3e6ec;
+        }
+
+        body.dark-mode .empty-icon {
+            background: #28212a;
+        }
+
+
+        /* ============================================================
+           RESPONSIVE
+           SIDEBAR NEVER HIDES
+        ============================================================ */
+
+        @media (max-width: 850px) {
+
+            .class-details {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .summary-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .subjects-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                position: fixed !important;
+
+                top: 0 !important;
+                left: 0 !important;
+
+                width: 285px !important;
+                min-width: 285px !important;
+                max-width: 285px !important;
+
+                height: 100vh !important;
+
+                transform: none !important;
+
+                display: flex !important;
+            }
+
+            .main-wrapper {
+                margin-left: 285px !important;
+
+                width:
+                    calc(100% - 285px) !important;
+
+                min-width: 650px !important;
+            }
+
+            .student-class-page {
+                min-width: 650px;
+            }
+        }
+
+
+        @media (max-width: 650px) {
+
+            .student-class-page {
+                padding:
+                    20px 12px 40px;
+            }
+
+            .page-header h1 {
+                font-size: 25px;
+            }
+
+            .class-hero {
+                padding: 24px;
+            }
+
+            .class-hero h2 {
+                font-size: 25px;
+            }
+
+            .class-details {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .semester-form {
+                width: 100%;
+            }
+
+            .semester-select {
+                width: 100%;
+            }
+
+            .results-card,
+            .subjects-card {
+                padding: 17px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .class-hero::after {
+                right: -15px;
+
+                font-size: 75px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================================================================
+     FIXED SIDEBAR
+================================================================ -->
+
+<aside class="sidebar">
+
+
+    <!-- BRAND -->
+
+    <div class="sidebar-brand">
+
+        <div class="brand-logo">
+            🎓
+        </div>
+
+        <div class="brand-content">
+
+            <div class="brand-title">
+                Student Management
+            </div>
+
+            <div class="brand-subtitle">
+                Academic Administration
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- USER -->
+
+    <div class="sidebar-user">
+
+        <div class="sidebar-user-avatar">
+
+            {% if request.user.first_name %}
+
+                {{ request.user.first_name|first|upper }}
+
+            {% else %}
+
+                {{ request.user.username|first|upper }}
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="sidebar-user-info">
+
+            <div class="sidebar-user-name">
+
+                {% if request.user.get_full_name %}
+
+                    {{ request.user.get_full_name }}
+
+                {% else %}
+
+                    {{ request.user.username }}
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="sidebar-user-role">
+
+                {% if current_role %}
+
+                    {{ current_role }}
+
+                {% elif request.user.profile.role %}
+
+                    {{ request.user.profile.role }}
+
+                {% elif request.user.is_superuser %}
+
+                    Administrator
+
+                {% else %}
+
+                    User
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         NAVIGATION
+    ============================================================= -->
+
+    <nav class="sidebar-navigation">
+
+
+        <!-- MAIN -->
+
+        <div class="nav-section-title">
+            Main
+        </div>
+
+
+        <a
+            href="{% url 'student-home' %}"
+            class="nav-link"
+        >
+
+            <span class="nav-icon">
+                🏠
+            </span>
+
+            <span class="nav-text">
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <a
+            href="{% url 'student-list' %}"
+            class="nav-link"
+        >
+
+            <span class="nav-icon">
+                👨‍🎓
+            </span>
+
+            <span class="nav-text">
+                Students
+            </span>
+
+        </a>
+
+
+
+        <!-- ========================================================
+             MANAGEMENT
+        ========================================================= -->
+
+        {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" or request.user.profile.role == "Teacher" %}
+
+
+            <div class="nav-section-title">
+                Management
+            </div>
+
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+
+                <a
+                    href="{% url 'teacherapp:teacher-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        👨‍🏫
+                    </span>
+
+                    <span class="nav-text">
+                        Teachers
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+
+            {% elif request.user.profile.role == "Teacher" %}
+
+
+                <a
+                    href="{% url 'teacherapp:teacher-dashboard' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        👨‍🏫
+                    </span>
+
+                    <span class="nav-text">
+                        Teacher Area
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+
+            {% endif %}
+
+
+
+            <!-- CLASSES ACTIVE -->
+
+            <a
+                href="{% url 'class-list' %}"
+                class="nav-link active"
+            >
+
+                <span class="nav-icon">
+                    🏫
+                </span>
+
+                <span class="nav-text">
+                    Classes
+                </span>
+
+                <span class="nav-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+
+            <!-- SUBJECTS -->
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                <a
+                    href="{% url 'subject-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📚
+                    </span>
+
+                    <span class="nav-text">
+                        Subjects
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+
+        {% endif %}
+
+
+
+        <!-- ========================================================
+             ACADEMIC
+        ========================================================= -->
+
+        {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" or request.user.profile.role == "Teacher" %}
+
+
+            <div class="nav-section-title">
+                Academic
+            </div>
+
+
+
+            <!-- ENROLLMENT -->
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                <a
+                    href="{% url 'student-enrollment' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📝
+                    </span>
+
+                    <span class="nav-text">
+                        Enrollment
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+
+
+            <!-- ASSIGNMENTS -->
+
+            {% if request.user.profile.role == "Teacher" %}
+
+                <a
+                    href="{% url 'teacherapp:assignment-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📋
+                    </span>
+
+                    <span class="nav-text">
+                        My Assignments
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+
+
+            <!-- ATTENDANCE + GRADES -->
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Teacher" %}
+
+
+                <a
+                    href="{% url 'attendance-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📅
+                    </span>
+
+                    <span class="nav-text">
+                        Attendance
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{% url 'grade-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📊
+                    </span>
+
+                    <span class="nav-text">
+                        Grades
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+
+            {% endif %}
+
+
+        {% endif %}
+
+
+
+        <!-- ========================================================
+             SYSTEM
+        ========================================================= -->
+
+        {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+
+            <div class="nav-section-title">
+                System
+            </div>
+
+
+            <a
+                href="/dashboard/logs/"
+                class="nav-link"
+            >
+
+                <span class="nav-icon">
+                    🛡
+                </span>
+
+                <span class="nav-text">
+                    System Logs
+                </span>
+
+                <span class="nav-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a
+                href="/conversations/"
+                class="nav-link"
+            >
+
+                <span class="nav-icon">
+                    💬
+                </span>
+
+                <span class="nav-text">
+                    Conversations
+                </span>
+
+                <span class="nav-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" %}
+
+                <a
+                    href="{% url 'users:manage-users' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        👥
+                    </span>
+
+                    <span class="nav-text">
+                        Manage Users
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+
+        {% endif %}
+
+
+    </nav>
+
+
+    <!-- ============================================================
+         LOGOUT
+    ============================================================= -->
+
+    <div class="sidebar-footer">
+
+        <button
+            type="button"
+            class="logout-button"
+            onclick="openLogoutModal()"
+        >
+
+            <span class="logout-icon">
+                🚪
+            </span>
+
+            <span>
+                Logout
+            </span>
+
+        </button>
+
+    </div>
+
+</aside>
+
+
+
+<!-- ================================================================
+     MAIN CONTENT
+================================================================ -->
+
+<div class="main-wrapper">
+
+
+    <div class="student-class-page">
+
+        <div class="student-class-container">
+
+
+            <!-- BACK -->
+
+            <a
+                href="{% url 'student-home' %}"
+                class="back-link"
+            >
+                ← Back to Dashboard
+            </a>
+
+
+
+            <!-- PAGE HEADER -->
+
+            <header class="page-header">
+
+                <h1>
+                    🎓 My Class
+                </h1>
+
+                <p>
+                    View your class, enrolled subjects, semester results,
+                    scores, grades, and academic performance.
+                </p>
+
+            </header>
+
+
+
+            {% if class_room %}
+
+
+                <!-- =================================================
+                     CLASS INFORMATION
+                ================================================== -->
+
+                <section class="class-hero">
+
+                    <div class="class-hero-content">
+
+
+                        <div class="class-icon">
+                            🏫
+                        </div>
+
+
+                        <h2>
+                            {{ class_room.name }}
+                        </h2>
+
+
+                        <div class="class-details">
+
+
+                            <div class="class-detail">
+
+                                <div class="class-detail-label">
+                                    Class
+                                </div>
+
+                                <div class="class-detail-value">
+                                    {{ class_room.name }}
+                                </div>
+
+                            </div>
+
+
+                            <div class="class-detail">
+
+                                <div class="class-detail-label">
+                                    Status
+                                </div>
+
+                                <div class="class-detail-value class-status">
+
+                                    <span class="status-dot"></span>
+
+                                    {{ class_room.status }}
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="class-detail">
+
+                                <div class="class-detail-label">
+                                    Academic Year
+                                </div>
+
+                                <div class="class-detail-value">
+                                    {{ academic_year }}
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- RESULTS HEADER -->
+
+                <div class="section-header">
+
+                    <h2 class="section-title">
+                        📊 Academic Results
+                    </h2>
+
+
+                    {% if semesters %}
+
+                        <form
+                            method="GET"
+                            class="semester-form"
+                        >
+
+                            <label for="semester">
+                                Semester
+                            </label>
+
+
+                            <select
+                                name="semester"
+                                id="semester"
+                                class="semester-select"
+                                onchange="this.form.submit()"
+                            >
+
+                                {% for semester in semesters %}
+
+                                    <option
+                                        value="{{ semester.name }}"
+                                        {% if selected_semester == semester.name %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ semester.name }}
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </form>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <!-- RESULTS -->
+
+                <section class="results-card">
+
+
+                    {% if selected_semester %}
+
+
+                        <div class="section-header">
+
+                            <h3 class="section-title">
+                                {{ selected_semester }}
+                            </h3>
+
+                        </div>
+
+
+                        {% if results %}
+
+
+                            <div class="table-wrapper">
+
+                                <table class="results-table">
+
+                                    <thead>
+
+                                        <tr>
+
+                                            <th>
+                                                Subject
+                                            </th>
+
+                                            <th>
+                                                Score
+                                            </th>
+
+                                            <th>
+                                                Grade
+                                            </th>
+
+                                            <th>
+                                                Result
+                                            </th>
+
+                                        </tr>
+
+                                    </thead>
+
+
+                                    <tbody>
+
+                                        {% for result in results %}
+
+                                            <tr>
+
+
+                                                <td class="subject-name">
+                                                    {{ result.subject.name }}
+                                                </td>
+
+
+                                                <td class="score">
+                                                    {{ result.score }}%
+                                                </td>
+
+
+                                                <td>
+
+                                                    {% if result.letter_grade == "F" %}
+
+                                                        <span class="grade-badge grade-f">
+                                                            {{ result.letter_grade }}
+                                                        </span>
+
+                                                    {% elif result.letter_grade == "D" %}
+
+                                                        <span class="grade-badge grade-d">
+                                                            {{ result.letter_grade }}
+                                                        </span>
+
+                                                    {% else %}
+
+                                                        <span class="grade-badge">
+                                                            {{ result.letter_grade }}
+                                                        </span>
+
+                                                    {% endif %}
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    {% if result.result == "PASS" %}
+
+                                                        <span class="result-badge result-pass">
+                                                            PASS
+                                                        </span>
+
+                                                    {% elif result.result == "RE-EXAM" %}
+
+                                                        <span class="result-badge result-reexam">
+                                                            RE-EXAM
+                                                        </span>
+
+                                                    {% else %}
+
+                                                        <span class="result-badge result-fail">
+                                                            FAIL
+                                                        </span>
+
+                                                    {% endif %}
+
+                                                </td>
+
+
+                                            </tr>
+
+                                        {% endfor %}
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+
+                        {% else %}
+
+
+                            <div class="empty-card">
+
+                                <div class="empty-icon">
+                                    📋
+                                </div>
+
+                                <h3>
+                                    No Results Available
+                                </h3>
+
+                                <p>
+                                    No grades have been recorded for
+                                    {{ selected_semester }} yet.
+                                </p>
+
+                            </div>
+
+
+                        {% endif %}
+
+
+                    {% else %}
+
+
+                        <div class="empty-card">
+
+                            <div class="empty-icon">
+                                📅
+                            </div>
+
+                            <h3>
+                                No Semester Available
+                            </h3>
+
+                            <p>
+                                There are currently no active semesters
+                                available for viewing.
+                            </p>
+
+                        </div>
+
+
+                    {% endif %}
+
+
+                </section>
+
+
+
+                <!-- SUMMARY -->
+
+                {% if selected_semester %}
+
+                    <div class="summary-grid">
+
+
+                        <div class="summary-card">
+
+                            <div class="summary-label">
+                                Semester Average
+                            </div>
+
+                            <div class="summary-value summary-average">
+
+                                {% if average != None %}
+                                    {{ average }}%
+                                {% else %}
+                                    —
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="summary-card">
+
+                            <div class="summary-label">
+                                Overall Grade
+                            </div>
+
+                            <div class="summary-value summary-grade">
+
+                                {% if overall_grade %}
+                                    {{ overall_grade }}
+                                {% else %}
+                                    —
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="summary-card">
+
+                            <div class="summary-label">
+                                Overall Result
+                            </div>
+
+                            <div
+                                class="
+                                    summary-value
+
+                                    {% if overall_result == 'PASS' %}
+                                        summary-result
+
+                                    {% elif overall_result == 'RE-EXAM' %}
+                                        summary-reexam
+
+                                    {% elif overall_result == 'FAIL' %}
+                                        summary-fail
+                                    {% endif %}
+                                "
+                            >
+
+                                {% if overall_result %}
+                                    {{ overall_result }}
+                                {% else %}
+                                    —
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                {% endif %}
+
+
+
+                <!-- ENROLLED SUBJECTS -->
+
+                <section class="subjects-card">
+
+                    <h2 class="section-title">
+                        📚 My Enrolled Subjects
+                    </h2>
+
+
+                    {% if enrollments %}
+
+
+                        <div class="subjects-list">
+
+                            {% for enrollment in enrollments %}
+
+                                <div class="subject-item">
+
+                                    <span class="subject-name-item">
+                                        {{ enrollment.subject.name }}
+                                    </span>
+
+                                    <span class="subject-status">
+                                        {{ enrollment.status }}
+                                    </span>
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                    {% else %}
+
+
+                        <div class="empty-card">
+
+                            <div class="empty-icon">
+                                📚
+                            </div>
+
+                            <h3>
+                                No Subjects Enrolled
+                            </h3>
+
+                            <p>
+                                You are currently not enrolled in any active subjects.
+                            </p>
+
+                        </div>
+
+
+                    {% endif %}
+
+
+                </section>
+
+
+            {% else %}
+
+
+                <!-- NO CLASS -->
+
+                <section class="no-class-card">
+
+                    <div class="no-class-icon">
+                        🏫
+                    </div>
+
+                    <h2>
+                        No Class Assigned
+                    </h2>
+
+                    <p>
+                        You have not been assigned to a class yet.
+                        Please contact the Administrator or Manager
+                        to assign you to a class.
+                    </p>
+
+                </section>
+
+
+            {% endif %}
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ================================================================
+     LOGOUT MODAL
+================================================================ -->
+
+<div
+    id="logoutModal"
+    style="
+        display:none;
+        position:fixed;
+        inset:0;
+        z-index:100000;
+        background:rgba(0,0,0,0.55);
+        align-items:center;
+        justify-content:center;
+    "
+>
+
+    <div
+        style="
+            width:420px;
+            max-width:90%;
+            background:#ffffff;
+            border-radius:18px;
+            padding:30px;
+            box-shadow:0 25px 70px rgba(0,0,0,0.25);
+            text-align:center;
+        "
+    >
+
+        <div
+            style="
+                font-size:42px;
+                margin-bottom:12px;
+            "
+        >
+            🚪
+        </div>
+
+
+        <h2
+            style="
+                margin:0 0 8px;
+                color:#202738;
+                font-size:21px;
+            "
+        >
+            Logout
+        </h2>
+
+
+        <p
+            style="
+                margin:0 0 24px;
+                color:#737d90;
+                font-size:13px;
+                line-height:1.6;
+            "
+        >
+            Are you sure you want to logout?
+        </p>
+
+
+        <div
+            style="
+                display:flex;
+                justify-content:center;
+                gap:10px;
+            "
+        >
+
+            <button
+                type="button"
+                onclick="closeLogoutModal()"
+                style="
+                    border:0;
+                    padding:11px 20px;
+                    border-radius:9px;
+                    background:#eef0f4;
+                    color:#30394c;
+                    font-weight:700;
+                    cursor:pointer;
+                "
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                onclick="confirmLogout()"
+                style="
+                    border:0;
+                    padding:11px 20px;
+                    border-radius:9px;
+                    background:#9a5243;
+                    color:#ffffff;
+                    font-weight:700;
+                    cursor:pointer;
+                "
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ================================================================
+     JAVASCRIPT
+================================================================ -->
+
+<script>
+
+    function openLogoutModal() {
+
+        const modal =
+            document.getElementById("logoutModal");
+
+        if (modal) {
+
+            modal.style.display = "flex";
+
+        }
+    }
+
+
+    function closeLogoutModal() {
+
+        const modal =
+            document.getElementById("logoutModal");
+
+        if (modal) {
+
+            modal.style.display = "none";
+
+        }
+    }
+
+
+    function confirmLogout() {
+
+        window.location.href =
+            "{% url 'users:logout' %}";
+
+    }
+
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Escape") {
+
+                closeLogoutModal();
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>
+

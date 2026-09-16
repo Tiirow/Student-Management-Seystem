@@ -1,0 +1,449 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<style>
+
+    /* ======================================================
+       PAGE
+       ====================================================== */
+
+    .conversation-page {
+        max-width: 850px;
+        margin: 50px auto;
+        padding: 20px;
+    }
+
+
+    /* ======================================================
+       CARD
+       ====================================================== */
+
+    .conversation-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow:
+            0 8px 30px rgba(0, 0, 0, 0.08);
+    }
+
+
+    /* ======================================================
+       HEADER
+       ====================================================== */
+
+    .conversation-header {
+        margin-bottom: 30px;
+    }
+
+    .conversation-header h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        color: #222;
+    }
+
+    .conversation-header p {
+        margin: 0;
+        color: #777;
+        font-size: 15px;
+    }
+
+
+    /* ======================================================
+       FORM GROUP
+       ====================================================== */
+
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 9px;
+        font-weight: 600;
+        color: #333;
+        font-size: 15px;
+    }
+
+
+    /* ======================================================
+       SELECT + TEXTAREA
+       ====================================================== */
+
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 13px 14px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background: #fff;
+        color: #333;
+        font-size: 15px;
+        outline: none;
+        transition: 0.2s ease;
+    }
+
+    .form-group select:focus,
+    .form-group textarea:focus {
+        border-color: #4a90e2;
+        box-shadow:
+            0 0 0 3px rgba(74, 144, 226, 0.10);
+    }
+
+
+    /* ======================================================
+       TEXTAREA
+       ====================================================== */
+
+    .form-group textarea {
+        min-height: 160px;
+        resize: vertical;
+    }
+
+
+    /* ======================================================
+       HELP TEXT
+       ====================================================== */
+
+    .form-help {
+        display: block;
+        margin-top: 6px;
+        color: #888;
+        font-size: 13px;
+    }
+
+
+    /* ======================================================
+       BUTTONS
+       ====================================================== */
+
+    .conversation-buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 28px;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        text-align: center;
+        transition: 0.2s ease;
+    }
+
+
+    /* ======================================================
+       PRIMARY BUTTON
+       ====================================================== */
+
+    .btn-primary {
+        background: #4a90e2;
+        color: #fff;
+    }
+
+    .btn-primary:hover {
+        background: #357abd;
+    }
+
+
+    /* ======================================================
+       SECONDARY BUTTON
+       ====================================================== */
+
+    .btn-secondary {
+        background: #eeeeee;
+        color: #333;
+    }
+
+    .btn-secondary:hover {
+        background: #dddddd;
+    }
+
+
+    /* ======================================================
+       EMPTY RECIPIENT
+       ====================================================== */
+
+    .empty-users {
+        padding: 15px;
+        background: #fff3cd;
+        border: 1px solid #ffe69c;
+        border-radius: 10px;
+        color: #856404;
+        font-size: 14px;
+    }
+
+
+    /* ======================================================
+       ERROR MESSAGE
+       ====================================================== */
+
+    .error-message {
+        margin-bottom: 20px;
+        padding: 12px 15px;
+        border-radius: 10px;
+        background: #f8d7da;
+        border: 1px solid #f5c2c7;
+        color: #842029;
+        font-size: 14px;
+    }
+
+
+    /* ======================================================
+       MOBILE
+       ====================================================== */
+
+    @media (max-width: 600px) {
+
+        .conversation-page {
+            margin: 20px auto;
+            padding: 10px;
+        }
+
+        .conversation-card {
+            padding: 22px;
+        }
+
+        .conversation-buttons {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+            box-sizing: border-box;
+        }
+    }
+
+</style>
+
+
+<div class="conversation-page">
+
+    <div class="conversation-card">
+
+
+        <!-- ==================================================
+             HEADER
+             ================================================== -->
+
+        <div class="conversation-header">
+
+            <h1>
+                Start a Conversation
+            </h1>
+
+
+            {% if is_staff %}
+
+                <p>
+                    Select a user and send your first message.
+                </p>
+
+            {% else %}
+
+                <p>
+                    Need help? Contact an Administrator.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- ==================================================
+             DJANGO MESSAGES
+             ================================================== -->
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="error-message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+
+        <!-- ==================================================
+             FORM
+             ================================================== -->
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            <!-- ==============================================
+                 RECIPIENT
+                 ============================================== -->
+
+            <div class="form-group">
+
+                <label for="recipient_id">
+
+                    {{ recipient_label }}
+
+                </label>
+
+
+                {% if users %}
+
+                    <select
+                        name="recipient_id"
+                        id="recipient_id"
+                        required
+                    >
+
+                        <option
+                            value=""
+                            selected
+                            disabled
+                        >
+                            -- {{ recipient_label }} --
+                        </option>
+
+
+                        {% for user in users %}
+
+                            <option value="{{ user.id }}">
+
+                                {% if user.get_full_name %}
+
+                                    {{ user.get_full_name }}
+
+                                    ({{ user.username }})
+
+                                {% else %}
+
+                                    {{ user.username }}
+
+                                {% endif %}
+
+
+                                {% if user.profile.role == 'Administrator' %}
+
+                                    — Administrator
+
+                                {% elif user.profile.role == 'Manager' %}
+
+                                    — Manager
+
+                                {% elif user.profile.role == 'Teacher' %}
+
+                                    — Teacher
+
+                                {% elif user.profile.role == 'Student' %}
+
+                                    — Student
+
+                                {% endif %}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+
+                    <span class="form-help">
+
+                        {{ recipient_help }}
+
+                    </span>
+
+                {% else %}
+
+                    <div class="empty-users">
+
+                        {% if is_staff %}
+
+                            No active users are currently available.
+
+                        {% else %}
+
+                            No Administrator is currently available.
+
+                        {% endif %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- ==============================================
+                 MESSAGE
+                 ============================================== -->
+
+            <div class="form-group">
+
+                <label for="body">
+
+                    Message
+
+                </label>
+
+
+                <textarea
+                    name="body"
+                    id="body"
+                    placeholder="Write your message here..."
+                    required
+                ></textarea>
+
+
+                <span class="form-help">
+
+                    Write your first message.
+
+                </span>
+
+            </div>
+
+
+            <!-- ==============================================
+                 BUTTONS
+                 ============================================== -->
+
+            <div class="conversation-buttons">
+
+
+                {% if users %}
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Start Conversation
+                    </button>
+
+                {% endif %}
+
+
+                <a
+                    href="{% url 'conversations:conversation-list' %}"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </a>
+
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

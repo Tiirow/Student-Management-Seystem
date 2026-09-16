@@ -1,0 +1,1065 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Teacher Assignments | Student Management System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #9a5243;
+            --primary-dark: #7c3f34;
+            --primary-light: #f8ece8;
+
+            --dark: #172033;
+            --dark-soft: #24304a;
+
+            --text: #374151;
+            --muted: #6b7280;
+            --light-muted: #9aa2b2;
+
+            --border: #e5e7eb;
+            --border-light: #edf0f3;
+
+            --background: #f4f6fa;
+            --white: #ffffff;
+
+            --success: #15803d;
+            --success-bg: #ecfdf3;
+
+            --danger: #b42318;
+            --danger-bg: #fef2f2;
+        }
+
+        body {
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+
+            background: var(--background);
+            color: var(--dark);
+
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button,
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .page {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 40px 0 70px;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .page-header {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 24px;
+
+            padding: 30px;
+            margin-bottom: 24px;
+
+            border-radius: 20px;
+
+            color: var(--white);
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--dark) 0%,
+                    var(--dark-soft) 65%,
+                    var(--primary-dark) 140%
+                );
+
+            box-shadow:
+                0 20px 55px rgba(23, 32, 51, 0.14);
+        }
+
+        .page-header::before {
+            content: "";
+
+            position: absolute;
+
+            width: 210px;
+            height: 210px;
+
+            right: -70px;
+            top: -100px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(214, 168, 95, 0.15);
+        }
+
+        .page-header::after {
+            content: "";
+
+            position: absolute;
+
+            width: 140px;
+            height: 140px;
+
+            right: 130px;
+            bottom: -95px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(154, 82, 67, 0.20);
+        }
+
+        .header-left {
+            position: relative;
+            z-index: 2;
+
+            display: flex;
+            align-items: center;
+
+            gap: 16px;
+
+            min-width: 0;
+        }
+
+        .header-icon {
+            width: 58px;
+            height: 58px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 16px;
+
+            font-size: 27px;
+
+            background:
+                rgba(255, 255, 255, 0.12);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.20);
+
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .header-content {
+            min-width: 0;
+        }
+
+        .header-title {
+            color: var(--white);
+
+            font-size: 27px;
+            line-height: 1.2;
+
+            font-weight: 800;
+
+            letter-spacing: -0.5px;
+        }
+
+        .header-subtitle {
+            margin-top: 6px;
+
+            color:
+                rgba(255, 255, 255, 0.70);
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           ADD ASSIGNMENT BUTTON
+        ===================================================== */
+
+        .add-button {
+            position: relative;
+            z-index: 3;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            min-height: 44px;
+
+            padding: 0 18px;
+
+            flex-shrink: 0;
+
+            border-radius: 10px;
+
+            background: var(--primary);
+            color: var(--white);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.18);
+
+            font-size: 13px;
+            font-weight: 750;
+
+            box-shadow:
+                0 8px 20px
+                rgba(0, 0, 0, 0.15);
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .add-button:hover {
+            background: var(--primary-dark);
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 12px 26px
+                rgba(0, 0, 0, 0.20);
+        }
+
+        .add-button:active {
+            transform:
+                translateY(0);
+        }
+
+        .button-icon {
+            font-size: 17px;
+            line-height: 1;
+        }
+
+        /* =====================================================
+           MAIN CARD
+        ===================================================== */
+
+        .assignment-card {
+            background: var(--white);
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 12px 40px
+                rgba(23, 32, 51, 0.07);
+        }
+
+        /* =====================================================
+           CARD HEADER
+        ===================================================== */
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 22px 25px;
+
+            border-bottom:
+                1px solid var(--border-light);
+        }
+
+        .card-header-left {
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+        }
+
+        .card-icon {
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background: var(--primary-light);
+
+            color: var(--primary);
+
+            font-size: 16px;
+        }
+
+        .card-title {
+            color: var(--dark);
+
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .assignment-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-width: 34px;
+            height: 30px;
+
+            padding: 0 10px;
+
+            border-radius: 9px;
+
+            background: var(--primary-light);
+            color: var(--primary);
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .assignment-table {
+            width: 100%;
+
+            min-width: 760px;
+
+            border-collapse: collapse;
+        }
+
+        .assignment-table thead {
+            background: #f8f9fb;
+        }
+
+        .assignment-table th {
+            padding: 14px 20px;
+
+            text-align: left;
+
+            color: var(--muted);
+
+            font-size: 11px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.5px;
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+        .assignment-table td {
+            padding: 17px 20px;
+
+            color: var(--text);
+
+            font-size: 13px;
+
+            border-bottom:
+                1px solid var(--border-light);
+
+            vertical-align: middle;
+        }
+
+        .assignment-table tbody tr {
+            transition:
+                background 0.18s ease;
+        }
+
+        .assignment-table tbody tr:hover {
+            background: #fcfcfd;
+        }
+
+        .assignment-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* =====================================================
+           TEACHER
+        ===================================================== */
+
+        .teacher-cell {
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+        }
+
+        .teacher-avatar {
+            width: 40px;
+            height: 40px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8ece8,
+                    #f3ded8
+                );
+
+            color: var(--primary);
+
+            font-size: 13px;
+            font-weight: 800;
+
+            border:
+                1px solid #efd9d3;
+        }
+
+        .teacher-info {
+            min-width: 0;
+        }
+
+        .teacher-name {
+            color: var(--dark);
+
+            font-weight: 750;
+
+            white-space: nowrap;
+        }
+
+        .teacher-username {
+            margin-top: 3px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            white-space: nowrap;
+        }
+
+        /* =====================================================
+           CLASS
+        ===================================================== */
+
+        .class-name {
+            color: var(--dark-soft);
+
+            font-weight: 700;
+        }
+
+        .class-label {
+            display: block;
+
+            margin-top: 3px;
+
+            color: var(--light-muted);
+
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           SUBJECT
+        ===================================================== */
+
+        .subject-name {
+            color: var(--text);
+
+            font-weight: 650;
+        }
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+
+            gap: 6px;
+
+            padding: 6px 10px;
+
+            border-radius: 999px;
+
+            background: var(--success-bg);
+            color: var(--success);
+
+            font-size: 11px;
+            font-weight: 800;
+
+            text-transform: capitalize;
+        }
+
+        .status::before {
+            content: "";
+
+            width: 6px;
+            height: 6px;
+
+            flex-shrink: 0;
+
+            border-radius: 50%;
+
+            background: #16a34a;
+        }
+
+        .status-inactive {
+            background: var(--danger-bg);
+            color: var(--danger);
+        }
+
+        .status-inactive::before {
+            background: #dc2626;
+        }
+
+        .status-default {
+            display: inline-flex;
+
+            padding: 6px 10px;
+
+            border-radius: 999px;
+
+            background: #f3f4f6;
+
+            color: #6b7280;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           EMPTY STATE
+        ===================================================== */
+
+        .empty-state {
+            padding: 80px 25px;
+
+            text-align: center;
+        }
+
+        .empty-icon {
+            width: 70px;
+            height: 70px;
+
+            margin:
+                0 auto 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 20px;
+
+            background: var(--primary-light);
+
+            color: var(--primary);
+
+            font-size: 29px;
+
+            border:
+                1px solid #f0dcd7;
+        }
+
+        .empty-title {
+            color: var(--dark);
+
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .empty-text {
+            max-width: 440px;
+
+            margin:
+                8px auto 0;
+
+            color: #7b8494;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+        .empty-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+
+            margin-top: 22px;
+
+            min-height: 42px;
+
+            padding: 0 17px;
+
+            border-radius: 9px;
+
+            background: var(--primary);
+            color: var(--white);
+
+            font-size: 12.5px;
+            font-weight: 750;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .empty-button:hover {
+            background: var(--primary-dark);
+
+            transform:
+                translateY(-1px);
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .page-footer {
+            padding-top: 22px;
+
+            text-align: center;
+
+            color: var(--light-muted);
+
+            font-size: 11.5px;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 760px) {
+
+            .page {
+                width:
+                    calc(100% - 24px);
+
+                padding:
+                    25px 0 50px;
+            }
+
+            .page-header {
+                padding: 22px 20px;
+
+                align-items:
+                    flex-start;
+
+                flex-direction:
+                    column;
+            }
+
+            .header-title {
+                font-size: 22px;
+            }
+
+            .header-subtitle {
+                font-size: 12px;
+            }
+
+            .add-button {
+                width: 100%;
+            }
+
+            .card-header {
+                padding:
+                    18px 17px;
+            }
+
+            .assignment-table th,
+            .assignment-table td {
+                padding:
+                    14px 15px;
+            }
+        }
+
+        @media (max-width: 430px) {
+
+            .header-left {
+                gap: 12px;
+            }
+
+            .header-icon {
+                width: 48px;
+                height: 48px;
+
+                border-radius: 13px;
+
+                font-size: 22px;
+            }
+
+            .header-title {
+                font-size: 20px;
+            }
+
+            .header-subtitle {
+                font-size: 11px;
+            }
+
+            .empty-state {
+                padding:
+                    60px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="page-header">
+
+        <div class="header-left">
+
+            <div class="header-icon">
+                👨‍🏫
+            </div>
+
+            <div class="header-content">
+
+                <h1 class="header-title">
+                    Teacher Assignments
+                </h1>
+
+                <p class="header-subtitle">
+                    Manage teachers, classes, and subjects from one place.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- IMPORTANT:
+             teacherapp has app_name="teacherapp"
+             and assignment-create is the URL name.
+        -->
+
+        <a
+            href="{% url 'teacherapp:assignment-create' %}"
+            class="add-button"
+        >
+            <span class="button-icon">＋</span>
+            <span>Add Assignment</span>
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         ASSIGNMENTS CARD
+    ====================================================== -->
+
+    <div class="assignment-card">
+
+        <div class="card-header">
+
+            <div class="card-header-left">
+
+                <div class="card-icon">
+                    📋
+                </div>
+
+                <h2 class="card-title">
+                    Assigned Teachers
+                </h2>
+
+            </div>
+
+            <span class="assignment-count">
+                {{ assignments|length }}
+            </span>
+
+        </div>
+
+
+        {% if assignments %}
+
+            <!-- =================================================
+                 ASSIGNMENT TABLE
+            ================================================== -->
+
+            <div class="table-wrapper">
+
+                <table class="assignment-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Teacher</th>
+                            <th>Class</th>
+                            <th>Subject</th>
+                            <th>Status</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for assignment in assignments %}
+
+                            <tr>
+
+                                <!-- =================================
+                                     TEACHER
+                                ================================== -->
+
+                                <td>
+
+                                    <div class="teacher-cell">
+
+                                        <div class="teacher-avatar">
+
+                                            {% if assignment.teacher.first_name %}
+                                                {{ assignment.teacher.first_name|first|upper }}
+                                            {% elif assignment.teacher.username %}
+                                                {{ assignment.teacher.username|first|upper }}
+                                            {% else %}
+                                                T
+                                            {% endif %}
+
+                                        </div>
+
+
+                                        <div class="teacher-info">
+
+                                            <div class="teacher-name">
+
+                                                {% if assignment.teacher.first_name or assignment.teacher.last_name %}
+
+                                                    {{ assignment.teacher.first_name }}
+                                                    {{ assignment.teacher.last_name }}
+
+                                                {% elif assignment.teacher.username %}
+
+                                                    {{ assignment.teacher.username }}
+
+                                                {% else %}
+
+                                                    Unknown Teacher
+
+                                                {% endif %}
+
+                                            </div>
+
+
+                                            {% if assignment.teacher.username %}
+
+                                                <div class="teacher-username">
+                                                    @{{ assignment.teacher.username }}
+                                                </div>
+
+                                            {% endif %}
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- =================================
+                                     CLASS
+                                ================================== -->
+
+                                <td>
+
+                                    {% if assignment.class_room %}
+
+                                        <span class="class-name">
+                                            {{ assignment.class_room.name }}
+                                        </span>
+
+                                        <span class="class-label">
+                                            Assigned Class
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="class-name">
+                                            —
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- =================================
+                                     SUBJECT
+                                ================================== -->
+
+                                <td>
+
+                                    {% if assignment.subject %}
+
+                                        <span class="subject-name">
+                                            {{ assignment.subject.name }}
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="subject-name">
+                                            —
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- =================================
+                                     STATUS
+                                ================================== -->
+
+                                <td>
+
+                                    {% if assignment.status %}
+
+                                        {% if assignment.status|lower == "active" %}
+
+                                            <span class="status">
+                                                {{ assignment.status }}
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="status status-inactive">
+                                                {{ assignment.status }}
+                                            </span>
+
+                                        {% endif %}
+
+                                    {% else %}
+
+                                        <span class="status-default">
+                                            Not specified
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        {% else %}
+
+            <!-- =================================================
+                 EMPTY STATE
+            ================================================== -->
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    👨‍🏫
+                </div>
+
+                <h3 class="empty-title">
+                    No Teacher Assignments
+                </h3>
+
+                <p class="empty-text">
+                    There are currently no teacher assignments
+                    in the system. Create the first assignment
+                    to connect a teacher with a class and subject.
+                </p>
+
+
+                <!-- IMPORTANT:
+                     Correct namespaced URL.
+                -->
+
+                <a
+                    href="{% url 'teacherapp:assignment-create' %}"
+                    class="empty-button"
+                >
+                    <span>＋</span>
+                    <span>Add First Assignment</span>
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <div class="page-footer">
+
+        Teacher Management System
+        &nbsp;•&nbsp;
+        Academic Management System
+
+    </div>
+
+</div>
+
+</body>
+</html>
+

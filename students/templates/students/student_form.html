@@ -1,0 +1,2176 @@
+{% extends "students/student_base.html" %}
+
+
+{% block title %}
+
+    {% if student %}
+        Edit Student
+    {% else %}
+        Add Student
+    {% endif %}
+
+    | Student Portal
+
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+    /* ============================================================
+       VARIABLES
+    ============================================================ */
+
+    :root {
+
+        --form-navy: #172033;
+        --form-navy-light: #24304a;
+
+        --primary: #9a5243;
+        --primary-dark: #7c3f34;
+        --primary-light: #f8ece8;
+
+        --gold: #d6a85f;
+        --gold-light: #fff7e8;
+
+        --blue: #3b82f6;
+        --blue-light: #eff6ff;
+
+        --green: #16a34a;
+
+        --red: #dc2626;
+        --red-light: #fef2f2;
+
+        --text: #172033;
+        --muted: #6b7280;
+
+        --border: #e5e7eb;
+
+        --white: #ffffff;
+
+        --shadow-sm:
+            0 3px 10px
+            rgba(23, 32, 51, 0.06);
+
+        --shadow-md:
+            0 15px 45px
+            rgba(23, 32, 51, 0.10);
+
+        --shadow-lg:
+            0 25px 70px
+            rgba(23, 32, 51, 0.14);
+    }
+
+
+    /* ============================================================
+       FORM PAGE
+    ============================================================ */
+
+    .form-page {
+        width: 100%;
+    }
+
+
+    /* ============================================================
+       HERO HEADER
+    ============================================================ */
+
+    .form-page-header {
+
+        position: relative;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        padding:
+            26px 30px;
+
+        margin-bottom: 24px;
+
+        border-radius: 20px;
+
+        color: #ffffff;
+
+        overflow: hidden;
+
+        background:
+            linear-gradient(
+                135deg,
+                #172033 0%,
+                #24304a 65%,
+                #7c4036 140%
+            );
+
+        box-shadow:
+            var(--shadow-lg);
+    }
+
+
+    .form-page-header::before {
+
+        content: "";
+
+        position: absolute;
+
+        width: 190px;
+        height: 190px;
+
+        right: -55px;
+        top: -90px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(214, 168, 95, 0.18);
+    }
+
+
+    .form-page-header::after {
+
+        content: "";
+
+        position: absolute;
+
+        width: 110px;
+        height: 110px;
+
+        right: 120px;
+        bottom: -70px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(154, 82, 67, 0.25);
+    }
+
+
+    .form-header-left {
+
+        position: relative;
+
+        z-index: 2;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 16px;
+    }
+
+
+    /* ============================================================
+       HEADER ICON
+    ============================================================ */
+
+    .form-page-icon {
+
+        width: 58px;
+        height: 58px;
+
+        flex-shrink: 0;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 16px;
+
+        font-size: 27px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(255,255,255,0.20),
+                rgba(255,255,255,0.08)
+            );
+
+        border:
+            1px solid
+            rgba(255,255,255,0.20);
+
+        box-shadow:
+            inset 0 1px
+            rgba(255,255,255,0.20),
+
+            0 8px 25px
+            rgba(0,0,0,0.15);
+    }
+
+
+    .form-page-title {
+
+        margin: 0;
+
+        color: #ffffff;
+
+        font-size: 28px;
+
+        font-weight: 800;
+
+        letter-spacing:
+            -0.6px;
+
+        line-height: 1.2;
+    }
+
+
+    .form-page-subtitle {
+
+        margin:
+            6px 0 0;
+
+        color:
+            rgba(255,255,255,0.72);
+
+        font-size: 13.5px;
+
+        line-height: 1.5;
+    }
+
+
+    /* ============================================================
+       MAIN FORM CARD
+    ============================================================ */
+
+    .student-form-card {
+
+        background:
+            rgba(255,255,255,0.98);
+
+        border:
+            1px solid
+            rgba(255,255,255,0.8);
+
+        border-radius: 22px;
+
+        overflow: hidden;
+
+        box-shadow:
+            var(--shadow-lg);
+    }
+
+
+    /* ============================================================
+       FORM SECTION
+    ============================================================ */
+
+    .form-section {
+
+        position: relative;
+
+        padding:
+            34px 38px;
+    }
+
+
+    .form-section + .form-section {
+
+        border-top:
+            1px solid #e9ebef;
+    }
+
+
+    /* ============================================================
+       SECTION HEADING
+    ============================================================ */
+
+    .section-heading {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 14px;
+
+        margin-bottom: 27px;
+    }
+
+
+    .section-icon {
+
+        width: 45px;
+        height: 45px;
+
+        flex-shrink: 0;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 13px;
+
+        font-size: 19px;
+
+        box-shadow:
+            0 7px 18px
+            rgba(0,0,0,0.07);
+    }
+
+
+    .account-icon {
+
+        color: var(--primary);
+
+        background:
+            linear-gradient(
+                135deg,
+                #fbed e9,
+                #fff7f4
+            );
+
+        border:
+            1px solid #f0d5cf;
+    }
+
+
+    .personal-icon {
+
+        color: var(--blue);
+
+        background:
+            linear-gradient(
+                135deg,
+                #eaf2ff,
+                #f5f9ff
+            );
+
+        border:
+            1px solid #d6e6ff;
+    }
+
+
+    .section-title {
+
+        margin: 0;
+
+        color:
+            var(--text);
+
+        font-size: 18px;
+
+        font-weight: 800;
+
+        letter-spacing:
+            -0.2px;
+    }
+
+
+    .section-description {
+
+        margin:
+            4px 0 0;
+
+        color:
+            var(--muted);
+
+        font-size: 12.5px;
+
+        line-height: 1.5;
+    }
+
+
+    /* ============================================================
+       ACCENT LINE
+    ============================================================ */
+
+    .account-section::before {
+
+        content: "";
+
+        position: absolute;
+
+        left: 0;
+        top: 35px;
+
+        width: 4px;
+        height: 45px;
+
+        border-radius:
+            0 5px 5px 0;
+
+        background:
+            linear-gradient(
+                180deg,
+                #9a5243,
+                #d6a85f
+            );
+    }
+
+
+    .personal-section::before {
+
+        content: "";
+
+        position: absolute;
+
+        left: 0;
+        top: 35px;
+
+        width: 4px;
+        height: 45px;
+
+        border-radius:
+            0 5px 5px 0;
+
+        background:
+            linear-gradient(
+                180deg,
+                #3b82f6,
+                #60a5fa
+            );
+    }
+
+
+    /* ============================================================
+       GRID
+    ============================================================ */
+
+    .form-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+
+        gap:
+            22px 25px;
+    }
+
+
+    .form-group {
+
+        min-width: 0;
+    }
+
+
+    .form-group.full {
+
+        grid-column:
+            1 / -1;
+    }
+
+
+    /* ============================================================
+       LABEL
+    ============================================================ */
+
+    .form-label {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 4px;
+
+        margin-bottom: 8px;
+
+        color: #374151;
+
+        font-size: 12.5px;
+
+        font-weight: 750;
+
+        letter-spacing:
+            0.1px;
+    }
+
+
+    .required {
+
+        color:
+            var(--primary);
+
+        font-weight: 900;
+    }
+
+
+    /* ============================================================
+       INPUT
+    ============================================================ */
+
+    .form-control,
+    .form-select,
+    .form-textarea {
+
+        width: 100%;
+
+        box-sizing: border-box;
+
+        border:
+            1px solid #dce1e8;
+
+        background:
+            linear-gradient(
+                180deg,
+                #ffffff,
+                #fbfcfd
+            );
+
+        color:
+            #172033;
+
+        border-radius:
+            11px;
+
+        outline: none;
+
+        font-family: inherit;
+
+        font-size: 13.5px;
+
+        transition:
+            all 0.20s ease;
+
+        box-shadow:
+            0 2px 4px
+            rgba(23,32,51,0.02);
+    }
+
+
+    .form-control,
+    .form-select {
+
+        height: 48px;
+
+        padding:
+            0 14px;
+    }
+
+
+    .form-textarea {
+
+        min-height: 115px;
+
+        padding:
+            13px 14px;
+
+        resize: vertical;
+
+        line-height: 1.55;
+    }
+
+
+    /* ============================================================
+       PLACEHOLDER
+    ============================================================ */
+
+    .form-control::placeholder,
+    .form-textarea::placeholder {
+
+        color:
+            #a5acb7;
+    }
+
+
+    /* ============================================================
+       HOVER
+    ============================================================ */
+
+    .form-control:hover,
+    .form-select:hover,
+    .form-textarea:hover {
+
+        border-color:
+            #c6cdd7;
+
+        background:
+            #ffffff;
+    }
+
+
+    /* ============================================================
+       FOCUS
+    ============================================================ */
+
+    .form-control:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+
+        border-color:
+            var(--primary);
+
+        background:
+            #ffffff;
+
+        box-shadow:
+
+            0 0 0 4px
+            rgba(154,82,67,0.10),
+
+            0 5px 15px
+            rgba(154,82,67,0.07);
+
+        transform:
+            translateY(-1px);
+    }
+
+
+    /* ============================================================
+       SELECT
+    ============================================================ */
+
+    .form-select {
+
+        cursor: pointer;
+
+        appearance: auto;
+    }
+
+
+    /* ============================================================
+       PASSWORD
+    ============================================================ */
+
+    .input-wrapper {
+
+        position: relative;
+    }
+
+
+    .password-input {
+
+        padding-right:
+            52px !important;
+    }
+
+
+    .password-toggle {
+
+        position: absolute;
+
+        top: 50%;
+        right: 9px;
+
+        transform:
+            translateY(-50%);
+
+        width: 34px;
+        height: 34px;
+
+        border: none;
+
+        border-radius: 8px;
+
+        background:
+            transparent;
+
+        color:
+            #7c8491;
+
+        cursor: pointer;
+
+        font-size: 15px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        transition:
+            all 0.18s ease;
+    }
+
+
+    .password-toggle:hover {
+
+        background:
+            var(--primary-light);
+
+        color:
+            var(--primary);
+    }
+
+
+    /* ============================================================
+       PASSWORD HINT
+    ============================================================ */
+
+    .password-hint {
+
+        margin-top: 7px;
+
+        color:
+            #9299a5;
+
+        font-size: 11px;
+
+        line-height: 1.4;
+    }
+
+
+    /* ============================================================
+       ERRORS
+    ============================================================ */
+
+    .field-error {
+
+        margin-top: 7px;
+
+        color:
+            var(--red);
+
+        font-size: 11.5px;
+
+        font-weight: 600;
+
+        line-height: 1.4;
+    }
+
+
+    .has-error .form-control,
+    .has-error .form-select,
+    .has-error .form-textarea {
+
+        border-color:
+            #e79a9a;
+
+        background:
+            #fff9f9;
+    }
+
+
+    .has-error .form-control:focus,
+    .has-error .form-select:focus,
+    .has-error .form-textarea:focus {
+
+        box-shadow:
+
+            0 0 0 4px
+            rgba(220,38,38,0.08);
+    }
+
+
+    /* ============================================================
+       NON FIELD ERROR
+    ============================================================ */
+
+    .form-errors-wrapper {
+
+        padding:
+            28px 38px 0;
+    }
+
+
+    .error-box {
+
+        padding:
+            14px 17px;
+
+        border-radius:
+            11px;
+
+        border:
+            1px solid #f1b5b5;
+
+        background:
+            linear-gradient(
+                135deg,
+                #fff4f4,
+                #fff9f9
+            );
+
+        color:
+            var(--red);
+
+        font-size:
+            12.5px;
+
+        line-height:
+            1.5;
+
+        box-shadow:
+            var(--shadow-sm);
+    }
+
+
+    /* ============================================================
+       FORM FOOTER
+    ============================================================ */
+
+    .form-footer {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: flex-end;
+
+        gap: 12px;
+
+        padding:
+            22px 38px;
+
+        background:
+            linear-gradient(
+                180deg,
+                #fbfcfe,
+                #f7f8fa
+            );
+
+        border-top:
+            1px solid #e7e9ed;
+    }
+
+
+    /* ============================================================
+       BUTTON
+    ============================================================ */
+
+    .form-button {
+
+        min-height: 45px;
+
+        padding:
+            0 20px;
+
+        border-radius:
+            10px;
+
+        font-family:
+            inherit;
+
+        font-size:
+            13px;
+
+        font-weight:
+            750;
+
+        text-decoration:
+            none;
+
+        cursor:
+            pointer;
+
+        display:
+            inline-flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        gap:
+            8px;
+
+        transition:
+            all 0.20s ease;
+    }
+
+
+    /* ============================================================
+       CANCEL
+    ============================================================ */
+
+    .btn-cancel {
+
+        color:
+            #596273;
+
+        background:
+            #ffffff;
+
+        border:
+            1px solid #d9dee5;
+
+        box-shadow:
+            0 3px 8px
+            rgba(23,32,51,0.04);
+    }
+
+
+    .btn-cancel:hover {
+
+        color:
+            var(--primary);
+
+        border-color:
+            #d7b0a8;
+
+        background:
+            #fff9f7;
+
+        transform:
+            translateY(-1px);
+    }
+
+
+    /* ============================================================
+       PRIMARY
+    ============================================================ */
+
+    .btn-submit {
+
+        color:
+            #ffffff;
+
+        border:
+            1px solid var(--primary);
+
+        background:
+            linear-gradient(
+                135deg,
+                #a85d4d,
+                #8b493c
+            );
+
+        box-shadow:
+            0 7px 18px
+            rgba(154,82,67,0.25);
+    }
+
+
+    .btn-submit:hover {
+
+        background:
+            linear-gradient(
+                135deg,
+                #b46756,
+                #7c4035
+            );
+
+        transform:
+            translateY(-2px);
+
+        box-shadow:
+            0 11px 25px
+            rgba(154,82,67,0.32);
+    }
+
+
+    .btn-submit:active {
+
+        transform:
+            translateY(0);
+    }
+
+
+    /* ============================================================
+       DISABLED
+    ============================================================ */
+
+    .btn-submit:disabled {
+
+        opacity:
+            0.65;
+
+        cursor:
+            not-allowed;
+
+        transform:
+            none;
+
+        box-shadow:
+            none;
+    }
+
+
+    /* ============================================================
+       DARK MODE
+    ============================================================ */
+
+    body.dark-mode .form-page-header {
+
+        box-shadow:
+            0 25px 70px
+            rgba(0,0,0,0.28);
+    }
+
+
+    body.dark-mode .student-form-card {
+
+        background:
+            #181c2a;
+
+        border-color:
+            #292e3d;
+    }
+
+
+    body.dark-mode .form-section + .form-section {
+
+        border-color:
+            #292e3d;
+    }
+
+
+    body.dark-mode .section-title {
+
+        color:
+            #f3f5fa;
+    }
+
+
+    body.dark-mode .section-description {
+
+        color:
+            #929bad;
+    }
+
+
+    body.dark-mode .form-label {
+
+        color:
+            #d7dbe5;
+    }
+
+
+    body.dark-mode .form-control,
+    body.dark-mode .form-select,
+    body.dark-mode .form-textarea {
+
+        background:
+            #202536;
+
+        border-color:
+            #353b4d;
+
+        color:
+            #f3f5fa;
+    }
+
+
+    body.dark-mode .form-control::placeholder,
+    body.dark-mode .form-textarea::placeholder {
+
+        color:
+            #737c90;
+    }
+
+
+    body.dark-mode .form-control:hover,
+    body.dark-mode .form-select:hover,
+    body.dark-mode .form-textarea:hover {
+
+        background:
+            #252a3b;
+
+        border-color:
+            #454c60;
+    }
+
+
+    body.dark-mode .form-control:focus,
+    body.dark-mode .form-select:focus,
+    body.dark-mode .form-textarea:focus {
+
+        background:
+            #252a3b;
+
+        border-color:
+            #b96a59;
+    }
+
+
+    body.dark-mode .password-toggle {
+
+        color:
+            #aab1c0;
+    }
+
+
+    body.dark-mode .password-hint {
+
+        color:
+            #7f8799;
+    }
+
+
+    body.dark-mode .form-footer {
+
+        background:
+            linear-gradient(
+                180deg,
+                #1c2030,
+                #181c2a
+            );
+
+        border-color:
+            #292e3d;
+    }
+
+
+    body.dark-mode .btn-cancel {
+
+        background:
+            #202536;
+
+        border-color:
+            #3a4052;
+
+        color:
+            #d5dae4;
+    }
+
+
+    body.dark-mode .btn-cancel:hover {
+
+        background:
+            #292e3f;
+
+        border-color:
+            #a96a5b;
+
+        color:
+            #e4a99d;
+    }
+
+
+    /* ============================================================
+       TABLET
+    ============================================================ */
+
+    @media (max-width: 800px) {
+
+        .form-section {
+
+            padding:
+                28px 25px;
+        }
+
+        .form-footer {
+
+            padding:
+                20px 25px;
+        }
+
+        .form-errors-wrapper {
+
+            padding:
+                24px 25px 0;
+        }
+    }
+
+
+    /* ============================================================
+       MOBILE
+    ============================================================ */
+
+    @media (max-width: 650px) {
+
+        .form-page-header {
+
+            padding:
+                20px;
+
+            border-radius:
+                17px;
+        }
+
+
+        .form-page-icon {
+
+            width: 48px;
+            height: 48px;
+
+            font-size: 22px;
+
+            border-radius:
+                13px;
+        }
+
+
+        .form-page-title {
+
+            font-size:
+                22px;
+        }
+
+
+        .form-page-subtitle {
+
+            font-size:
+                12px;
+        }
+
+
+        .form-grid {
+
+            grid-template-columns:
+                1fr;
+
+            gap:
+                18px;
+        }
+
+
+        .form-group.full {
+
+            grid-column:
+                auto;
+        }
+
+
+        .form-section {
+
+            padding:
+                25px 20px;
+        }
+
+
+        .form-footer {
+
+            padding:
+                18px 20px;
+
+            flex-direction:
+                column-reverse;
+        }
+
+
+        .form-button {
+
+            width:
+                100%;
+        }
+
+
+        .form-errors-wrapper {
+
+            padding:
+                20px 20px 0;
+        }
+    }
+
+
+    /* ============================================================
+       SMALL MOBILE
+    ============================================================ */
+
+    @media (max-width: 400px) {
+
+        .form-page-header {
+
+            padding:
+                17px;
+        }
+
+
+        .form-header-left {
+
+            gap:
+                11px;
+        }
+
+
+        .form-page-title {
+
+            font-size:
+                20px;
+        }
+
+
+        .section-title {
+
+            font-size:
+                16px;
+        }
+
+
+        .section-description {
+
+            font-size:
+                11.5px;
+        }
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="form-page">
+
+
+    <!-- ============================================================
+         PAGE HEADER
+    ============================================================ -->
+
+    <div class="form-page-header">
+
+        <div class="form-header-left">
+
+            <div class="form-page-icon">
+                🎓
+            </div>
+
+            <div>
+
+                <h1 class="form-page-title">
+
+                    {% if student %}
+                        Edit Student
+                    {% else %}
+                        Add Student
+                    {% endif %}
+
+                </h1>
+
+                <p class="form-page-subtitle">
+
+                    {% if student %}
+
+                        Update the student's
+                        account and personal information.
+
+                    {% else %}
+
+                        Create a student login account
+                        and register their information.
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         FORM CARD
+    ============================================================ -->
+
+    <div class="student-form-card">
+
+        <form
+            method="POST"
+            novalidate
+            id="studentForm"
+        >
+
+            {% csrf_token %}
+
+
+            <!-- ====================================================
+                 NON FIELD ERRORS
+            ==================================================== -->
+
+            {% if form.non_field_errors %}
+
+                <div class="form-errors-wrapper">
+
+                    <div class="error-box">
+
+                        {% for error in form.non_field_errors %}
+
+                            <div>
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- ====================================================
+                 LOGIN ACCOUNT
+            ==================================================== -->
+
+            <section class="form-section account-section">
+
+                <div class="section-heading">
+
+                    <div class="section-icon account-icon">
+                        🔐
+                    </div>
+
+                    <div>
+
+                        <h2 class="section-title">
+                            Student Login Account
+                        </h2>
+
+                        <p class="section-description">
+                            Create the credentials the student
+                            will use to sign in.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- USERNAME -->
+
+                    <div
+                        class="form-group
+                        {% if form.username.errors %}
+                            has-error
+                        {% endif %}"
+                    >
+
+                        <label
+                            class="form-label"
+                            for="{{ form.username.id_for_label }}"
+                        >
+
+                            Username
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+                        {{ form.username }}
+
+                        {% for error in form.username.errors %}
+
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div
+                        class="form-group
+                        {% if form.password.errors %}
+                            has-error
+                        {% endif %}"
+                    >
+
+                        <label
+                            class="form-label"
+                            for="{{ form.password.id_for_label }}"
+                        >
+
+                            Password
+
+                            {% if not student %}
+
+                                <span class="required">
+                                    *
+                                </span>
+
+                            {% endif %}
+
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            {{ form.password }}
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                onclick="togglePassword(
+                                    '{{ form.password.id_for_label }}',
+                                    this
+                                )"
+                                aria-label="Show or hide password"
+                            >
+                                👁
+                            </button>
+
+                        </div>
+
+
+                        <div class="password-hint">
+
+                            {% if student %}
+
+                                Leave blank to keep
+                                the current password.
+
+                            {% else %}
+
+                                Use a strong password
+                                for the student account.
+
+                            {% endif %}
+
+                        </div>
+
+
+                        {% for error in form.password.errors %}
+
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- CONFIRM PASSWORD -->
+
+                    <div
+                        class="form-group
+                        {% if form.confirm_password.errors %}
+                            has-error
+                        {% endif %}"
+                    >
+
+                        <label
+                            class="form-label"
+                            for="{{ form.confirm_password.id_for_label }}"
+                        >
+
+                            Confirm Password
+
+                            {% if not student %}
+
+                                <span class="required">
+                                    *
+                                </span>
+
+                            {% endif %}
+
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            {{ form.confirm_password }}
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                onclick="togglePassword(
+                                    '{{ form.confirm_password.id_for_label }}',
+                                    this
+                                )"
+                                aria-label="Show or hide password confirmation"
+                            >
+                                👁
+                            </button>
+
+                        </div>
+
+
+                        {% for error in form.confirm_password.errors %}
+
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ====================================================
+                 PERSONAL INFORMATION
+            ==================================================== -->
+
+            <section class="form-section personal-section">
+
+                <div class="section-heading">
+
+                    <div class="section-icon personal-icon">
+                        👤
+                    </div>
+
+                    <div>
+
+                        <h2 class="section-title">
+                            Personal Information
+                        </h2>
+
+                        <p class="section-description">
+                            Enter the student's official
+                            registration information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- STUDENT ID -->
+
+                    <div
+                        class="form-group
+                        {% if form.student_id.errors %}
+                            has-error
+                        {% endif %}"
+                    >
+
+                        <label
+                            class="form-label"
+                            for="{{ form.student_id.id_for_label }}"
+                        >
+
+                            Student ID
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+                        {{ form.student_id }}
+
+                        {% for error in form.student_id.errors %}
+
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- FIRST NAME -->
+
+                    <div
+                        class="form-group
+                        {% if form.first_name.errors %}
+                            has-error
+                        {% endif %}"
+                    >
+
+                        <label
+                            class="form-label"
+                            for="{{ form.first_name.id_for_label }}"
+                        >
+
+                            First Name
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+                        {{ form.first_name }}
+
+                        {% for error in form.first_name.errors %}
+
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- LAST NAME -->
+
+                    <div
+                        class="form-group
+                        {% if form.last_name.errors %}
+                            has-error
+                        {% endif %}"
+                    >
+
+                        <label
+                            class="form-label"
+                            for="{{ form.last_name.id_for_label }}"
+                        >
+
+                            Last Name
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+                        {{ form.last_name }}
+
+                        {% for error in form.last_name.errors %}
+
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div
+                        class="form-group
+                        {% if form.email.errors %}
+                            has-error
+                        {% endif %}"
+                    >
+
+                        <label
+                            class="form-label"
+                            for="{{ form.email.id_for_label }}"
+                        >
+
+                            Email
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+                        {{ form.email }}
+
+                        {% for error in form.email.errors %}
+
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div
+                        class="form-group
+                        {% if form.phone.errors %}
+                            has-error
+                        {% endif %}"
+                    >
+
+                        <label
+                            class="form-label"
+                            for="{{ form.phone.id_for_label }}"
+                        >
+
+                            Phone
+
+                        </label>
+
+                        {{ form.phone }}
+
+                        {% for error in form.phone.errors %}
+
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- GENDER -->
+
+                    <div
+                        class="form-group
+                        {% if form.gender.errors %}
+                            has-error
+                        {% endif %}"
+                    >
+
+                        <label
+                            class="form-label"
+                            for="{{ form.gender.id_for_label }}"
+                        >
+
+                            Gender
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+                        {{ form.gender }}
+
+                        {% for error in form.gender.errors %}
+
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- DATE OF BIRTH -->
+
+                    <div
+                        class="form-group
+                        {% if form.date_of_birth.errors %}
+                            has-error
+                        {% endif %}"
+                    >
+
+                        <label
+                            class="form-label"
+                            for="{{ form.date_of_birth.id_for_label }}"
+                        >
+
+                            Date of Birth
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+                        {{ form.date_of_birth }}
+
+                        {% for error in form.date_of_birth.errors %}
+
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- CLASS -->
+
+                    <div
+                        class="form-group
+                        {% if form.class_room.errors %}
+                            has-error
+                        {% endif %}"
+                    >
+
+                        <label
+                            class="form-label"
+                            for="{{ form.class_room.id_for_label }}"
+                        >
+
+                            Class
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+                        {{ form.class_room }}
+
+                        {% for error in form.class_room.errors %}
+
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- ADDRESS -->
+
+                    <div
+                        class="form-group full
+                        {% if form.address.errors %}
+                            has-error
+                        {% endif %}"
+                    >
+
+                        <label
+                            class="form-label"
+                            for="{{ form.address.id_for_label }}"
+                        >
+
+                            Address
+
+                        </label>
+
+                        {{ form.address }}
+
+                        {% for error in form.address.errors %}
+
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ====================================================
+                 FORM FOOTER
+            ==================================================== -->
+
+            <div class="form-footer">
+
+                <a
+                    href="{% url 'student-list' %}"
+                    class="form-button btn-cancel"
+                >
+                    ← Cancel
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="form-button btn-submit"
+                    id="submitButton"
+                >
+
+                    {% if student %}
+
+                        ✓ Update Student
+
+                    {% else %}
+
+                        🎓 Create Student
+
+                    {% endif %}
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+
+    /* ============================================================
+       PASSWORD SHOW / HIDE
+    ============================================================ */
+
+    function togglePassword(fieldId, button) {
+
+        const field =
+            document.getElementById(fieldId);
+
+        if (!field) {
+            return;
+        }
+
+
+        if (field.type === "password") {
+
+            field.type = "text";
+
+            button.textContent = "🙈";
+
+        } else {
+
+            field.type = "password";
+
+            button.textContent = "👁";
+
+        }
+    }
+
+
+    /* ============================================================
+       ADD DJANGO FORM CLASSES
+    ============================================================ */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const form =
+                document.getElementById(
+                    "studentForm"
+                );
+
+
+            if (!form) {
+                return;
+            }
+
+
+            /* INPUTS */
+
+            form.querySelectorAll(
+                "input"
+            ).forEach(
+                function (input) {
+
+                    const supportedTypes = [
+                        "text",
+                        "email",
+                        "password",
+                        "date",
+                        "number",
+                        "tel"
+                    ];
+
+
+                    if (
+                        supportedTypes.includes(
+                            input.type
+                        )
+                    ) {
+
+                        input.classList.add(
+                            "form-control"
+                        );
+                    }
+
+                }
+            );
+
+
+            /* SELECTS */
+
+            form.querySelectorAll(
+                "select"
+            ).forEach(
+                function (select) {
+
+                    select.classList.add(
+                        "form-select"
+                    );
+
+                }
+            );
+
+
+            /* TEXTAREAS */
+
+            form.querySelectorAll(
+                "textarea"
+            ).forEach(
+                function (textarea) {
+
+                    textarea.classList.add(
+                        "form-textarea"
+                    );
+
+                }
+            );
+
+
+            /* PASSWORD FIELDS */
+
+            const password =
+                document.getElementById(
+                    "{{ form.password.id_for_label }}"
+                );
+
+            const confirmPassword =
+                document.getElementById(
+                    "{{ form.confirm_password.id_for_label }}"
+                );
+
+
+            if (password) {
+
+                password.classList.add(
+                    "password-input"
+                );
+
+            }
+
+
+            if (confirmPassword) {
+
+                confirmPassword.classList.add(
+                    "password-input"
+                );
+
+            }
+
+        }
+    );
+
+
+    /* ============================================================
+       PREVENT DOUBLE SUBMISSION
+    ============================================================ */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const form =
+                document.getElementById(
+                    "studentForm"
+                );
+
+            const submitButton =
+                document.getElementById(
+                    "submitButton"
+                );
+
+
+            if (
+                !form ||
+                !submitButton
+            ) {
+                return;
+            }
+
+
+            form.addEventListener(
+                "submit",
+                function () {
+
+                    if (
+                        form.dataset.submitted ===
+                        "true"
+                    ) {
+                        return;
+                    }
+
+
+                    form.dataset.submitted =
+                        "true";
+
+
+                    submitButton.disabled =
+                        true;
+
+
+                    submitButton.innerHTML =
+                        "{% if student %}Updating...{% else %}Creating...{% endif %}";
+
+                }
+            );
+
+        }
+    );
+
+</script>
+
+{% endblock %}

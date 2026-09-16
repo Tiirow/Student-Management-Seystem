@@ -1,0 +1,135 @@
+{% extends 'main.html' %} {% block content %}
+
+<style>
+  .delete-container {
+    max-width: 600px;
+    margin: 80px auto;
+    padding: 20px;
+  }
+
+  .delete-card {
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 14px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .delete-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+  }
+
+  .delete-card h1 {
+    margin: 0 0 15px;
+    color: #222;
+    font-size: 28px;
+  }
+
+  .delete-card p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .project-title {
+    font-weight: bold;
+    color: #222;
+  }
+
+  .warning-text {
+    color: #d32f2f !important;
+    font-size: 14px !important;
+    margin-bottom: 25px !important;
+  }
+
+  .delete-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 25px;
+  }
+
+  .delete-btn,
+  .cancel-btn {
+    border: none;
+    text-decoration: none;
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+
+  .delete-btn {
+    background: #e53935;
+    color: white;
+  }
+
+  .delete-btn:hover {
+    background: #c62828;
+  }
+
+  .cancel-btn {
+    background: #eeeeee;
+    color: #333;
+  }
+
+  .cancel-btn:hover {
+    background: #dddddd;
+  }
+
+  @media (max-width: 600px) {
+    .delete-container {
+      margin: 40px 15px;
+      padding: 10px;
+    }
+
+    .delete-card {
+      padding: 25px;
+    }
+
+    .delete-actions {
+      flex-direction: column;
+    }
+
+    .delete-btn,
+    .cancel-btn {
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+</style>
+
+<div class="delete-container">
+  <div class="delete-card">
+    <div class="delete-icon">⚠️</div>
+
+    <h1>Delete Project</h1>
+
+    <p>Are you sure you want to delete</p>
+
+    <p class="project-title">"{{ projectObj.title }}"</p>
+
+    <p class="warning-text">This action cannot be undone.</p>
+
+    <div class="delete-actions">
+      <!-- DELETE -->
+
+      <form method="POST" action="">
+        {% csrf_token %}
+
+        <button type="submit" class="delete-btn">🗑️ Yes, Delete</button>
+      </form>
+
+      <!-- CANCEL -->
+
+      <a href="{% url 'project' projectObj.id %}" class="cancel-btn">
+        Cancel
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

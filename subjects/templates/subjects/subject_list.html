@@ -1,0 +1,2706 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Subject Management | Student Management System
+    </title>
+
+
+    <style>
+
+        /* ============================================================
+           GLOBAL
+        ============================================================ */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f6f7f9;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #222;
+            overflow-x: auto;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+        }
+
+
+        /* ============================================================
+           FIXED SIDEBAR
+        ============================================================ */
+
+        .sidebar {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 285px;
+            height: 100vh;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #17191d 0%,
+                    #121418 100%
+                );
+
+            color: #fff;
+
+            z-index: 9999;
+
+            display: flex;
+            flex-direction: column;
+
+            overflow: hidden;
+
+            border-right:
+                1px solid rgba(255,255,255,0.06);
+
+            box-shadow:
+                8px 0 30px rgba(0,0,0,0.12);
+        }
+
+
+        /* ============================================================
+           SIDEBAR BRAND
+        ============================================================ */
+
+        .sidebar-brand {
+
+            height: 92px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 24px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.07);
+
+            flex-shrink: 0;
+        }
+
+        .brand-logo {
+
+            width: 46px;
+            height: 46px;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #9a5243,
+                    #c17865
+                );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+
+            box-shadow:
+                0 8px 22px rgba(154,82,67,0.30);
+
+            flex-shrink: 0;
+        }
+
+        .brand-content {
+            margin-left: 13px;
+        }
+
+        .brand-title {
+
+            margin: 0;
+
+            color: #fff;
+
+            font-size: 16px;
+            font-weight: 800;
+
+            letter-spacing: .2px;
+        }
+
+        .brand-subtitle {
+
+            margin-top: 4px;
+
+            color: #8d929b;
+
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+
+        /* ============================================================
+           SIDEBAR USER
+        ============================================================ */
+
+        .sidebar-user {
+
+            margin: 18px 15px 10px;
+
+            padding: 14px;
+
+            border-radius: 13px;
+
+            background:
+                rgba(255,255,255,0.045);
+
+            border:
+                1px solid rgba(255,255,255,0.06);
+
+            display: flex;
+            align-items: center;
+
+            flex-shrink: 0;
+        }
+
+        .sidebar-user-avatar {
+
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #9a5243,
+                    #b76a59
+                );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #fff;
+
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .sidebar-user-info {
+
+            min-width: 0;
+
+            margin-left: 11px;
+        }
+
+        .sidebar-user-name {
+
+            color: #fff;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-user-role {
+
+            margin-top: 4px;
+
+            color: #9297a0;
+
+            font-size: 10px;
+            font-weight: 600;
+
+            text-transform: uppercase;
+
+            letter-spacing: .5px;
+        }
+
+
+        /* ============================================================
+           SIDEBAR NAVIGATION
+        ============================================================ */
+
+        .sidebar-navigation {
+
+            flex: 1;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            padding: 8px 13px 18px;
+        }
+
+        .sidebar-navigation::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .sidebar-navigation::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-navigation::-webkit-scrollbar-thumb {
+
+            background:
+                rgba(255,255,255,0.10);
+
+            border-radius: 10px;
+        }
+
+        .nav-section-title {
+
+            padding: 15px 11px 8px;
+
+            color: #686d76;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 1.2px;
+
+            text-transform: uppercase;
+        }
+
+        .nav-link {
+
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            width: 100%;
+
+            min-height: 46px;
+
+            padding: 0 12px;
+
+            margin-bottom: 4px;
+
+            border-radius: 10px;
+
+            color: #aeb2ba;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            transition:
+                background .20s ease,
+                color .20s ease,
+                transform .20s ease;
+        }
+
+        .nav-link:hover {
+
+            background:
+                rgba(255,255,255,0.055);
+
+            color: #fff;
+
+            transform: translateX(2px);
+        }
+
+        .nav-link.active {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(154,82,67,0.28),
+                    rgba(154,82,67,0.10)
+                );
+
+            color: #fff;
+
+            box-shadow:
+                inset 3px 0 0 #9a5243;
+        }
+
+        .nav-icon {
+
+            width: 32px;
+            min-width: 32px;
+
+            height: 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background:
+                rgba(255,255,255,0.035);
+
+            font-size: 15px;
+
+            margin-right: 9px;
+        }
+
+        .nav-link.active .nav-icon {
+
+            background:
+                rgba(154,82,67,0.25);
+        }
+
+        .nav-text {
+            flex: 1;
+        }
+
+        .nav-arrow {
+
+            color: #686d76;
+
+            font-size: 11px;
+        }
+
+
+        /* ============================================================
+           SIDEBAR FOOTER
+        ============================================================ */
+
+        .sidebar-footer {
+
+            padding: 13px;
+
+            border-top:
+                1px solid rgba(255,255,255,0.07);
+
+            flex-shrink: 0;
+        }
+
+        .logout-form {
+
+            width: 100%;
+
+            margin: 0;
+            padding: 0;
+        }
+
+        .logout-button {
+
+            width: 100%;
+
+            min-height: 44px;
+
+            border: 0;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255,255,255,0.045);
+
+            color: #aeb2ba;
+
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 12px;
+
+            font-family: inherit;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            transition:
+                background .2s ease,
+                color .2s ease;
+        }
+
+        .logout-button:hover {
+
+            background:
+                rgba(180,50,40,0.15);
+
+            color: #ffaaa3;
+        }
+
+        .logout-icon {
+
+            width: 32px;
+            min-width: 32px;
+
+            height: 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 15px;
+        }
+
+
+        /* ============================================================
+           MAIN WRAPPER
+        ============================================================ */
+
+        .main-wrapper {
+
+            margin-left: 285px;
+
+            min-height: 100vh;
+
+            width:
+                calc(100% - 285px);
+        }
+
+
+        /* ============================================================
+           SUBJECT MANAGEMENT PAGE
+        ============================================================ */
+
+        .subject-page {
+
+            min-height: 100vh;
+
+            background: #f5f6f8;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+        }
+
+        .subject-container {
+
+            max-width: 1500px;
+
+            margin: 0 auto;
+
+            padding: 35px;
+        }
+
+
+        /* ============================================================
+           HEADER
+        ============================================================ */
+
+        .subject-header {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+        }
+
+        .subject-title h1 {
+
+            margin: 0;
+
+            color: #222222;
+
+            font-size: 30px;
+
+            font-weight: 850;
+
+            letter-spacing: -.5px;
+        }
+
+        .subject-title p {
+
+            margin: 7px 0 0;
+
+            color: #858585;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+
+        /* ============================================================
+           HEADER ACTIONS
+        ============================================================ */
+
+        .subject-header-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            gap: 9px;
+
+            flex-wrap: wrap;
+        }
+
+        .add-subject-btn,
+        .assign-subject-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            min-height: 44px;
+
+            padding: 0 16px;
+
+            border-radius: 10px;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            transition: all .2s ease;
+        }
+
+        .add-subject-btn {
+
+            background: #9a5243;
+
+            color: #ffffff;
+
+            box-shadow:
+                0 6px 16px
+                rgba(154,82,67,0.18);
+        }
+
+        .add-subject-btn:hover {
+
+            background: #7f4236;
+
+            color: #ffffff;
+
+            transform: translateY(-2px);
+        }
+
+        .assign-subject-btn {
+
+            background: #eef3ff;
+
+            color: #3159b7;
+
+            border:
+                1px solid #dce5fb;
+        }
+
+        .assign-subject-btn:hover {
+
+            background: #dfe8ff;
+
+            color: #244899;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* ============================================================
+           STATISTICS
+        ============================================================ */
+
+        .stats-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 16px;
+
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+
+            background: #ffffff;
+
+            border:
+                1px solid #eeeeee;
+
+            border-radius: 15px;
+
+            padding: 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            box-shadow:
+                0 4px 18px
+                rgba(0,0,0,0.04);
+        }
+
+        .stat-icon {
+
+            width: 48px;
+            height: 48px;
+
+            min-width: 48px;
+
+            border-radius: 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 21px;
+        }
+
+        .icon-total {
+            background: #f5e9e6;
+        }
+
+        .icon-active {
+            background: #e8f7ee;
+        }
+
+        .icon-classes {
+            background: #eaf2ff;
+        }
+
+        .stat-info span {
+
+            display: block;
+
+            color: #888888;
+
+            font-size: 10px;
+
+            margin-bottom: 5px;
+        }
+
+        .stat-info strong {
+
+            display: block;
+
+            color: #222222;
+
+            font-size: 23px;
+
+            font-weight: 850;
+        }
+
+
+        /* ============================================================
+           MAIN CARD
+        ============================================================ */
+
+        .main-card {
+
+            background: #ffffff;
+
+            border:
+                1px solid #eeeeee;
+
+            border-radius: 16px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 4px 18px
+                rgba(0,0,0,0.04);
+
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+
+            padding: 20px 22px;
+
+            border-bottom:
+                1px solid #eeeeee;
+        }
+
+        .card-header h2 {
+
+            margin: 0;
+
+            color: #292929;
+
+            font-size: 17px;
+
+            font-weight: 800;
+        }
+
+        .card-header p {
+
+            margin: 5px 0 0;
+
+            color: #999999;
+
+            font-size: 11px;
+        }
+
+
+        /* ============================================================
+           TABLE
+        ============================================================ */
+
+        .table-wrapper {
+
+            width: 100%;
+
+            overflow-x: auto;
+        }
+
+        .subject-table {
+
+            width: 100%;
+
+            min-width: 900px;
+
+            border-collapse: collapse;
+        }
+
+        .subject-table th {
+
+            padding: 13px 18px;
+
+            background: #fafafa;
+
+            color: #888888;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            text-align: left;
+
+            text-transform: uppercase;
+
+            letter-spacing: .5px;
+
+            border-bottom:
+                1px solid #eeeeee;
+
+            white-space: nowrap;
+        }
+
+        .subject-table td {
+
+            padding: 15px 18px;
+
+            color: #555555;
+
+            font-size: 12px;
+
+            border-bottom:
+                1px solid #f2f2f2;
+
+            vertical-align: middle;
+        }
+
+        .subject-table tbody tr {
+
+            transition:
+                background .18s ease;
+        }
+
+        .subject-table tbody tr:hover {
+
+            background: #fcfaf9;
+        }
+
+        .subject-table tbody tr:last-child td {
+
+            border-bottom: none;
+        }
+
+
+        /* ============================================================
+           SUBJECT CELL
+        ============================================================ */
+
+        .subject-cell {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .subject-icon {
+
+            width: 38px;
+            height: 38px;
+
+            min-width: 38px;
+
+            border-radius: 10px;
+
+            background: #f7ece9;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 17px;
+        }
+
+        .subject-info strong {
+
+            display: block;
+
+            color: #333333;
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+        .subject-info span {
+
+            display: block;
+
+            margin-top: 3px;
+
+            color: #999999;
+
+            font-size: 10px;
+
+            line-height: 1.5;
+        }
+
+
+        /* ============================================================
+           CODE BADGE
+        ============================================================ */
+
+        .code-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            padding: 5px 8px;
+
+            border-radius: 7px;
+
+            background: #f4f5f7;
+
+            color: #596273;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+
+        /* ============================================================
+           CREDIT HOURS
+        ============================================================ */
+
+        .credit-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            padding: 5px 8px;
+
+            border-radius: 7px;
+
+            background: #eef3ff;
+
+            color: #3159b7;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            white-space: nowrap;
+        }
+
+
+        /* ============================================================
+           ENROLLMENT COUNT
+        ============================================================ */
+
+        .enrollment-count {
+
+            color: #444444;
+
+            font-weight: 750;
+
+            white-space: nowrap;
+        }
+
+
+        /* ============================================================
+           STATUS
+        ============================================================ */
+
+        .status-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            white-space: nowrap;
+        }
+
+        .status-active {
+
+            background: #eaf8ef;
+
+            color: #22824a;
+        }
+
+        .status-inactive {
+
+            background: #f3f4f6;
+
+            color: #6b7280;
+        }
+
+        .status-dot {
+
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: currentColor;
+        }
+
+
+        /* ============================================================
+           ACTIONS
+        ============================================================ */
+
+        .action-links {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-height: 30px;
+
+            padding: 0 10px;
+
+            border-radius: 7px;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            transition: all .15s ease;
+
+            white-space: nowrap;
+        }
+
+        .action-btn:hover {
+
+            transform: translateY(-1px);
+        }
+
+        .view-btn {
+
+            background: #eef3ff;
+
+            color: #3159b7;
+        }
+
+        .view-btn:hover {
+
+            background: #dfe8ff;
+
+            color: #244899;
+        }
+
+        .edit-btn {
+
+            background: #fff4df;
+
+            color: #9a6200;
+        }
+
+        .edit-btn:hover {
+
+            background: #ffe9bc;
+
+            color: #7d4f00;
+        }
+
+        .delete-btn {
+
+            background: #fff0ef;
+
+            color: #b42318;
+        }
+
+        .delete-btn:hover {
+
+            background: #ffe0dd;
+
+            color: #951b12;
+        }
+
+
+        /* ============================================================
+           CLASS SUBJECT OVERVIEW
+        ============================================================ */
+
+        .class-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 15px;
+
+            padding: 22px;
+        }
+
+        .class-card {
+
+            border:
+                1px solid #eeeeee;
+
+            background: #ffffff;
+
+            border-radius: 13px;
+
+            padding: 17px;
+
+            transition: all .2s ease;
+        }
+
+        .class-card:hover {
+
+            transform: translateY(-3px);
+
+            border-color: #ead8d4;
+
+            box-shadow:
+                0 8px 20px
+                rgba(0,0,0,0.06);
+        }
+
+        .class-top {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 14px;
+        }
+
+        .class-icon {
+
+            width: 38px;
+            height: 38px;
+
+            border-radius: 10px;
+
+            background: #f5e9e6;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 17px;
+        }
+
+        .class-name {
+
+            color: #333333;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+        .class-description {
+
+            color: #999999;
+
+            font-size: 10px;
+
+            margin-top: 3px;
+        }
+
+        .subject-count-box {
+
+            display: flex;
+
+            align-items: flex-end;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-top: 12px;
+        }
+
+        .subject-count-label {
+
+            color: #888888;
+
+            font-size: 10px;
+        }
+
+        .subject-count-number {
+
+            color: #9a5243;
+
+            font-size: 23px;
+
+            font-weight: 850;
+        }
+
+        .subject-word {
+
+            color: #666666;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+
+        /* ============================================================
+           EMPTY STATE
+        ============================================================ */
+
+        .empty-state {
+
+            padding: 55px 20px;
+
+            text-align: center;
+        }
+
+        .empty-icon {
+
+            width: 65px;
+            height: 65px;
+
+            margin: 0 auto 14px;
+
+            border-radius: 50%;
+
+            background: #f6ebe8;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 28px;
+        }
+
+        .empty-state h3 {
+
+            margin: 0 0 7px;
+
+            color: #333333;
+
+            font-size: 17px;
+
+            font-weight: 800;
+        }
+
+        .empty-state p {
+
+            color: #999999;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+
+            margin: 0 auto;
+
+            max-width: 480px;
+        }
+
+        .empty-add-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 7px;
+
+            margin-top: 17px;
+
+            min-height: 40px;
+
+            padding: 0 15px;
+
+            border-radius: 9px;
+
+            background: #9a5243;
+
+            color: #ffffff;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .empty-add-btn:hover {
+
+            background: #7f4236;
+
+            color: #ffffff;
+        }
+
+
+        /* ============================================================
+           DARK MODE
+        ============================================================ */
+
+        body.dark-mode .subject-page {
+
+            background: #111521;
+        }
+
+        body.dark-mode .subject-title h1,
+        body.dark-mode .stat-info strong,
+        body.dark-mode .card-header h2,
+        body.dark-mode .subject-info strong,
+        body.dark-mode .class-name,
+        body.dark-mode .empty-state h3 {
+
+            color: #f2f4f8;
+        }
+
+        body.dark-mode .subject-title p,
+        body.dark-mode .stat-info span,
+        body.dark-mode .card-header p,
+        body.dark-mode .subject-info span,
+        body.dark-mode .class-description,
+        body.dark-mode .subject-count-label,
+        body.dark-mode .empty-state p {
+
+            color: #929bad;
+        }
+
+        body.dark-mode .stat-card,
+        body.dark-mode .main-card,
+        body.dark-mode .class-card {
+
+            background: #181c2a;
+
+            border-color: #292e3d;
+        }
+
+        body.dark-mode .card-header {
+
+            border-color: #303545;
+        }
+
+        body.dark-mode .subject-table th {
+
+            background: #202431;
+
+            color: #929bad;
+
+            border-color: #303545;
+        }
+
+        body.dark-mode .subject-table td {
+
+            color: #d5d9e2;
+
+            border-color: #303545;
+        }
+
+        body.dark-mode .subject-table tbody tr:hover {
+
+            background: #202431;
+        }
+
+        body.dark-mode .code-badge {
+
+            background: #202431;
+
+            color: #cbd1dc;
+        }
+
+        body.dark-mode .class-icon,
+        body.dark-mode .subject-icon {
+
+            background: #28212a;
+        }
+
+        body.dark-mode .assign-subject-btn {
+
+            background: #202a43;
+
+            border-color: #354260;
+
+            color: #a9c0ff;
+        }
+
+        body.dark-mode .assign-subject-btn:hover {
+
+            background: #293653;
+
+            color: #c4d4ff;
+        }
+
+
+        /* ============================================================
+           RESPONSIVE
+        ============================================================ */
+
+        @media (max-width: 1100px) {
+
+            .subject-container {
+
+                padding: 28px 25px;
+            }
+
+            .subject-title h1 {
+
+                font-size: 27px;
+            }
+
+            .class-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0,1fr));
+            }
+
+        }
+
+
+        @media (max-width: 900px) {
+
+            .subject-container {
+
+                padding: 22px 18px;
+            }
+
+            .subject-header {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+            .subject-header-actions {
+
+                justify-content: stretch;
+            }
+
+            .add-subject-btn,
+            .assign-subject-btn {
+
+                flex: 1;
+            }
+
+            .stats-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0,1fr));
+            }
+
+            .class-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0,1fr));
+            }
+
+        }
+
+
+        /* ============================================================
+           MOBILE
+           SIDEBAR REMAINS FIXED
+        ============================================================ */
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+
+                width: 285px;
+
+                left: 0 !important;
+
+                transform: none !important;
+            }
+
+            .main-wrapper {
+
+                margin-left: 285px;
+
+                width:
+                    calc(100% - 285px);
+
+                min-width: 650px;
+            }
+
+            .subject-container {
+
+                padding: 25px 20px 40px;
+            }
+
+            .stats-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(180px,1fr));
+            }
+
+            .class-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(180px,1fr));
+            }
+
+        }
+
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ============================================================
+         FIXED SIDEBAR
+    ============================================================ -->
+
+    <aside class="sidebar">
+
+
+        <!-- ========================================================
+             BRAND
+        ========================================================= -->
+
+        <div class="sidebar-brand">
+
+            <div class="brand-logo">
+                🎓
+            </div>
+
+            <div class="brand-content">
+
+                <div class="brand-title">
+                    Student Management
+                </div>
+
+                <div class="brand-subtitle">
+                    Academic Administration
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================================================
+             USER
+        ========================================================= -->
+
+        <div class="sidebar-user">
+
+            <div class="sidebar-user-avatar">
+
+                {% if request.user.first_name %}
+
+                    {{ request.user.first_name|first|upper }}
+
+                {% else %}
+
+                    {{ request.user.username|first|upper }}
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="sidebar-user-info">
+
+                <div class="sidebar-user-name">
+
+                    {% if request.user.get_full_name %}
+
+                        {{ request.user.get_full_name }}
+
+                    {% else %}
+
+                        {{ request.user.username }}
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="sidebar-user-role">
+
+                    {% if current_role %}
+
+                        {{ current_role }}
+
+                    {% elif request.user.profile.role %}
+
+                        {{ request.user.profile.role }}
+
+                    {% elif request.user.is_superuser %}
+
+                        Administrator
+
+                    {% else %}
+
+                        User
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================================================
+             NAVIGATION
+        ========================================================= -->
+
+        <nav class="sidebar-navigation">
+
+
+            <!-- ====================================================
+                 MAIN
+            ==================================================== -->
+
+            <div class="nav-section-title">
+                Main
+            </div>
+
+
+            <a
+                href="{% url 'student-home' %}"
+                class="nav-link"
+            >
+
+                <span class="nav-icon">
+                    🏠
+                </span>
+
+                <span class="nav-text">
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <a
+                href="{% url 'student-list' %}"
+                class="nav-link"
+            >
+
+                <span class="nav-icon">
+                    👨‍🎓
+                </span>
+
+                <span class="nav-text">
+                    Students
+                </span>
+
+            </a>
+
+
+            <!-- ====================================================
+                 MANAGEMENT
+            ==================================================== -->
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" or request.user.profile.role == "Teacher" %}
+
+
+                <div class="nav-section-title">
+                    Management
+                </div>
+
+
+                <!-- TEACHERS -->
+
+                {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                    <a
+                        href="{% url 'teacherapp:teacher-list' %}"
+                        class="nav-link"
+                    >
+
+                        <span class="nav-icon">
+                            👨‍🏫
+                        </span>
+
+                        <span class="nav-text">
+                            Teachers
+                        </span>
+
+                        <span class="nav-arrow">
+                            ›
+                        </span>
+
+                    </a>
+
+                {% elif request.user.profile.role == "Teacher" %}
+
+                    <a
+                        href="{% url 'teacherapp:teacher-dashboard' %}"
+                        class="nav-link"
+                    >
+
+                        <span class="nav-icon">
+                            👨‍🏫
+                        </span>
+
+                        <span class="nav-text">
+                            Teacher Area
+                        </span>
+
+                        <span class="nav-arrow">
+                            ›
+                        </span>
+
+                    </a>
+
+                {% endif %}
+
+
+                <!-- CLASSES -->
+
+                <a
+                    href="{% url 'class-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        🏫
+                    </span>
+
+                    <span class="nav-text">
+                        Classes
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+
+                <!-- SUBJECTS ACTIVE -->
+
+                {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                    <a
+                        href="{% url 'subject-list' %}"
+                        class="nav-link active"
+                    >
+
+                        <span class="nav-icon">
+                            📚
+                        </span>
+
+                        <span class="nav-text">
+                            Subjects
+                        </span>
+
+                        <span class="nav-arrow">
+                            ›
+                        </span>
+
+                    </a>
+
+                {% endif %}
+
+
+            {% endif %}
+
+
+            <!-- ====================================================
+                 ACADEMIC
+            ==================================================== -->
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" or request.user.profile.role == "Teacher" %}
+
+
+                <div class="nav-section-title">
+                    Academic
+                </div>
+
+
+                <!-- ENROLLMENT -->
+
+                {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                    <a
+                        href="{% url 'student-enrollment' %}"
+                        class="nav-link"
+                    >
+
+                        <span class="nav-icon">
+                            📝
+                        </span>
+
+                        <span class="nav-text">
+                            Enrollment
+                        </span>
+
+                        <span class="nav-arrow">
+                            ›
+                        </span>
+
+                    </a>
+
+                {% endif %}
+
+
+                <!-- TEACHER ASSIGNMENTS -->
+
+                {% if request.user.profile.role == "Teacher" %}
+
+                    <a
+                        href="{% url 'teacherapp:assignment-list' %}"
+                        class="nav-link"
+                    >
+
+                        <span class="nav-icon">
+                            📋
+                        </span>
+
+                        <span class="nav-text">
+                            My Assignments
+                        </span>
+
+                        <span class="nav-arrow">
+                            ›
+                        </span>
+
+                    </a>
+
+                {% endif %}
+
+
+                <!-- ATTENDANCE -->
+
+                {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Teacher" %}
+
+                    <a
+                        href="{% url 'attendance-list' %}"
+                        class="nav-link"
+                    >
+
+                        <span class="nav-icon">
+                            📅
+                        </span>
+
+                        <span class="nav-text">
+                            Attendance
+                        </span>
+
+                        <span class="nav-arrow">
+                            ›
+                        </span>
+
+                    </a>
+
+
+                    <!-- GRADES -->
+
+                    <a
+                        href="{% url 'grade-list' %}"
+                        class="nav-link"
+                    >
+
+                        <span class="nav-icon">
+                            📊
+                        </span>
+
+                        <span class="nav-text">
+                            Grades
+                        </span>
+
+                        <span class="nav-arrow">
+                            ›
+                        </span>
+
+                    </a>
+
+                {% endif %}
+
+
+            {% endif %}
+
+
+            <!-- ====================================================
+                 SYSTEM
+            ==================================================== -->
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+
+                <div class="nav-section-title">
+                    System
+                </div>
+
+
+                <a
+                    href="/dashboard/logs/"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        🛡
+                    </span>
+
+                    <span class="nav-text">
+                        System Logs
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="/conversations/"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        💬
+                    </span>
+
+                    <span class="nav-text">
+                        Conversations
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+
+                {% if request.user.is_superuser or request.user.profile.role == "Administrator" %}
+
+                    <a
+                        href="{% url 'users:manage-users' %}"
+                        class="nav-link"
+                    >
+
+                        <span class="nav-icon">
+                            👥
+                        </span>
+
+                        <span class="nav-text">
+                            Manage Users
+                        </span>
+
+                        <span class="nav-arrow">
+                            ›
+                        </span>
+
+                    </a>
+
+                {% endif %}
+
+
+            {% endif %}
+
+
+        </nav>
+
+
+        <!-- ========================================================
+             SIDEBAR FOOTER
+        ========================================================= -->
+
+        <div class="sidebar-footer">
+
+            <form
+                method="post"
+                action="{% url 'users:logout' %}"
+                class="logout-form"
+                id="logoutForm"
+            >
+
+                {% csrf_token %}
+
+                <button
+                    type="button"
+                    class="logout-button"
+                    onclick="openLogoutModal()"
+                >
+
+                    <span class="logout-icon">
+                        🚪
+                    </span>
+
+                    <span>
+                        Logout
+                    </span>
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- ============================================================
+         MAIN CONTENT
+    ============================================================ -->
+
+    <main class="main-wrapper">
+
+
+        <div class="subject-page">
+
+
+            <div class="subject-container">
+
+
+                <!-- ==================================================
+                     HEADER
+                ================================================== -->
+
+                <div class="subject-header">
+
+
+                    <div class="subject-title">
+
+                        <h1>
+                            📚 Subjects Management
+                        </h1>
+
+                        <p>
+                            Manage the school subject catalog and assign
+                            subjects to the curriculum of each class.
+                        </p>
+
+                    </div>
+
+
+                    {% if request.user.is_superuser or request.user.profile.can_manage_subjects %}
+
+                        <div class="subject-header-actions">
+
+
+                            <a
+                                href="{% url 'subject-create' %}"
+                                class="add-subject-btn"
+                            >
+
+                                ➕
+
+                                Add New Subject
+
+                            </a>
+
+
+                            <a
+                                href="{% url 'subject-assign-class' %}"
+                                class="assign-subject-btn"
+                            >
+
+                                📚
+
+                                Assign Subject to Class
+
+                            </a>
+
+
+                        </div>
+
+                    {% endif %}
+
+
+                </div>
+
+
+
+                <!-- ==================================================
+                     STATISTICS
+                ================================================== -->
+
+                <div class="stats-grid">
+
+
+                    <!-- TOTAL SUBJECTS -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon icon-total">
+                            📚
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>
+                                Total Subjects
+                            </span>
+
+                            <strong>
+                                {{ total_subjects|default:0 }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTIVE SUBJECTS -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon icon-active">
+                            🟢
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>
+                                Active Subjects
+                            </span>
+
+                            <strong>
+                                {{ active_subjects|default:0 }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- TOTAL CLASSES -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon icon-classes">
+                            🏫
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>
+                                Total Classes
+                            </span>
+
+                            <strong>
+                                {{ total_classes|default:0 }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ==================================================
+                     SUBJECTS TABLE
+                ================================================== -->
+
+                <section class="main-card">
+
+
+                    <div class="card-header">
+
+                        <h2>
+                            📖 All Subjects
+                        </h2>
+
+                        <p>
+                            Registered subjects currently available
+                            in the school subject catalog.
+                        </p>
+
+                    </div>
+
+
+                    {% if subjects %}
+
+
+                        <div class="table-wrapper">
+
+
+                            <table class="subject-table">
+
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            Subject
+                                        </th>
+
+                                        <th>
+                                            Code
+                                        </th>
+
+                                        <th>
+                                            Credit Hours
+                                        </th>
+
+                                        <th>
+                                            Enrolled Students
+                                        </th>
+
+                                        <th>
+                                            Classes
+                                        </th>
+
+                                        <th>
+                                            Status
+                                        </th>
+
+                                        <th>
+                                            Actions
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+
+                                    {% for subject in subjects %}
+
+
+                                        <tr>
+
+
+                                            <!-- SUBJECT -->
+
+                                            <td>
+
+                                                <div class="subject-cell">
+
+
+                                                    <div class="subject-icon">
+                                                        📚
+                                                    </div>
+
+
+                                                    <div class="subject-info">
+
+                                                        <strong>
+                                                            {{ subject.name }}
+                                                        </strong>
+
+
+                                                        <span>
+
+                                                            {% if subject.description %}
+
+                                                                {{ subject.description|truncatechars:55 }}
+
+                                                            {% else %}
+
+                                                                No description
+
+                                                            {% endif %}
+
+                                                        </span>
+
+                                                    </div>
+
+
+                                                </div>
+
+                                            </td>
+
+
+                                            <!-- CODE -->
+
+                                            <td>
+
+                                                <span class="code-badge">
+
+                                                    {{ subject.code }}
+
+                                                </span>
+
+                                            </td>
+
+
+                                            <!-- CREDIT HOURS -->
+
+                                            <td>
+
+                                                <span class="credit-badge">
+
+                                                    {{ subject.credit_hours }}
+
+                                                    hour{{ subject.credit_hours|pluralize }}
+
+                                                </span>
+
+                                            </td>
+
+
+                                            <!-- ENROLLED STUDENTS -->
+
+                                            <td>
+
+                                                <span class="enrollment-count">
+
+                                                    {{ subject.enrollment_count|default:0 }}
+
+                                                    student{{ subject.enrollment_count|pluralize }}
+
+                                                </span>
+
+                                            </td>
+
+
+                                            <!-- CLASSES -->
+
+                                            <td>
+
+                                                <span class="enrollment-count">
+
+                                                    {{ subject.class_count|default:0 }}
+
+                                                    class{{ subject.class_count|pluralize }}
+
+                                                </span>
+
+                                            </td>
+
+
+                                            <!-- STATUS -->
+
+                                            <td>
+
+                                                {% if subject.status == "Active" %}
+
+                                                    <span class="status-badge status-active">
+
+                                                        <span class="status-dot"></span>
+
+                                                        Active
+
+                                                    </span>
+
+                                                {% else %}
+
+                                                    <span class="status-badge status-inactive">
+
+                                                        <span class="status-dot"></span>
+
+                                                        {{ subject.status }}
+
+                                                    </span>
+
+                                                {% endif %}
+
+                                            </td>
+
+
+                                            <!-- ACTIONS -->
+
+                                            <td>
+
+                                                <div class="action-links">
+
+
+                                                    <!-- VIEW -->
+
+                                                    <a
+                                                        href="{% url 'subject-detail' subject.id %}"
+                                                        class="action-btn view-btn"
+                                                    >
+
+                                                        👁 View
+
+                                                    </a>
+
+
+                                                    {% if request.user.is_superuser or request.user.profile.can_manage_subjects %}
+
+
+                                                        <!-- EDIT -->
+
+                                                        <a
+                                                            href="{% url 'subject-update' subject.id %}"
+                                                            class="action-btn edit-btn"
+                                                        >
+
+                                                            ✏ Edit
+
+                                                        </a>
+
+
+                                                        <!-- DELETE -->
+
+                                                        <a
+                                                            href="{% url 'subject-delete' subject.id %}"
+                                                            class="action-btn delete-btn"
+                                                        >
+
+                                                            🗑 Delete
+
+                                                        </a>
+
+
+                                                    {% endif %}
+
+
+                                                </div>
+
+                                            </td>
+
+
+                                        </tr>
+
+
+                                    {% endfor %}
+
+
+                                </tbody>
+
+
+                            </table>
+
+
+                        </div>
+
+
+                    {% else %}
+
+
+                        <!-- ==================================================
+                             EMPTY STATE
+                        ================================================== -->
+
+                        <div class="empty-state">
+
+
+                            <div class="empty-icon">
+                                📚
+                            </div>
+
+
+                            <h3>
+                                No Subjects Yet
+                            </h3>
+
+
+                            <p>
+                                No subjects have been created in the
+                                school subject catalog yet.
+                            </p>
+
+
+                            {% if request.user.is_superuser or request.user.profile.can_manage_subjects %}
+
+                                <a
+                                    href="{% url 'subject-create' %}"
+                                    class="empty-add-btn"
+                                >
+
+                                    ➕
+
+                                    Add First Subject
+
+                                </a>
+
+                            {% endif %}
+
+
+                        </div>
+
+
+                    {% endif %}
+
+
+                </section>
+
+
+
+                <!-- ==================================================
+                     CLASS SUBJECT OVERVIEW
+                ================================================== -->
+
+                <section class="main-card">
+
+
+                    <div class="card-header">
+
+                        <h2>
+                            🏫 Class Curriculum Overview
+                        </h2>
+
+                        <p>
+                            See how many official curriculum subjects
+                            are assigned to each school class.
+                        </p>
+
+                    </div>
+
+
+                    {% if classes %}
+
+
+                        <div class="class-grid">
+
+
+                            {% for classroom in classes %}
+
+
+                                <div class="class-card">
+
+
+                                    <div class="class-top">
+
+
+                                        <div class="class-icon">
+                                            🎓
+                                        </div>
+
+
+                                        <div>
+
+                                            <div class="class-name">
+                                                {{ classroom.name }}
+                                            </div>
+
+
+                                            <div class="class-description">
+
+                                                {% if classroom.status == "Active" %}
+
+                                                    Active Class
+
+                                                {% else %}
+
+                                                    {{ classroom.status }}
+
+                                                {% endif %}
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+
+
+                                    <div class="subject-count-box">
+
+
+                                        <div>
+
+
+                                            <div class="subject-count-label">
+                                                Official Subjects
+                                            </div>
+
+
+                                            <div>
+
+                                                <span class="subject-count-number">
+
+                                                    {{ classroom.subject_count|default:0 }}
+
+                                                </span>
+
+
+                                                <span class="subject-word">
+
+                                                    subject{{ classroom.subject_count|pluralize }}
+
+                                                </span>
+
+                                            </div>
+
+
+                                        </div>
+
+
+                                        <a
+                                            href="{% url 'class-view' classroom.id %}"
+                                            class="action-btn view-btn"
+                                        >
+
+                                            View Class
+
+                                        </a>
+
+
+                                    </div>
+
+
+                                </div>
+
+
+                            {% endfor %}
+
+
+                        </div>
+
+
+                    {% else %}
+
+
+                        <div class="empty-state">
+
+
+                            <div class="empty-icon">
+                                🏫
+                            </div>
+
+
+                            <h3>
+                                No Classes Yet
+                            </h3>
+
+
+                            <p>
+                                Create classes and assign curriculum
+                                subjects before class subject statistics
+                                can be displayed.
+                            </p>
+
+
+                        </div>
+
+
+                    {% endif %}
+
+
+                </section>
+
+
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- ============================================================
+         JAVASCRIPT
+    ============================================================ -->
+
+    <script>
+
+
+        /* ============================================================
+           LOGOUT CONFIRMATION
+        ============================================================ */
+
+        function openLogoutModal() {
+
+            const logoutForm =
+                document.getElementById("logoutForm");
+
+
+            if (!logoutForm) {
+                return;
+            }
+
+
+            const confirmed = confirm(
+                "Are you sure you want to logout?"
+            );
+
+
+            if (confirmed) {
+
+                logoutForm.submit();
+
+            }
+
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>

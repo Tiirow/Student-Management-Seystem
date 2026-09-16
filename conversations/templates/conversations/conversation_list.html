@@ -1,0 +1,2111 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Conversations | Student Management System</title>
+
+
+    <style>
+
+        /* ============================================================
+           GLOBAL
+           ============================================================ */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f5f7fb;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #222;
+            overflow-x: auto;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+
+        /* ============================================================
+           FIXED SIDEBAR
+           SAME DESIGN AS student_list.html
+           ============================================================ */
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            width: 285px;
+            height: 100vh;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #17191d 0%,
+                    #121418 100%
+                );
+
+            color: #fff;
+
+            z-index: 9999;
+
+            display: flex;
+            flex-direction: column;
+
+            overflow: hidden;
+
+            border-right: 1px solid rgba(255,255,255,0.06);
+
+            box-shadow:
+                8px 0 30px rgba(0,0,0,0.12);
+        }
+
+
+        /* ============================================================
+           SIDEBAR BRAND
+           ============================================================ */
+
+        .sidebar-brand {
+            height: 92px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 24px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.07);
+
+            flex-shrink: 0;
+        }
+
+        .brand-logo {
+            width: 46px;
+            height: 46px;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #9a5243,
+                    #c17865
+                );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+
+            box-shadow:
+                0 8px 22px rgba(154,82,67,0.30);
+
+            flex-shrink: 0;
+        }
+
+        .brand-content {
+            margin-left: 13px;
+        }
+
+        .brand-title {
+            margin: 0;
+
+            color: #fff;
+
+            font-size: 16px;
+            font-weight: 800;
+
+            letter-spacing: 0.2px;
+        }
+
+        .brand-subtitle {
+            margin-top: 4px;
+
+            color: #8d929b;
+
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+
+        /* ============================================================
+           USER PROFILE
+           ============================================================ */
+
+        .sidebar-user {
+            margin: 18px 15px 10px;
+
+            padding: 14px;
+
+            border-radius: 13px;
+
+            background:
+                rgba(255,255,255,0.045);
+
+            border:
+                1px solid rgba(255,255,255,0.06);
+
+            display: flex;
+            align-items: center;
+
+            flex-shrink: 0;
+        }
+
+        .sidebar-user-avatar {
+            width: 42px;
+            height: 42px;
+
+            min-width: 42px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #9a5243,
+                    #b76a59
+                );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #fff;
+
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .sidebar-user-info {
+            min-width: 0;
+            margin-left: 11px;
+        }
+
+        .sidebar-user-name {
+            color: #fff;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-user-role {
+            margin-top: 4px;
+
+            color: #9297a0;
+
+            font-size: 10px;
+            font-weight: 600;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.5px;
+        }
+
+
+        /* ============================================================
+           NAVIGATION
+           ============================================================ */
+
+        .sidebar-navigation {
+            flex: 1;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            padding: 8px 13px 18px;
+        }
+
+        .sidebar-navigation::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .sidebar-navigation::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-navigation::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.10);
+            border-radius: 10px;
+        }
+
+        .nav-section-title {
+            padding: 15px 11px 8px;
+
+            color: #686d76;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 1.2px;
+
+            text-transform: uppercase;
+        }
+
+        .nav-link {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            width: 100%;
+
+            min-height: 46px;
+
+            padding: 0 12px;
+            margin-bottom: 4px;
+
+            border-radius: 10px;
+
+            color: #aeb2ba;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            transition:
+                background 0.20s ease,
+                color 0.20s ease,
+                transform 0.20s ease;
+        }
+
+        .nav-link:hover {
+            background:
+                rgba(255,255,255,0.055);
+
+            color: #fff;
+
+            transform: translateX(2px);
+        }
+
+        .nav-link.active {
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(154,82,67,0.28),
+                    rgba(154,82,67,0.10)
+                );
+
+            color: #fff;
+
+            box-shadow:
+                inset 3px 0 0 #9a5243;
+        }
+
+        .nav-icon {
+            width: 32px;
+            min-width: 32px;
+
+            height: 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background:
+                rgba(255,255,255,0.035);
+
+            font-size: 15px;
+
+            margin-right: 9px;
+        }
+
+        .nav-link.active .nav-icon {
+            background:
+                rgba(154,82,67,0.25);
+        }
+
+        .nav-text {
+            flex: 1;
+        }
+
+        .nav-arrow {
+            color: #686d76;
+            font-size: 11px;
+        }
+
+
+        /* ============================================================
+           SIDEBAR FOOTER
+           ============================================================ */
+
+        .sidebar-footer {
+            padding: 13px;
+
+            border-top:
+                1px solid rgba(255,255,255,0.07);
+
+            flex-shrink: 0;
+        }
+
+        .logout-button {
+            width: 100%;
+
+            min-height: 44px;
+
+            border: 0;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255,255,255,0.045);
+
+            color: #aeb2ba;
+
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 12px;
+
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .logout-button:hover {
+            background:
+                rgba(180,50,40,0.15);
+
+            color: #ffaaa3;
+        }
+
+        .logout-icon {
+            width: 32px;
+            min-width: 32px;
+
+            height: 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 15px;
+        }
+
+
+        /* ============================================================
+           MAIN CONTENT
+           ============================================================ */
+
+        .main-content {
+            margin-left: 285px;
+
+            min-height: 100vh;
+
+            width: calc(100% - 285px);
+
+            padding: 1px 0 50px;
+        }
+
+
+        /* ============================================================
+           CONVERSATION PAGE
+           ============================================================ */
+
+        .conversation-list-page {
+            max-width: 1000px;
+
+            margin: 40px auto;
+
+            padding: 20px;
+        }
+
+        .conversation-list-card {
+            background: #ffffff;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 8px 30px rgba(0, 0, 0, 0.08);
+
+            overflow: hidden;
+        }
+
+
+        /* ============================================================
+           HEADER
+           ============================================================ */
+
+        .conversation-header {
+            padding: 25px 30px;
+
+            border-bottom:
+                1px solid #eeeeee;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 20px;
+        }
+
+        .conversation-header h1 {
+            margin: 0 0 6px;
+
+            font-size: 28px;
+
+            color: #222;
+        }
+
+        .conversation-header p {
+            margin: 0;
+
+            color: #777;
+
+            font-size: 14px;
+        }
+
+
+        /* ============================================================
+           NEW CONVERSATION BUTTON
+           ============================================================ */
+
+        .new-conversation-btn {
+            display: inline-block;
+
+            padding: 11px 18px;
+
+            background: #4a90e2;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition: 0.2s ease;
+        }
+
+        .new-conversation-btn:hover {
+            background: #357abd;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* ============================================================
+           SEARCH
+           ============================================================ */
+
+        .conversation-search {
+            padding: 20px 30px;
+
+            border-bottom:
+                1px solid #eeeeee;
+
+            background: #fafafa;
+        }
+
+        .search-form {
+            display: flex;
+
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+
+            padding: 12px 14px;
+
+            border:
+                1px solid #ddd;
+
+            border-radius: 9px;
+
+            outline: none;
+
+            font-size: 14px;
+
+            box-sizing: border-box;
+        }
+
+        .search-input:focus {
+            border-color: #4a90e2;
+
+            box-shadow:
+                0 0 0 3px rgba(74,144,226,0.10);
+        }
+
+        .search-btn {
+            border: none;
+
+            padding: 12px 20px;
+
+            border-radius: 9px;
+
+            background: #333;
+
+            color: white;
+
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        .search-btn:hover {
+            background: #222;
+        }
+
+
+        /* ============================================================
+           STATS
+           ============================================================ */
+
+        .conversation-stats {
+            display: flex;
+
+            gap: 12px;
+
+            padding: 20px 30px;
+
+            border-bottom:
+                1px solid #eeeeee;
+        }
+
+        .stat-card {
+            padding: 12px 18px;
+
+            border-radius: 10px;
+
+            background: #f5f7fa;
+        }
+
+        .stat-number {
+            font-size: 20px;
+
+            font-weight: 700;
+
+            color: #222;
+        }
+
+        .stat-label {
+            font-size: 12px;
+
+            color: #777;
+
+            margin-top: 2px;
+        }
+
+
+        /* ============================================================
+           CONVERSATION ITEMS
+           ============================================================ */
+
+        .conversation-items {
+            display: flex;
+
+            flex-direction: column;
+        }
+
+        .conversation-item {
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 20px 30px;
+
+            text-decoration: none;
+
+            color: inherit;
+
+            border-bottom:
+                1px solid #eeeeee;
+
+            transition:
+                background 0.2s ease;
+        }
+
+        .conversation-item:hover {
+            background: #f8f9fb;
+        }
+
+        .conversation-item:last-child {
+            border-bottom: none;
+        }
+
+
+        /* ============================================================
+           AVATAR
+           ============================================================ */
+
+        .conversation-avatar {
+            width: 48px;
+
+            height: 48px;
+
+            min-width: 48px;
+
+            border-radius: 50%;
+
+            background: #4a90e2;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        /* ============================================================
+           INFO
+           ============================================================ */
+
+        .conversation-info {
+            flex: 1;
+
+            min-width: 0;
+        }
+
+        .conversation-name-row {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 5px;
+        }
+
+        .conversation-name {
+            font-size: 16px;
+
+            font-weight: 700;
+
+            color: #222;
+        }
+
+        .conversation-role {
+            font-size: 11px;
+
+            padding: 3px 7px;
+
+            border-radius: 5px;
+
+            background: #eeeeee;
+
+            color: #666;
+        }
+
+        .conversation-preview {
+            color: #777;
+
+            font-size: 14px;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
+
+
+        /* ============================================================
+           RIGHT SIDE
+           ============================================================ */
+
+        .conversation-meta {
+            min-width: 100px;
+
+            text-align: right;
+        }
+
+        .conversation-time {
+            color: #999;
+
+            font-size: 12px;
+
+            margin-bottom: 7px;
+        }
+
+        .unread-badge {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-width: 22px;
+
+            height: 22px;
+
+            padding: 0 6px;
+
+            border-radius: 20px;
+
+            background: #4a90e2;
+
+            color: white;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            box-sizing: border-box;
+        }
+
+
+        /* ============================================================
+           EMPTY STATE
+           ============================================================ */
+
+        .empty-state {
+            text-align: center;
+
+            padding: 70px 25px;
+        }
+
+        .empty-icon {
+            font-size: 50px;
+
+            margin-bottom: 15px;
+        }
+
+        .empty-state h2 {
+            margin: 0 0 8px;
+
+            color: #333;
+
+            font-size: 22px;
+        }
+
+        .empty-state p {
+            margin: 0 0 22px;
+
+            color: #888;
+
+            font-size: 14px;
+        }
+
+
+        /* ============================================================
+           HELP BOX
+           ============================================================ */
+
+        .conversation-help {
+            margin: 0 30px 25px;
+
+            padding: 14px 16px;
+
+            border-radius: 10px;
+
+            background: #f5f8ff;
+
+            border:
+                1px solid #dce8ff;
+
+            color: #49627a;
+
+            font-size: 13px;
+        }
+
+
+        /* ============================================================
+           RESPONSIVE
+           
+           SAME BEHAVIOR AS student_list.html
+           SIDEBAR NEVER COLLAPSES
+           ============================================================ */
+
+        @media (max-width: 1100px) {
+
+            .conversation-list-page {
+                max-width: 100%;
+
+                padding: 18px;
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            /*
+                Sidebar remains fixed at 285px.
+                Main content remains beside it.
+            */
+
+            .sidebar {
+                width: 285px;
+
+                transform: none !important;
+
+                left: 0 !important;
+            }
+
+            .main-content {
+                margin-left: 285px;
+
+                width: calc(100% - 285px);
+
+                min-width: 650px;
+            }
+
+            .conversation-list-page {
+                margin: 20px auto;
+
+                padding: 10px;
+            }
+
+            .conversation-header {
+                padding: 20px;
+
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+            .conversation-search {
+                padding: 15px 20px;
+            }
+
+            .conversation-stats {
+                padding: 15px 20px;
+            }
+
+            .conversation-item {
+                padding: 17px 20px;
+            }
+
+            .conversation-meta {
+                min-width: auto;
+            }
+
+            .conversation-preview {
+                max-width: 180px;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-btn {
+                width: 100%;
+            }
+
+            .conversation-help {
+                margin-left: 20px;
+
+                margin-right: 20px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================================================================
+     FIXED SIDEBAR
+     SAME SIDEBAR AS STUDENT LIST
+     ================================================================ -->
+
+<aside class="sidebar">
+
+
+    <!-- ============================================================
+         BRAND
+         ============================================================ -->
+
+    <div class="sidebar-brand">
+
+        <div class="brand-logo">
+            🎓
+        </div>
+
+        <div class="brand-content">
+
+            <div class="brand-title">
+                Student Management
+            </div>
+
+            <div class="brand-subtitle">
+                Academic Administration
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         USER
+         ============================================================ -->
+
+    <div class="sidebar-user">
+
+        <div class="sidebar-user-avatar">
+
+            {% if request.user.first_name %}
+
+                {{ request.user.first_name|first|upper }}
+
+            {% else %}
+
+                {{ request.user.username|first|upper }}
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="sidebar-user-info">
+
+            <div class="sidebar-user-name">
+
+                {% if request.user.get_full_name %}
+
+                    {{ request.user.get_full_name }}
+
+                {% else %}
+
+                    {{ request.user.username }}
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="sidebar-user-role">
+
+                {% if current_role %}
+
+                    {{ current_role }}
+
+                {% elif request.user.profile.role %}
+
+                    {{ request.user.profile.role }}
+
+                {% elif request.user.is_superuser %}
+
+                    Administrator
+
+                {% else %}
+
+                    User
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         NAVIGATION
+         ============================================================ -->
+
+    <nav class="sidebar-navigation">
+
+
+        <!-- ========================================================
+             MAIN
+             ======================================================== -->
+
+        <div class="nav-section-title">
+            Main
+        </div>
+
+
+        <!-- DASHBOARD -->
+
+        <a
+            href="{% url 'student-home' %}"
+            class="nav-link"
+        >
+
+            <span class="nav-icon">
+                🏠
+            </span>
+
+            <span class="nav-text">
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <!-- STUDENTS -->
+
+        <a
+            href="{% url 'student-list' %}"
+            class="nav-link"
+        >
+
+            <span class="nav-icon">
+                👨‍🎓
+            </span>
+
+            <span class="nav-text">
+                Students
+            </span>
+
+        </a>
+
+
+        <!-- ========================================================
+             MANAGEMENT
+             ======================================================== -->
+
+        {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" or request.user.profile.role == "Teacher" %}
+
+            <div class="nav-section-title">
+                Management
+            </div>
+
+
+            <!-- TEACHERS -->
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                <a
+                    href="{% url 'teacherapp:teacher-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        👨‍🏫
+                    </span>
+
+                    <span class="nav-text">
+                        Teachers
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% elif request.user.profile.role == "Teacher" %}
+
+                <a
+                    href="{% url 'teacherapp:teacher-dashboard' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        👨‍🏫
+                    </span>
+
+                    <span class="nav-text">
+                        Teacher Area
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+
+            <!-- CLASSES -->
+
+            <a
+                href="{% url 'class-list' %}"
+                class="nav-link"
+            >
+
+                <span class="nav-icon">
+                    🏫
+                </span>
+
+                <span class="nav-text">
+                    Classes
+                </span>
+
+                <span class="nav-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- SUBJECTS -->
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                <a
+                    href="{% url 'subject-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📚
+                    </span>
+
+                    <span class="nav-text">
+                        Subjects
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+        {% endif %}
+
+
+        <!-- ========================================================
+             ACADEMIC
+             ======================================================== -->
+
+        {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" or request.user.profile.role == "Teacher" %}
+
+            <div class="nav-section-title">
+                Academic
+            </div>
+
+
+            <!-- ENROLLMENT -->
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                <a
+                    href="{% url 'student-enrollment' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📝
+                    </span>
+
+                    <span class="nav-text">
+                        Enrollment
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+
+            <!-- ASSIGNMENTS -->
+
+            {% if request.user.profile.role == "Teacher" %}
+
+                <a
+                    href="{% url 'teacherapp:assignment-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📋
+                    </span>
+
+                    <span class="nav-text">
+                        My Assignments
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+
+            <!-- ATTENDANCE -->
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Teacher" %}
+
+                <a
+                    href="{% url 'attendance-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📅
+                    </span>
+
+                    <span class="nav-text">
+                        Attendance
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+
+            <!-- GRADES -->
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Teacher" %}
+
+                <a
+                    href="{% url 'grade-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📊
+                    </span>
+
+                    <span class="nav-text">
+                        Grades
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+        {% endif %}
+
+
+        <!-- ========================================================
+             SYSTEM
+             ======================================================== -->
+
+        {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+            <div class="nav-section-title">
+                System
+            </div>
+
+
+            <!-- SYSTEM LOGS -->
+
+            <a
+                href="/dashboard/logs/"
+                class="nav-link"
+            >
+
+                <span class="nav-icon">
+                    🛡
+                </span>
+
+                <span class="nav-text">
+                    System Logs
+                </span>
+
+                <span class="nav-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- CONVERSATIONS -->
+
+            <a
+                href="{% url 'conversations:conversation-list' %}"
+                class="nav-link active"
+            >
+
+                <span class="nav-icon">
+                    💬
+                </span>
+
+                <span class="nav-text">
+                    Conversations
+                </span>
+
+                <span class="nav-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- MANAGE USERS -->
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" %}
+
+                <a
+                    href="{% url 'users:manage-users' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        👥
+                    </span>
+
+                    <span class="nav-text">
+                        Manage Users
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+        {% endif %}
+
+
+    </nav>
+
+
+    <!-- ============================================================
+         SIDEBAR FOOTER
+         ============================================================ -->
+
+    <div class="sidebar-footer">
+
+        <button
+            type="button"
+            class="logout-button"
+            onclick="openLogoutModal()"
+        >
+
+            <span class="logout-icon">
+                🚪
+            </span>
+
+            <span>
+                Logout
+            </span>
+
+        </button>
+
+    </div>
+
+
+</aside>
+
+
+
+<!-- ================================================================
+     MAIN CONTENT
+     ================================================================ -->
+
+<main class="main-content">
+
+
+    <div class="conversation-list-page">
+
+
+        <div class="conversation-list-card">
+
+
+            <!-- ====================================================
+                 HEADER
+                 ==================================================== -->
+
+            <div class="conversation-header">
+
+                <div>
+
+                    <h1>
+                        Conversations
+                    </h1>
+
+
+                    {% if is_staff %}
+
+                        <p>
+                            Manage conversations and communicate with users.
+                        </p>
+
+                    {% else %}
+
+                        <p>
+                            Contact an Admin or Manager and manage your messages.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!--
+                    All users can start a conversation.
+                    Backend permissions are enforced in views.py.
+                -->
+
+                <a
+                    href="{% url 'conversations:start-conversation' %}"
+                    class="new-conversation-btn"
+                >
+                    + New Conversation
+                </a>
+
+            </div>
+
+
+
+            <!-- ====================================================
+                 HELP MESSAGE
+                 ==================================================== -->
+
+            {% if not is_staff %}
+
+                <div class="conversation-help">
+
+                    💬 Need help?
+
+                    Start a new conversation with an
+
+                    <strong>Admin</strong>
+
+                    or
+
+                    <strong>Manager</strong>.
+
+                </div>
+
+            {% endif %}
+
+
+
+            <!-- ====================================================
+                 SEARCH
+                 ==================================================== -->
+
+            <div class="conversation-search">
+
+                <form
+                    method="GET"
+                    class="search-form"
+                >
+
+                    <input
+                        type="text"
+                        name="q"
+                        value="{{ search_query }}"
+                        class="search-input"
+                        placeholder="Search conversations..."
+                    >
+
+                    <button
+                        type="submit"
+                        class="search-btn"
+                    >
+                        Search
+                    </button>
+
+                </form>
+
+            </div>
+
+
+
+            <!-- ====================================================
+                 STATS
+                 ==================================================== -->
+
+            <div class="conversation-stats">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-number">
+                        {{ conversations|length }}
+                    </div>
+
+                    <div class="stat-label">
+                        Conversations
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-number">
+                        {{ unread_count }}
+                    </div>
+
+                    <div class="stat-label">
+                        Unread
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ====================================================
+                 CONVERSATIONS
+                 ==================================================== -->
+
+            {% if conversations %}
+
+                <div class="conversation-items">
+
+
+                    {% for conversation in conversations %}
+
+
+                        <a
+                            href="{% url 'conversations:conversation-detail' conversation_id=conversation.id %}"
+                            class="conversation-item"
+                        >
+
+
+                            <!-- AVATAR -->
+
+                            <div class="conversation-avatar">
+
+                                {% if request.user.id == conversation.user_id %}
+
+                                    {{ conversation.staff.username|first|upper }}
+
+                                {% else %}
+
+                                    {{ conversation.user.username|first|upper }}
+
+                                {% endif %}
+
+                            </div>
+
+
+
+                            <!-- INFO -->
+
+                            <div class="conversation-info">
+
+
+                                <div class="conversation-name-row">
+
+
+                                    {% if request.user.id == conversation.user_id %}
+
+
+                                        <span class="conversation-name">
+
+                                            {{ conversation.staff.username }}
+
+                                        </span>
+
+
+                                        <span class="conversation-role">
+
+                                            {% if conversation.staff.profile.role %}
+
+                                                {{ conversation.staff.profile.role }}
+
+                                            {% else %}
+
+                                                Staff
+
+                                            {% endif %}
+
+                                        </span>
+
+
+                                    {% else %}
+
+
+                                        <span class="conversation-name">
+
+                                            {{ conversation.user.username }}
+
+                                        </span>
+
+
+                                        <span class="conversation-role">
+                                            User
+                                        </span>
+
+
+                                    {% endif %}
+
+
+                                </div>
+
+
+
+                                <!-- LAST MESSAGE -->
+
+                                {% with last_message=conversation.messages.last %}
+
+
+                                    {% if last_message %}
+
+                                        <div class="conversation-preview">
+
+
+                                            {% if last_message.sender_id == request.user.id %}
+
+                                                <strong>
+                                                    You:
+                                                </strong>
+
+                                            {% else %}
+
+                                                <strong>
+                                                    {{ last_message.sender.username }}:
+                                                </strong>
+
+                                            {% endif %}
+
+
+                                            {{ last_message.body }}
+
+
+                                        </div>
+
+
+                                    {% else %}
+
+
+                                        <div class="conversation-preview">
+
+                                            No messages yet.
+
+                                        </div>
+
+
+                                    {% endif %}
+
+
+                                {% endwith %}
+
+
+                            </div>
+
+
+
+                            <!-- META -->
+
+                            <div class="conversation-meta">
+
+
+                                <div class="conversation-time">
+
+                                    {{ conversation.updated_at|date:"M d, H:i" }}
+
+                                </div>
+
+
+                                {% if conversation.unread_count %}
+
+                                    <span class="unread-badge">
+
+                                        {{ conversation.unread_count }}
+
+                                    </span>
+
+                                {% endif %}
+
+
+                            </div>
+
+
+                        </a>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+            {% else %}
+
+
+                <!-- =================================================
+                     EMPTY STATE
+                     ================================================== -->
+
+                <div class="empty-state">
+
+
+                    <div class="empty-icon">
+                        💬
+                    </div>
+
+
+                    <h2>
+                        No Conversations Yet
+                    </h2>
+
+
+                    {% if is_staff %}
+
+
+                        <p>
+                            You don't have any conversations with users yet.
+                        </p>
+
+
+                    {% else %}
+
+
+                        <p>
+                            You haven't started any conversations yet.
+                            Contact an Admin or Manager if you need help.
+                        </p>
+
+
+                    {% endif %}
+
+
+                    <a
+                        href="{% url 'conversations:start-conversation' %}"
+                        class="new-conversation-btn"
+                    >
+                        + Start a Conversation
+                    </a>
+
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+    </div>
+
+
+</main>
+
+
+
+<!-- ================================================================
+     LOGOUT MODAL
+     ================================================================ -->
+
+<div
+    id="logoutOverlay"
+    class="logout-overlay"
+    onclick="closeLogoutModal(event)"
+>
+
+
+    <div
+        class="logout-modal"
+        onclick="event.stopPropagation()"
+    >
+
+        <div class="logout-modal-icon">
+            🚪
+        </div>
+
+        <h3>
+            Logout
+        </h3>
+
+        <p>
+            Are you sure you want to logout from the Student Management System?
+        </p>
+
+
+        <div class="logout-modal-actions">
+
+            <button
+                type="button"
+                class="modal-btn cancel-btn"
+                onclick="closeLogoutModal()"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                class="modal-btn confirm-logout-btn"
+                onclick="confirmLogout()"
+            >
+                Yes, Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ================================================================
+     LOGOUT MODAL CSS
+     ================================================================ -->
+
+<style>
+
+    .logout-overlay {
+        position: fixed;
+
+        inset: 0;
+
+        background:
+            rgba(0,0,0,0.55);
+
+        backdrop-filter: blur(4px);
+
+        z-index: 20000;
+
+        display: none;
+
+        align-items: center;
+        justify-content: center;
+
+        padding: 20px;
+    }
+
+    .logout-overlay.show {
+        display: flex;
+    }
+
+    .logout-modal {
+        width: 100%;
+
+        max-width: 420px;
+
+        background: #fff;
+
+        border-radius: 18px;
+
+        padding: 28px;
+
+        box-shadow:
+            0 25px 70px rgba(0,0,0,0.25);
+
+        animation:
+            modalIn 0.2s ease;
+    }
+
+    @keyframes modalIn {
+
+        from {
+            opacity: 0;
+            transform: translateY(10px) scale(0.98);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+    }
+
+    .logout-modal-icon {
+        width: 55px;
+        height: 55px;
+
+        border-radius: 15px;
+
+        background: #fff0ef;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 25px;
+
+        margin-bottom: 16px;
+    }
+
+    .logout-modal h3 {
+        margin: 0 0 8px;
+
+        color: #222;
+
+        font-size: 20px;
+    }
+
+    .logout-modal p {
+        margin: 0;
+
+        color: #777;
+
+        font-size: 13px;
+
+        line-height: 1.6;
+    }
+
+    .logout-modal-actions {
+        display: flex;
+
+        justify-content: flex-end;
+
+        gap: 10px;
+
+        margin-top: 25px;
+    }
+
+    .modal-btn {
+        border: 0;
+
+        border-radius: 9px;
+
+        padding: 11px 17px;
+
+        font-family: inherit;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+    }
+
+    .cancel-btn {
+        background: #f2f2f2;
+
+        color: #555;
+    }
+
+    .cancel-btn:hover {
+        background: #e5e5e5;
+    }
+
+    .confirm-logout-btn {
+        background: #9a5243;
+
+        color: #fff;
+    }
+
+    .confirm-logout-btn:hover {
+        background: #7f4034;
+    }
+
+</style>
+
+
+
+<!-- ================================================================
+     JAVASCRIPT
+     ================================================================ -->
+
+<script>
+
+    function openLogoutModal() {
+
+        const overlay =
+            document.getElementById("logoutOverlay");
+
+        if (overlay) {
+
+            overlay.classList.add("show");
+
+        }
+
+    }
+
+
+    function closeLogoutModal(event) {
+
+        if (
+            event &&
+            event.target !== event.currentTarget
+        ) {
+
+            return;
+
+        }
+
+
+        const overlay =
+            document.getElementById("logoutOverlay");
+
+        if (overlay) {
+
+            overlay.classList.remove("show");
+
+        }
+
+    }
+
+
+    function confirmLogout() {
+
+        window.location.href =
+            "{% url 'users:logout' %}";
+
+    }
+
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+
+                const overlay =
+                    document.getElementById("logoutOverlay");
+
+                if (
+                    overlay &&
+                    overlay.classList.contains("show")
+                ) {
+
+                    overlay.classList.remove("show");
+
+                }
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>
+

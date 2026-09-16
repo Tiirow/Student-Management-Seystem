@@ -1,0 +1,931 @@
+{% extends "students/student_base.html" %}
+
+{% block title %}
+My Subjects
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ============================================================
+   PAGE
+============================================================ */
+
+.subject-page {
+    width: 100%;
+    min-width: 0;
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.subject-header {
+    position: relative;
+    overflow: hidden;
+
+    margin-bottom: 20px;
+
+    padding: 28px 30px;
+
+    border-radius: 20px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #172033 0%,
+            #24304a 65%,
+            #9a5243 145%
+        );
+
+    box-shadow:
+        0 15px 35px rgba(23,32,51,0.14);
+}
+
+.subject-header::after {
+    content: "📚";
+
+    position: absolute;
+
+    right: 30px;
+    top: 18px;
+
+    font-size: 78px;
+
+    opacity: 0.08;
+}
+
+.subject-header-content {
+    position: relative;
+    z-index: 2;
+}
+
+.subject-header-label {
+    margin-bottom: 6px;
+
+    color:
+        rgba(255,255,255,0.55);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+}
+
+.subject-header h1 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 27px;
+
+    font-weight: 850;
+}
+
+.subject-header p {
+    margin: 7px 0 0;
+
+    max-width: 650px;
+
+    color:
+        rgba(255,255,255,0.68);
+
+    font-size: 10px;
+
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   HEADER META
+============================================================ */
+
+.subject-meta {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 15px;
+}
+
+.subject-meta span {
+    display: inline-flex;
+
+    align-items: center;
+
+    min-height: 28px;
+
+    padding: 0 10px;
+
+    border-radius: 8px;
+
+    background:
+        rgba(255,255,255,0.08);
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    color:
+        rgba(255,255,255,0.82);
+
+    font-size: 8px;
+
+    font-weight: 750;
+}
+
+
+/* ============================================================
+   SUMMARY
+============================================================ */
+
+.subject-summary {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 13px;
+
+    margin-bottom: 20px;
+}
+
+.summary-card {
+    padding: 17px;
+
+    background: #ffffff;
+
+    border:
+        1px solid #e8ebf1;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 6px 20px rgba(31,41,55,0.035);
+}
+
+.summary-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 11px;
+
+    font-size: 17px;
+}
+
+.summary-total .summary-icon {
+    background: #eef3ff;
+}
+
+.summary-class .summary-icon {
+    background: #f5e9e6;
+}
+
+.summary-status .summary-icon {
+    background: #e8f7ee;
+}
+
+.summary-label {
+    margin-top: 11px;
+
+    color: #929aa8;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.6px;
+}
+
+.summary-value {
+    margin-top: 4px;
+
+    color: #202735;
+
+    font-size: 20px;
+
+    font-weight: 850;
+}
+
+
+/* ============================================================
+   SUBJECT CARD
+============================================================ */
+
+.subject-card {
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border:
+        1px solid #e8ebf1;
+
+    border-radius: 17px;
+
+    box-shadow:
+        0 6px 20px rgba(31,41,55,0.035);
+}
+
+.subject-card-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding:
+        18px 20px;
+
+    border-bottom:
+        1px solid #edf0f3;
+}
+
+.subject-card-header h2 {
+    margin: 0;
+
+    color: #29313e;
+
+    font-size: 15px;
+
+    font-weight: 850;
+}
+
+.subject-card-header p {
+    margin: 4px 0 0;
+
+    color: #969eac;
+
+    font-size: 8px;
+}
+
+.subject-count-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 32px;
+
+    min-height: 28px;
+
+    padding: 0 9px;
+
+    border-radius: 7px;
+
+    background: #faf0ed;
+
+    color: #9a5243;
+
+    font-size: 8px;
+
+    font-weight: 850;
+}
+
+
+/* ============================================================
+   SUBJECT LIST
+============================================================ */
+
+.subject-list {
+    padding:
+        7px 20px 18px;
+}
+
+.subject-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding:
+        14px 0;
+
+    border-bottom:
+        1px solid #f0f2f5;
+}
+
+.subject-row:last-child {
+    border-bottom: none;
+}
+
+.subject-main {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    min-width: 0;
+}
+
+.subject-icon {
+    width: 44px;
+    height: 44px;
+
+    min-width: 44px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f4f7ff,
+            #eaf0ff
+        );
+
+    font-size: 18px;
+}
+
+.subject-info {
+    min-width: 0;
+}
+
+.subject-name {
+    display: block;
+
+    color: #2f3745;
+
+    font-size: 12px;
+
+    font-weight: 850;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.subject-details {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    margin-top: 5px;
+}
+
+.subject-details span {
+    display: inline-flex;
+
+    align-items: center;
+
+    min-height: 21px;
+
+    padding: 0 7px;
+
+    border-radius: 6px;
+
+    background: #f7f8fa;
+
+    color: #8e97a5;
+
+    font-size: 7px;
+
+    font-weight: 750;
+}
+
+.subject-status {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding:
+        6px 8px;
+
+    border-radius: 7px;
+
+    background: #e8f7ee;
+
+    color: #22824a;
+
+    font-size: 7px;
+
+    font-weight: 850;
+
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #28a35a;
+}
+
+
+/* ============================================================
+   EMPTY
+============================================================ */
+
+.empty-state {
+    padding:
+        55px 20px;
+
+    text-align: center;
+}
+
+.empty-icon {
+    width: 62px;
+    height: 62px;
+
+    margin:
+        0 auto 13px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 17px;
+
+    background: #f5e9e6;
+
+    font-size: 26px;
+}
+
+.empty-state h3 {
+    margin: 0;
+
+    color: #343c49;
+
+    font-size: 16px;
+
+    font-weight: 850;
+}
+
+.empty-state p {
+    max-width: 430px;
+
+    margin:
+        7px auto 0;
+
+    color: #969eac;
+
+    font-size: 9px;
+
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   INFORMATION
+============================================================ */
+
+.info-card {
+    margin-top: 18px;
+
+    padding: 18px 20px;
+
+    background: #ffffff;
+
+    border:
+        1px solid #e8ebf1;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 6px 20px rgba(31,41,55,0.03);
+}
+
+.info-title {
+    margin: 0 0 6px;
+
+    color: #303846;
+
+    font-size: 12px;
+
+    font-weight: 850;
+}
+
+.info-text {
+    margin: 0;
+
+    color: #8f98a6;
+
+    font-size: 8px;
+
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   DARK MODE
+============================================================ */
+
+body.dark-mode .summary-card,
+body.dark-mode .subject-card,
+body.dark-mode .info-card {
+    background: #181c2a;
+
+    border-color: #292e3d;
+}
+
+body.dark-mode .summary-value,
+body.dark-mode .subject-card-header h2,
+body.dark-mode .subject-name,
+body.dark-mode .info-title {
+    color: #f2f4f8;
+}
+
+body.dark-mode .summary-label,
+body.dark-mode .subject-card-header p,
+body.dark-mode .subject-details span,
+body.dark-mode .empty-state p,
+body.dark-mode .info-text {
+    color: #929bad;
+}
+
+body.dark-mode .subject-row {
+    border-color: #292e3d;
+}
+
+body.dark-mode .subject-details span {
+    background: #202431;
+}
+
+body.dark-mode .empty-state h3 {
+    color: #f2f4f8;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 800px) {
+
+    .subject-summary {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .subject-header {
+        padding: 23px 20px;
+    }
+
+    .subject-header h1 {
+        font-size: 23px;
+    }
+
+    .subject-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .subject-row {
+        align-items: flex-start;
+    }
+
+    .subject-main {
+        align-items: flex-start;
+    }
+
+}
+
+</style>
+
+
+<div class="subject-page">
+
+
+    <!-- ========================================================
+         HEADER
+    ========================================================= -->
+
+    <section class="subject-header">
+
+        <div class="subject-header-content">
+
+            <div class="subject-header-label">
+                STUDENT PORTAL
+            </div>
+
+            <h1>
+                📚 My Subjects
+            </h1>
+
+            <p>
+                View the subjects officially assigned to your
+                current class. This page contains your academic
+                subjects only.
+            </p>
+
+
+            <div class="subject-meta">
+
+                <span>
+                    👤
+                    {{ student.student_id }}
+                </span>
+
+
+                {% if class_room %}
+
+                    <span>
+                        🏫
+                        {{ class_room.name }}
+                    </span>
+
+                {% else %}
+
+                    <span>
+                        🏫
+                        No Class Assigned
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================================
+         SUMMARY
+    ========================================================= -->
+
+    <div class="subject-summary">
+
+
+        <!-- TOTAL SUBJECTS -->
+
+        <div class="summary-card summary-total">
+
+            <div class="summary-icon">
+                📚
+            </div>
+
+            <div class="summary-label">
+                Total Subjects
+            </div>
+
+            <div class="summary-value">
+                {{ subject_count|default:"0" }}
+            </div>
+
+        </div>
+
+
+        <!-- CLASS -->
+
+        <div class="summary-card summary-class">
+
+            <div class="summary-icon">
+                🏫
+            </div>
+
+            <div class="summary-label">
+                My Class
+            </div>
+
+            <div class="summary-value">
+
+                {% if class_room %}
+                    {{ class_room.name }}
+                {% else %}
+                    —
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="summary-card summary-status">
+
+            <div class="summary-icon">
+                ✅
+            </div>
+
+            <div class="summary-label">
+                Curriculum Status
+            </div>
+
+            <div class="summary-value">
+
+                {% if subject_count %}
+                    Active
+                {% else %}
+                    —
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ========================================================
+         SUBJECT CARD
+    ========================================================= -->
+
+    <section class="subject-card">
+
+
+        <div class="subject-card-header">
+
+            <div>
+
+                <h2>
+                    📚 Class Subjects
+                </h2>
+
+                <p>
+                    Subjects provided for your current class.
+                </p>
+
+            </div>
+
+
+            <div class="subject-count-badge">
+
+                {{ subject_count|default:"0" }}
+
+            </div>
+
+        </div>
+
+
+        {% if subject_rows %}
+
+
+            <div class="subject-list">
+
+
+                {% for row in subject_rows %}
+
+                    <div class="subject-row">
+
+
+                        <div class="subject-main">
+
+
+                            <div class="subject-icon">
+                                📚
+                            </div>
+
+
+                            <div class="subject-info">
+
+                                <span class="subject-name">
+                                    {{ row.subject.name }}
+                                </span>
+
+
+                                <div class="subject-details">
+
+
+                                    {% if row.subject.code %}
+
+                                        <span>
+                                            Code:
+                                            {{ row.subject.code }}
+                                        </span>
+
+                                    {% endif %}
+
+
+                                    {% if row.subject.credit_hours %}
+
+                                        <span>
+                                            {{ row.subject.credit_hours }}
+                                            Credit Hours
+                                        </span>
+
+                                    {% endif %}
+
+
+                                    {% if row.enrolled %}
+
+                                        <span>
+                                            Enrolled
+                                        </span>
+
+                                    {% else %}
+
+                                        <span>
+                                            Class Subject
+                                        </span>
+
+                                    {% endif %}
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="subject-status">
+
+                            <span class="status-dot"></span>
+
+                            Active
+
+                        </div>
+
+
+                    </div>
+
+                {% endfor %}
+
+
+            </div>
+
+
+        {% else %}
+
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    📚
+                </div>
+
+                <h3>
+                    No Subjects Assigned
+                </h3>
+
+                <p>
+                    No active subjects have been assigned
+                    to your class yet. Please contact the
+                    school Administrator.
+                </p>
+
+            </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+    <!-- ========================================================
+         INFORMATION
+    ========================================================= -->
+
+    <section class="info-card">
+
+        <h3 class="info-title">
+            Academic Information
+        </h3>
+
+        <p class="info-text">
+            The subjects displayed here come from your
+            class curriculum. Your school administration
+            manages the curriculum and your enrollment.
+        </p>
+
+    </section>
+
+
+</div>
+
+{% endblock content %}
+

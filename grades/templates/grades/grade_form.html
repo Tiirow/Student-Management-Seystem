@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% if edit_mode %}
+            Edit Result
+        {% else %}
+            Add Student Result
+        {% endif %}
+    </title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+            background: #f5f7fa;
+            color: #1f2937;
+        }
+
+        .grade-page {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px 60px;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .grade-header {
+            margin-bottom: 28px;
+        }
+
+        .grade-header h1 {
+            font-size: 30px;
+            font-weight: 800;
+            margin: 0 0 8px;
+            color: #111827;
+        }
+
+        .grade-header p {
+            color: #6b7280;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* =====================================================
+           CARD
+        ===================================================== */
+
+        .grade-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow:
+                0 15px 45px rgba(15, 23, 42, 0.08);
+            border: 1px solid #e5e7eb;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: #111827;
+        }
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1f2937;
+        }
+
+        .form-control,
+        .form-select {
+            width: 100%;
+            min-height: 48px;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            background: #ffffff;
+            font-size: 15px;
+            color: #1f2937;
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #9A5243;
+            box-shadow:
+                0 0 0 3px rgba(154, 82, 67, 0.12);
+        }
+
+        .form-control::placeholder {
+            color: #9ca3af;
+        }
+
+        /* =====================================================
+           STUDENT INFORMATION
+        ===================================================== */
+
+        .student-info {
+            background:
+                linear-gradient(
+                    135deg,
+                    #9A5243,
+                    #6f382f
+                );
+            color: white;
+            border-radius: 18px;
+            padding: 24px;
+            margin-top: 20px;
+        }
+
+        .student-info h3 {
+            margin: 0 0 18px;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .student-info-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .student-info-item {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .student-info-item span {
+            display: block;
+            font-size: 12px;
+            opacity: 0.75;
+            margin-bottom: 5px;
+        }
+
+        .student-info-item strong {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           SUBJECT TABLE
+        ===================================================== */
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .subject-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        .subject-table th {
+            text-align: left;
+            padding: 14px;
+            background: #f8fafc;
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 800;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .subject-table td {
+            padding: 14px;
+            border-bottom: 1px solid #eef2f7;
+            vertical-align: middle;
+        }
+
+        .subject-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .subject-name {
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .score-input {
+            max-width: 150px;
+        }
+
+        /* =====================================================
+           EMPTY STATE
+        ===================================================== */
+
+        .empty-state {
+            padding: 35px;
+            text-align: center;
+            color: #64748b;
+            background: #f8fafc;
+            border-radius: 14px;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .empty-state strong {
+            display: block;
+            font-size: 16px;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* =====================================================
+           ERRORS
+        ===================================================== */
+
+        .error-list {
+            color: #dc2626;
+            margin-top: 7px;
+            font-size: 13px;
+        }
+
+        .error-list ul {
+            margin: 5px 0 0;
+            padding-left: 18px;
+        }
+
+        .non-field-errors {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* =====================================================
+           ACTIONS
+        ===================================================== */
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 0 20px;
+            border-radius: 11px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            transition:
+                background 0.2s ease,
+                transform 0.15s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-primary {
+            background: #9A5243;
+            color: white;
+            box-shadow:
+                0 8px 20px rgba(154, 82, 67, 0.20);
+        }
+
+        .btn-primary:hover {
+            background: #7d4035;
+        }
+
+        /* =====================================================
+           TOP NAVIGATION
+        ===================================================== */
+
+        .top-bar {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 15px 20px;
+        }
+
+        .top-bar-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .brand {
+            color: #9A5243;
+            font-size: 18px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .back-link {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: #9A5243;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 750px) {
+
+            .grade-page {
+                margin: 25px auto;
+                padding: 0 14px 40px;
+            }
+
+            .grade-header h1 {
+                font-size: 25px;
+            }
+
+            .grade-card {
+                padding: 20px;
+                border-radius: 16px;
+            }
+
+            .student-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .student-info {
+                padding: 20px;
+            }
+
+            .table-wrapper {
+                overflow-x: auto;
+            }
+
+            .actions {
+                justify-content: stretch;
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .top-bar-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     TOP BAR
+========================================================= -->
+
+<div class="top-bar">
+    <div class="top-bar-inner">
+
+        <a
+            href="{% url 'grade-list' %}"
+            class="brand"
+        >
+            Student Management System
+        </a>
+
+        <a
+            href="{% url 'grade-list' %}"
+            class="back-link"
+        >
+            ← Back to Results
+        </a>
+
+    </div>
+</div>
+
+
+<!-- =========================================================
+     MAIN PAGE
+========================================================= -->
+
+<div class="grade-page">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="grade-header">
+
+        <h1>
+
+            {% if edit_mode %}
+                ✏️ Edit Student Result
+            {% else %}
+                📊 Add Student Result
+            {% endif %}
+
+        </h1>
+
+        <p>
+
+            {% if edit_mode %}
+
+                Update the student's academic result.
+
+            {% else %}
+
+                Select a student, choose the semester,
+                and enter results for their enrolled subjects.
+
+            {% endif %}
+
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         EDIT MODE
+    ====================================================== -->
+
+    {% if edit_mode %}
+
+        <div class="grade-card">
+
+            <div class="section-title">
+                Result Information
+            </div>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+
+                    <div class="non-field-errors">
+                        {{ form.non_field_errors }}
+                    </div>
+
+                {% endif %}
+
+
+                <!-- STUDENT -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Student
+                    </label>
+
+                    {{ form.student }}
+
+                    {% if form.student.errors %}
+
+                        <div class="error-list">
+                            {{ form.student.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- SUBJECT -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Subject
+                    </label>
+
+                    {{ form.subject }}
+
+                    {% if form.subject.errors %}
+
+                        <div class="error-list">
+                            {{ form.subject.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- SEMESTER -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Semester
+                    </label>
+
+                    {{ form.semester }}
+
+                    {% if form.semester.errors %}
+
+                        <div class="error-list">
+                            {{ form.semester.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- SCORE -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Score
+                    </label>
+
+                    {{ form.score }}
+
+                    {% if form.score.errors %}
+
+                        <div class="error-list">
+                            {{ form.score.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="actions">
+
+                    <a
+                        href="{% url 'grade-list' %}"
+                        class="btn btn-secondary"
+                    >
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        💾 Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+    <!-- =====================================================
+         CREATE MODE
+    ====================================================== -->
+
+    {% else %}
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            <!-- =================================================
+                 STUDENT SELECTION
+            ================================================== -->
+
+            <div class="grade-card">
+
+                <div class="section-title">
+                    👤 Select Student
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Student
+                    </label>
+
+                    <select
+                        name="student"
+                        class="form-select"
+                        onchange="loadStudent(this.value)"
+                        required
+                    >
+
+                        <option value="">
+                            -- Select Student --
+                        </option>
+
+
+                        {% for student in students %}
+
+                            <option
+                                value="{{ student.id }}"
+
+                                {% if selected_student_id == student.id|stringformat:"s" %}
+                                    selected
+                                {% endif %}
+                            >
+
+                                {{ student.first_name }}
+                                {{ student.last_name }}
+
+                                —
+
+                                {{ student.student_id }}
+
+                                {% if student.class_room %}
+
+                                    —
+                                    {{ student.class_room.name }}
+
+                                {% endif %}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- =============================================
+                     SELECTED STUDENT INFORMATION
+                ============================================== -->
+
+                {% if selected_student %}
+
+                    <div class="student-info">
+
+                        <h3>
+
+                            {{ selected_student.first_name }}
+                            {{ selected_student.last_name }}
+
+                        </h3>
+
+
+                        <div class="student-info-grid">
+
+                            <!-- STUDENT ID -->
+
+                            <div class="student-info-item">
+
+                                <span>
+                                    Student ID
+                                </span>
+
+                                <strong>
+                                    {{ selected_student.student_id }}
+                                </strong>
+
+                            </div>
+
+
+                            <!-- USERNAME -->
+
+                            <div class="student-info-item">
+
+                                <span>
+                                    Username
+                                </span>
+
+                                <strong>
+
+                                    {% if selected_student.user %}
+
+                                        {{ selected_student.user.username }}
+
+                                    {% else %}
+
+                                        Not Connected
+
+                                    {% endif %}
+
+                                </strong>
+
+                            </div>
+
+
+                            <!-- CLASS -->
+
+                            <div class="student-info-item">
+
+                                <span>
+                                    Class
+                                </span>
+
+                                <strong>
+
+                                    {% if selected_student.class_room %}
+
+                                        {{ selected_student.class_room.name }}
+
+                                    {% else %}
+
+                                        Not Assigned
+
+                                    {% endif %}
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- =================================================
+                 SEMESTER
+            ================================================== -->
+
+            {% if selected_student %}
+
+                <div class="grade-card">
+
+                    <div class="section-title">
+                        📅 Select Semester
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Semester
+                        </label>
+
+                        <select
+                            name="semester"
+                            class="form-select"
+                            onchange="changeSemester(this.value)"
+                            required
+                        >
+
+                            {% for value, label in semester_choices %}
+
+                                <option
+                                    value="{{ value }}"
+
+                                    {% if selected_semester == value %}
+                                        selected
+                                    {% endif %}
+                                >
+
+                                    {{ label }}
+
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     SUBJECT RESULTS
+                ================================================== -->
+
+                <div class="grade-card">
+
+                    <div class="section-title">
+                        📚 Subject Results
+                    </div>
+
+
+                    {% if enrolled_subjects %}
+
+                        <div class="table-wrapper">
+
+                            <table class="subject-table">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            Subject
+                                        </th>
+
+                                        <th>
+                                            Score
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+                                    {% for enrollment in enrolled_subjects %}
+
+                                        <tr>
+
+                                            <td class="subject-name">
+
+                                                {{ enrollment.subject.name }}
+
+                                            </td>
+
+
+                                            <td>
+
+                                                <input
+                                                    type="number"
+                                                    name="score_{{ enrollment.subject.id }}"
+                                                    class="form-control score-input"
+                                                    min="0"
+                                                    max="100"
+                                                    step="0.01"
+                                                    placeholder="0 - 100"
+                                                >
+
+                                            </td>
+
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+
+                    {% else %}
+
+                        <div class="empty-state">
+
+                            <strong>
+                                No active subjects found.
+                            </strong>
+
+                            <p>
+                                Please enroll this student
+                                in subjects before entering results.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- =================================================
+                     ACTIONS
+                ================================================== -->
+
+                <div class="actions">
+
+                    <a
+                        href="{% url 'grade-list' %}"
+                        class="btn btn-secondary"
+                    >
+                        Cancel
+                    </a>
+
+
+                    {% if enrolled_subjects %}
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            💾 Save Results
+                        </button>
+
+                    {% endif %}
+
+                </div>
+
+            {% endif %}
+
+        </form>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    /* =========================================================
+       LOAD STUDENT
+    ========================================================= */
+
+    function loadStudent(studentId) {
+
+        if (!studentId) {
+
+            window.location.href =
+                "{% url 'grade-create' %}";
+
+            return;
+        }
+
+        window.location.href =
+            "{% url 'grade-create' %}" +
+            "?student=" +
+            encodeURIComponent(studentId);
+    }
+
+
+    /* =========================================================
+       CHANGE SEMESTER
+    ========================================================= */
+
+    function changeSemester(semester) {
+
+        const studentSelect =
+            document.querySelector(
+                'select[name="student"]'
+            );
+
+        if (!studentSelect) {
+            return;
+        }
+
+        const studentId =
+            studentSelect.value;
+
+        if (!studentId) {
+            return;
+        }
+
+        window.location.href =
+            "{% url 'grade-create' %}" +
+            "?student=" +
+            encodeURIComponent(studentId) +
+            "&semester=" +
+            encodeURIComponent(semester);
+    }
+
+</script>
+
+</body>
+</html>

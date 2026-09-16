@@ -1,0 +1,1196 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Edit Attendance | Student Management System</title>
+
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        :root {
+            --primary: #9A5243;
+            --primary-dark: #7e4035;
+            --primary-light: #f5e8e4;
+
+            --background: #f7f8fa;
+
+            --card: #ffffff;
+
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+
+            --success: #16845b;
+            --success-light: #e8f7f0;
+
+            --danger: #dc2626;
+            --danger-light: #fef2f2;
+
+            --orange: #d97706;
+            --orange-light: #fff7ed;
+
+            --sidebar-width: 260px;
+        }
+
+
+        body {
+
+            font-family: "Inter", sans-serif;
+
+            background: var(--background);
+
+            color: var(--text);
+
+            min-height: 100vh;
+
+        }
+
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+        .sidebar {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: var(--sidebar-width);
+
+            height: 100vh;
+
+            background: white;
+
+            border-right: 1px solid var(--border);
+
+            display: flex;
+
+            flex-direction: column;
+
+            z-index: 1000;
+
+        }
+
+
+        .brand {
+
+            height: 82px;
+
+            padding: 0 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            border-bottom: 1px solid var(--border);
+
+        }
+
+
+        .brand-logo {
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 12px;
+
+            background: var(--primary);
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+
+        .brand-text {
+            margin-left: 12px;
+        }
+
+
+        .brand-title {
+
+            font-size: 15px;
+
+            font-weight: 800;
+
+        }
+
+
+        .brand-subtitle {
+
+            margin-top: 3px;
+
+            font-size: 10px;
+
+            color: var(--muted);
+
+            letter-spacing: .4px;
+
+        }
+
+
+        .sidebar-content {
+
+            flex: 1;
+
+            padding: 20px 14px;
+
+        }
+
+
+        .nav-title {
+
+            padding: 0 12px;
+
+            margin-bottom: 10px;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            color: #9ca3af;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+        }
+
+
+        .nav-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 11px 13px;
+
+            margin-bottom: 4px;
+
+            border-radius: 10px;
+
+            color: #596273;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+        }
+
+
+        .nav-item:hover {
+
+            background: var(--primary-light);
+
+            color: var(--primary);
+
+        }
+
+
+        .nav-item.active {
+
+            background: var(--primary);
+
+            color: white;
+
+        }
+
+
+        .nav-divider {
+
+            height: 1px;
+
+            background: var(--border);
+
+            margin: 18px 8px;
+
+        }
+
+
+        .sidebar-user {
+
+            padding: 15px;
+
+            border-top: 1px solid var(--border);
+
+        }
+
+
+        .user-box {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 10px;
+
+            background: #fafafa;
+
+            border-radius: 12px;
+
+        }
+
+
+        .user-avatar {
+
+            width: 38px;
+            height: 38px;
+
+            border-radius: 10px;
+
+            background: var(--primary-light);
+
+            color: var(--primary);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-weight: 800;
+
+        }
+
+
+        .user-info {
+
+            min-width: 0;
+
+        }
+
+
+        .user-name {
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        .user-role {
+
+            margin-top: 2px;
+
+            font-size: 10px;
+
+            color: var(--muted);
+
+        }
+
+
+        .main {
+
+            margin-left: var(--sidebar-width);
+
+            min-height: 100vh;
+
+        }
+
+
+        .topbar {
+
+            height: 82px;
+
+            padding: 0 32px;
+
+            background: white;
+
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+        }
+
+
+        .page-title {
+
+            font-size: 21px;
+
+            font-weight: 800;
+
+        }
+
+
+        .page-subtitle {
+
+            margin-top: 3px;
+
+            font-size: 12px;
+
+            color: var(--muted);
+
+        }
+
+
+        .role-badge {
+
+            padding: 8px 12px;
+
+            border-radius: 999px;
+
+            background: var(--primary-light);
+
+            color: var(--primary);
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+        }
+
+
+        .content {
+
+            padding: 30px 32px 40px;
+
+        }
+
+
+        .back-link {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 20px;
+
+            color: var(--primary);
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+        }
+
+
+        .edit-card {
+
+            max-width: 760px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+        }
+
+
+        .edit-header {
+
+            padding: 22px;
+
+            border-bottom: 1px solid var(--border);
+
+        }
+
+
+        .edit-header h1 {
+
+            font-size: 20px;
+
+            font-weight: 800;
+
+            margin-bottom: 6px;
+
+        }
+
+
+        .edit-header p {
+
+            font-size: 11px;
+
+            color: var(--muted);
+
+        }
+
+
+        .student-box {
+
+            margin: 20px;
+
+            padding: 18px;
+
+            background: #fafafa;
+
+            border: 1px solid var(--border);
+
+            border-radius: 14px;
+
+        }
+
+
+        .student-name {
+
+            font-size: 15px;
+
+            font-weight: 800;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .student-meta {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px 22px;
+
+            font-size: 10px;
+
+            color: var(--muted);
+
+        }
+
+
+        .form-area {
+
+            padding: 0 20px 22px;
+
+        }
+
+
+        .field {
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .field label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            color: #4b5563;
+
+        }
+
+
+        .control {
+
+            width: 100%;
+
+            padding: 12px 13px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 10px;
+
+            background: white;
+
+            color: #374151;
+
+            font-size: 11px;
+
+            outline: none;
+
+        }
+
+
+        .control:focus {
+
+            border-color: var(--primary);
+
+            box-shadow:
+                0 0 0 3px rgba(154,82,67,.08);
+
+        }
+
+
+        textarea.control {
+
+            min-height: 110px;
+
+            resize: vertical;
+
+        }
+
+
+        .readonly-box {
+
+            width: 100%;
+
+            padding: 12px 13px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 10px;
+
+            background: #f9fafb;
+
+            color: #6b7280;
+
+            font-size: 11px;
+
+        }
+
+
+        .actions {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 10px;
+
+            padding-top: 5px;
+
+        }
+
+
+        .button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            padding: 11px 16px;
+
+            border-radius: 10px;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+        }
+
+
+        .cancel {
+
+            background: #f3f4f6;
+
+            color: #4b5563;
+
+        }
+
+
+        .save {
+
+            border: none;
+
+            background: var(--primary);
+
+            color: white;
+
+        }
+
+
+        .save:hover {
+
+            background: var(--primary-dark);
+
+        }
+
+
+        @media (max-width: 850px) {
+
+            .sidebar {
+
+                display: none;
+
+            }
+
+            .main {
+
+                margin-left: 0;
+
+            }
+
+            .topbar {
+
+                padding: 0 20px;
+
+            }
+
+            .content {
+
+                padding: 22px 20px 30px;
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .content {
+
+                padding: 18px 14px 25px;
+
+            }
+
+            .topbar {
+
+                height: 72px;
+
+            }
+
+            .page-title {
+
+                font-size: 18px;
+
+            }
+
+            .page-subtitle,
+
+            .role-badge {
+
+                display: none;
+
+            }
+
+            .student-meta {
+
+                flex-direction: column;
+
+                gap: 7px;
+
+            }
+
+            .actions {
+
+                flex-direction: column-reverse;
+
+            }
+
+            .button {
+
+                width: 100%;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<aside class="sidebar">
+
+
+    <div class="brand">
+
+        <div class="brand-logo">
+
+            <i class="fa-solid fa-graduation-cap"></i>
+
+        </div>
+
+
+        <div class="brand-text">
+
+            <div class="brand-title">
+                Student Management
+            </div>
+
+            <div class="brand-subtitle">
+                ADMINISTRATION SYSTEM
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="sidebar-content">
+
+
+        <div class="nav-title">
+            Main Menu
+        </div>
+
+
+        <a
+            href="{% url 'student-home' %}"
+            class="nav-item"
+        >
+
+            <i class="fa-solid fa-chart-pie"></i>
+
+            Dashboard
+
+        </a>
+
+
+        <a
+            href="{% url 'student-list' %}"
+            class="nav-item"
+        >
+
+            <i class="fa-solid fa-user-graduate"></i>
+
+            Students
+
+        </a>
+
+
+        <a
+            href="{% url 'class-list' %}"
+            class="nav-item"
+        >
+
+            <i class="fa-solid fa-school"></i>
+
+            Classes
+
+        </a>
+
+
+        <div class="nav-divider"></div>
+
+
+        <div class="nav-title">
+            Academic
+        </div>
+
+
+        <a
+            href="{% url 'attendance-list' %}"
+            class="nav-item active"
+        >
+
+            <i class="fa-solid fa-calendar-check"></i>
+
+            Attendance
+
+        </a>
+
+
+        <a
+            href="{% url 'grade-list' %}"
+            class="nav-item"
+        >
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            Grades
+
+        </a>
+
+
+    </div>
+
+
+    <div class="sidebar-user">
+
+
+        <div class="user-box">
+
+
+            <div class="user-avatar">
+
+                {% if request.user.first_name %}
+
+                    {{ request.user.first_name|first|upper }}
+
+                {% else %}
+
+                    {{ request.user.username|first|upper }}
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="user-info">
+
+                <div class="user-name">
+
+                    {% if request.user.get_full_name %}
+
+                        {{ request.user.get_full_name }}
+
+                    {% else %}
+
+                        {{ request.user.username }}
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="user-role">
+
+                    {{ current_role }}
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</aside>
+
+
+<main class="main">
+
+
+    <header class="topbar">
+
+
+        <div>
+
+            <div class="page-title">
+                Edit Attendance
+            </div>
+
+            <div class="page-subtitle">
+                Update student attendance record
+            </div>
+
+        </div>
+
+
+        <div class="role-badge">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+            {{ current_role }}
+
+        </div>
+
+
+    </header>
+
+
+    <section class="content">
+
+
+        <a
+            href="{% url 'attendance-list' %}"
+            class="back-link"
+        >
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Attendance
+
+        </a>
+
+
+        <div class="edit-card">
+
+
+            <div class="edit-header">
+
+                <h1>
+                    Update Attendance Record
+                </h1>
+
+                <p>
+                    Change the attendance status or add notes for this record.
+                </p>
+
+            </div>
+
+
+            <div class="student-box">
+
+
+                <div class="student-name">
+
+                    {{ student.first_name }}
+
+                    {{ student.last_name }}
+
+                </div>
+
+
+                <div class="student-meta">
+
+
+                    <span>
+
+                        <strong>
+                            Student ID:
+                        </strong>
+
+                        {{ student.student_id }}
+
+                    </span>
+
+
+                    <span>
+
+                        <strong>
+                            Class:
+                        </strong>
+
+                        {% if class_room %}
+
+                            {{ class_room.name }}
+
+                        {% else %}
+
+                            No Class
+
+                        {% endif %}
+
+                    </span>
+
+
+                    <span>
+
+                        <strong>
+                            Subject:
+                        </strong>
+
+                        {{ subject.name }}
+
+                    </span>
+
+
+                    <span>
+
+                        <strong>
+                            Date:
+                        </strong>
+
+                        {{ attendance.date|date:"M d, Y" }}
+
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+
+            <div class="form-area">
+
+
+                <form
+                    method="post"
+                >
+
+                    {% csrf_token %}
+
+
+                    <!-- STATUS -->
+
+                    <div class="field">
+
+                        <label for="status">
+                            Attendance Status
+                        </label>
+
+
+                        <select
+                            name="status"
+                            id="status"
+                            class="control"
+                            required
+                        >
+
+
+                            {% for choice in status_choices %}
+
+                                <option
+                                    value="{{ choice }}"
+                                    {% if attendance.status == choice %}
+                                        selected
+                                    {% endif %}
+                                >
+
+                                    {{ choice }}
+
+                                </option>
+
+                            {% endfor %}
+
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- DATE -->
+
+                    <div class="field">
+
+                        <label>
+                            Attendance Date
+                        </label>
+
+
+                        <div class="readonly-box">
+
+                            {{ attendance.date|date:"F d, Y" }}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SUBJECT -->
+
+                    <div class="field">
+
+                        <label>
+                            Subject
+                        </label>
+
+
+                        <div class="readonly-box">
+
+                            {{ subject.name }}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- NOTES -->
+
+                    <div class="field">
+
+                        <label for="notes">
+                            Notes
+                        </label>
+
+
+                        <textarea
+                            name="notes"
+                            id="notes"
+                            class="control"
+                            placeholder="Optional attendance notes..."
+                        >{{ attendance.notes|default:"" }}</textarea>
+
+                    </div>
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="actions">
+
+
+                        <a
+                            href="{% url 'attendance-list' %}"
+                            class="button cancel"
+                        >
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                            Cancel
+
+                        </a>
+
+
+                        <button
+                            type="submit"
+                            class="button save"
+                        >
+
+                            <i class="fa-solid fa-check"></i>
+
+                            Update Attendance
+
+                        </button>
+
+
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+</body>
+
+</html>
+

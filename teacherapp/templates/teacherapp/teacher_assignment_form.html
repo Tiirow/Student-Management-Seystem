@@ -1,0 +1,447 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+<style>
+    .assignment-page {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .page-header {
+        margin-bottom: 28px;
+    }
+
+    .page-header h1 {
+        margin: 0;
+        font-size: 32px;
+        font-weight: 800;
+        color: #172033;
+    }
+
+    .page-header p {
+        margin-top: 8px;
+        color: #718096;
+        font-size: 15px;
+    }
+
+    .assignment-card {
+        background: #ffffff;
+        border: 1px solid #e5e9ef;
+        border-radius: 20px;
+        padding: 35px;
+        box-shadow: 0 12px 35px rgba(15, 23, 42, 0.07);
+    }
+
+    .step {
+        display: flex;
+        gap: 18px;
+        margin-bottom: 30px;
+    }
+
+    .step-number {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        border-radius: 50%;
+        background: #9A5243;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+    }
+
+    .step-content {
+        flex: 1;
+    }
+
+    .step-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #172033;
+        margin-bottom: 9px;
+    }
+
+    .form-select {
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 52px;
+        border: 1px solid #d8dee8;
+        border-radius: 10px;
+        padding: 0 14px;
+        background: #ffffff;
+        color: #172033;
+        font-size: 15px;
+    }
+
+    .form-select:focus {
+        outline: none;
+        border-color: #9A5243;
+        box-shadow: 0 0 0 3px rgba(154, 82, 67, 0.12);
+    }
+
+    .help-text {
+        margin-top: 8px;
+        font-size: 13px;
+        color: #8a94a6;
+    }
+
+    .error-box {
+        background: #fff5f5;
+        border: 1px solid #fecaca;
+        color: #b42318;
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 20px;
+    }
+
+    .field-error {
+        color: #b42318;
+        font-size: 13px;
+        margin-top: 7px;
+    }
+
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 10px;
+        padding-top: 25px;
+        border-top: 1px solid #edf0f4;
+    }
+
+    .btn {
+        border: none;
+        border-radius: 10px;
+        padding: 13px 22px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .btn-cancel {
+        background: #f2f4f7;
+        color: #344054;
+    }
+
+    .btn-primary {
+        background: #9A5243;
+        color: #ffffff;
+    }
+
+    .btn-primary:hover {
+        background: #824335;
+    }
+
+    .btn-cancel:hover {
+        background: #e7e9ed;
+    }
+
+    .loading {
+        opacity: 0.65;
+    }
+
+    @media (max-width: 700px) {
+        .assignment-page {
+            margin: 20px auto;
+        }
+
+        .assignment-card {
+            padding: 22px;
+        }
+
+        .actions {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+
+<div class="assignment-page">
+
+    <!-- ===================================================== -->
+    <!-- HEADER -->
+    <!-- ===================================================== -->
+
+    <div class="page-header">
+        <h1>
+            📚 Assign Teacher
+        </h1>
+
+        <p>
+            Assign a teacher to a specific class and subject.
+        </p>
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- CARD -->
+    <!-- ===================================================== -->
+
+    <div class="assignment-card">
+
+        <!-- ================================================= -->
+        <!-- FORM ERRORS -->
+        <!-- ================================================= -->
+
+        {% if form.non_field_errors %}
+            <div class="error-box">
+                {% for error in form.non_field_errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+
+        <!-- ================================================= -->
+        <!-- FORM -->
+        <!-- ================================================= -->
+
+        <form
+            method="POST"
+            action="{% url 'teacherapp:assignment-create' %}"
+        >
+
+            {% csrf_token %}
+
+
+            <!-- ============================================= -->
+            <!-- STEP 1: TEACHER -->
+            <!-- ============================================= -->
+
+            <div class="step">
+
+                <div class="step-number">
+                    1
+                </div>
+
+                <div class="step-content">
+
+                    <div class="step-title">
+                        Select Teacher
+                    </div>
+
+                    {{ form.teacher }}
+
+                    {% if form.teacher.errors %}
+                        <div class="field-error">
+                            {{ form.teacher.errors }}
+                        </div>
+                    {% endif %}
+
+                    <div class="help-text">
+                        Select an active teacher.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ============================================= -->
+            <!-- STEP 2: CLASS -->
+            <!-- ============================================= -->
+
+            <div class="step">
+
+                <div class="step-number">
+                    2
+                </div>
+
+                <div class="step-content">
+
+                    <div class="step-title">
+                        Select Class
+                    </div>
+
+                    {{ form.class_room }}
+
+                    {% if form.class_room.errors %}
+                        <div class="field-error">
+                            {{ form.class_room.errors }}
+                        </div>
+                    {% endif %}
+
+                    <div class="help-text">
+                        Select the class where the teacher will teach.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ============================================= -->
+            <!-- STEP 3: SUBJECT -->
+            <!-- ============================================= -->
+
+            <div class="step">
+
+                <div class="step-number">
+                    3
+                </div>
+
+                <div class="step-content">
+
+                    <div class="step-title">
+                        Select Subject
+                    </div>
+
+                    {{ form.subject }}
+
+                    {% if form.subject.errors %}
+                        <div class="field-error">
+                            {{ form.subject.errors }}
+                        </div>
+                    {% endif %}
+
+                    <div class="help-text">
+                        Subjects will be filtered according to the selected class.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ============================================= -->
+            <!-- ACTIONS -->
+            <!-- ============================================= -->
+
+            <div class="actions">
+
+                <a
+                    href="{% url 'teacherapp:assignment-list' %}"
+                    class="btn btn-cancel"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    id="assignButton"
+                >
+                    ✓ Assign Teacher
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- DYNAMIC SUBJECT LOADING -->
+<!-- ========================================================= -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const classSelect = document.getElementById("id_class_room");
+    const subjectSelect = document.getElementById("id_subject");
+    const assignButton = document.getElementById("assignButton");
+
+    if (!classSelect || !subjectSelect) {
+        return;
+    }
+
+
+    classSelect.addEventListener("change", function () {
+
+        const classId = this.value;
+
+        subjectSelect.classList.add("loading");
+        subjectSelect.disabled = true;
+
+
+        if (!classId) {
+
+            subjectSelect.innerHTML =
+                '<option value="">Select Subject</option>';
+
+            subjectSelect.disabled = false;
+            subjectSelect.classList.remove("loading");
+
+            return;
+        }
+
+
+        subjectSelect.innerHTML =
+            '<option value="">Loading subjects...</option>';
+
+
+        fetch(
+            "{% url 'teacherapp:class-subjects' %}?class_id="
+            + encodeURIComponent(classId)
+        )
+
+        .then(function (response) {
+
+            if (!response.ok) {
+                throw new Error("Failed to load subjects.");
+            }
+
+            return response.text();
+
+        })
+
+        .then(function (html) {
+
+            subjectSelect.innerHTML =
+                '<option value="">Select Subject</option>'
+                + html;
+
+            subjectSelect.disabled = false;
+            subjectSelect.classList.remove("loading");
+
+        })
+
+        .catch(function (error) {
+
+            console.error(error);
+
+            subjectSelect.innerHTML =
+                '<option value="">Unable to load subjects</option>';
+
+            subjectSelect.disabled = false;
+            subjectSelect.classList.remove("loading");
+
+        });
+
+    });
+
+
+    /*
+     * Prevent double submission.
+     * This does NOT disable CSRF.
+     */
+    const form = document.querySelector("form");
+
+    if (form && assignButton) {
+
+        form.addEventListener("submit", function () {
+
+            assignButton.disabled = true;
+            assignButton.classList.add("loading");
+            assignButton.innerHTML = "Assigning...";
+
+        });
+
+    }
+
+});
+</script>
+
+{% endblock %}

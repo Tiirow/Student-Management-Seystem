@@ -1,0 +1,1215 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {{ teacher.get_full_name|default:teacher.username }} - Teacher Details
+    </title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+            background: #f4f6fa;
+            color: #172033;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .page {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 40px 0 70px;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .page-header {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+
+            padding: 28px 30px;
+            margin-bottom: 24px;
+
+            border-radius: 20px;
+            color: white;
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #172033 0%,
+                    #24304a 65%,
+                    #7c4035 140%
+                );
+
+            box-shadow:
+                0 20px 55px rgba(23, 32, 51, 0.14);
+        }
+
+        .page-header::before {
+            content: "";
+            position: absolute;
+
+            width: 190px;
+            height: 190px;
+
+            right: -60px;
+            top: -90px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(214, 168, 95, 0.16);
+        }
+
+        .page-header::after {
+            content: "";
+            position: absolute;
+
+            width: 120px;
+            height: 120px;
+
+            right: 140px;
+            bottom: -80px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(154, 82, 67, 0.20);
+        }
+
+        .header-left {
+            position: relative;
+            z-index: 2;
+
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-icon {
+            width: 56px;
+            height: 56px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 15px;
+
+            font-size: 26px;
+
+            background:
+                rgba(255, 255, 255, 0.12);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.20);
+        }
+
+        .header-title {
+            color: white;
+            font-size: 27px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .header-subtitle {
+            margin-top: 5px;
+
+            color:
+                rgba(255, 255, 255, 0.70);
+
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           HEADER ACTIONS
+        ===================================================== */
+
+        .header-actions {
+            position: relative;
+            z-index: 3;
+
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .header-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+
+            min-height: 42px;
+            padding: 0 15px;
+
+            border-radius: 10px;
+
+            font-size: 12px;
+            font-weight: 750;
+
+            transition:
+                all 0.2s ease;
+        }
+
+        .back-button {
+            color: white;
+
+            background:
+                rgba(255, 255, 255, 0.10);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.18);
+        }
+
+        .back-button:hover {
+            background:
+                rgba(255, 255, 255, 0.18);
+
+            transform:
+                translateY(-1px);
+        }
+
+        .edit-button {
+            color: white;
+            background: #9a5243;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.15);
+
+            box-shadow:
+                0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .edit-button:hover {
+            background: #7c3f34;
+
+            transform:
+                translateY(-1px);
+        }
+
+        /* =====================================================
+           PROFILE CARD
+        ===================================================== */
+
+        .profile-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+
+            background: white;
+
+            border:
+                1px solid #e5e7eb;
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 12px 40px
+                rgba(23, 32, 51, 0.07);
+
+            margin-bottom: 24px;
+        }
+
+        .profile-main {
+            padding: 28px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .large-avatar {
+            width: 76px;
+            height: 76px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8ece8,
+                    #f3ded8
+                );
+
+            color: #9a5243;
+
+            font-size: 25px;
+            font-weight: 800;
+
+            border:
+                1px solid #efd8d2;
+        }
+
+        .profile-name {
+            color: #172033;
+
+            font-size: 22px;
+            font-weight: 800;
+
+            letter-spacing: -0.3px;
+        }
+
+        .profile-role {
+            display: inline-flex;
+            align-items: center;
+
+            margin-top: 7px;
+
+            padding: 5px 10px;
+
+            border-radius: 999px;
+
+            background: #f8ece8;
+            color: #9a5243;
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .profile-username {
+            margin-top: 8px;
+
+            color: #7b8494;
+
+            font-size: 12.5px;
+        }
+
+        /* =====================================================
+           PROFILE INFORMATION
+        ===================================================== */
+
+        .profile-info {
+            padding: 24px 28px;
+
+            border-left:
+                1px solid #edf0f3;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 18px;
+        }
+
+        .info-item {
+            min-width: 0;
+        }
+
+        .info-label {
+            color: #8b94a4;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: #24304a;
+
+            font-size: 13px;
+            font-weight: 650;
+
+            word-break: break-word;
+        }
+
+        /* =====================================================
+           ASSIGNMENT CARD
+        ===================================================== */
+
+        .assignment-card {
+            background: white;
+
+            border:
+                1px solid #e5e7eb;
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 12px 40px
+                rgba(23, 32, 51, 0.07);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 22px 25px;
+
+            border-bottom:
+                1px solid #edf0f3;
+        }
+
+        .card-title {
+            color: #172033;
+
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .assignment-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-width: 34px;
+            height: 30px;
+
+            padding: 0 10px;
+
+            border-radius: 9px;
+
+            background: #f8ece8;
+            color: #9a5243;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .assignment-table {
+            width: 100%;
+            min-width: 680px;
+
+            border-collapse: collapse;
+        }
+
+        .assignment-table thead {
+            background: #f8f9fb;
+        }
+
+        .assignment-table th {
+            padding: 14px 20px;
+
+            text-align: left;
+
+            color: #6b7280;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+
+            border-bottom:
+                1px solid #e5e7eb;
+        }
+
+        .assignment-table td {
+            padding: 17px 20px;
+
+            color: #374151;
+
+            font-size: 13px;
+
+            border-bottom:
+                1px solid #edf0f3;
+
+            vertical-align: middle;
+        }
+
+        .assignment-table tbody tr {
+            transition:
+                background 0.18s ease;
+        }
+
+        .assignment-table tbody tr:hover {
+            background: #fcfcfd;
+        }
+
+        .assignment-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* =====================================================
+           CLASS
+        ===================================================== */
+
+        .class-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .class-icon {
+            width: 34px;
+            height: 34px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background: #f3f5f9;
+            color: #24304a;
+
+            font-size: 15px;
+        }
+
+        .class-name {
+            color: #24304a;
+            font-weight: 750;
+        }
+
+        /* =====================================================
+           SUBJECT
+        ===================================================== */
+
+        .subject-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subject-icon {
+            width: 34px;
+            height: 34px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background: #f8ece8;
+            color: #9a5243;
+
+            font-size: 15px;
+        }
+
+        .subject-name {
+            color: #374151;
+            font-weight: 650;
+        }
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            padding: 6px 10px;
+
+            border-radius: 999px;
+
+            background: #ecfdf3;
+            color: #15803d;
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .status::before {
+            content: "";
+
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: #16a34a;
+        }
+
+        .status-inactive {
+            background: #fef2f2;
+            color: #b42318;
+        }
+
+        .status-inactive::before {
+            background: #dc2626;
+        }
+
+        /* =====================================================
+           EMPTY STATE
+        ===================================================== */
+
+        .empty-state {
+            padding: 65px 25px;
+
+            text-align: center;
+        }
+
+        .empty-icon {
+            width: 65px;
+            height: 65px;
+
+            margin:
+                0 auto 16px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background: #f8ece8;
+            color: #9a5243;
+
+            font-size: 28px;
+        }
+
+        .empty-title {
+            color: #172033;
+
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .empty-text {
+            margin-top: 7px;
+
+            color: #7b8494;
+
+            font-size: 13px;
+        }
+
+        .empty-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 20px;
+
+            min-height: 42px;
+
+            padding: 0 17px;
+
+            border-radius: 9px;
+
+            background: #9a5243;
+            color: white;
+
+            font-size: 12.5px;
+            font-weight: 750;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .empty-button:hover {
+            background: #7c3f34;
+
+            transform:
+                translateY(-1px);
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .page-footer {
+            padding-top: 22px;
+
+            text-align: center;
+
+            color: #9aa2b2;
+
+            font-size: 11.5px;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 800px) {
+
+            .profile-card {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-info {
+                border-left: none;
+
+                border-top:
+                    1px solid #edf0f3;
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            .page {
+                width: calc(100% - 24px);
+                padding: 25px 0 50px;
+            }
+
+            .page-header {
+                padding: 22px 20px;
+
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .header-title {
+                font-size: 22px;
+            }
+
+            .header-subtitle {
+                font-size: 12px;
+            }
+
+            .header-actions {
+                width: 100%;
+            }
+
+            .header-button {
+                flex: 1;
+            }
+
+            .profile-main {
+                padding: 22px;
+            }
+
+            .profile-info {
+                padding: 20px 22px;
+            }
+
+            .card-header {
+                padding: 18px 17px;
+            }
+
+            .assignment-table th,
+            .assignment-table td {
+                padding: 14px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .header-left {
+                gap: 12px;
+            }
+
+            .header-icon {
+                width: 48px;
+                height: 48px;
+
+                font-size: 22px;
+            }
+
+            .header-title {
+                font-size: 20px;
+            }
+
+            .header-subtitle {
+                font-size: 11px;
+            }
+
+            .profile-main {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .large-avatar {
+                width: 64px;
+                height: 64px;
+
+                border-radius: 18px;
+            }
+
+            .profile-name {
+                font-size: 19px;
+            }
+
+            .profile-info {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="page-header">
+
+        <div class="header-left">
+
+            <div class="header-icon">
+                👨‍🏫
+            </div>
+
+            <div>
+
+                <h1 class="header-title">
+                    Teacher Details
+                </h1>
+
+                <p class="header-subtitle">
+                    View teacher information and assigned classes.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="header-actions">
+
+            <a
+                href="{% url 'teacherapp:teacher-list' %}"
+                class="header-button back-button"
+            >
+                ← Back
+            </a>
+
+            <a
+                href="{% url 'teacherapp:teacher-edit' teacher.id %}"
+                class="header-button edit-button"
+            >
+                ✎ Edit Teacher
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TEACHER PROFILE
+    ====================================================== -->
+
+    <div class="profile-card">
+
+        <!-- PROFILE MAIN -->
+
+        <div class="profile-main">
+
+            <div class="large-avatar">
+
+                {% if teacher.first_name %}
+
+                    {{ teacher.first_name|first|upper }}
+
+                {% elif teacher.username %}
+
+                    {{ teacher.username|first|upper }}
+
+                {% else %}
+
+                    T
+
+                {% endif %}
+
+            </div>
+
+
+            <div>
+
+                <h2 class="profile-name">
+
+                    {% if teacher.first_name or teacher.last_name %}
+
+                        {{ teacher.first_name }}
+                        {{ teacher.last_name }}
+
+                    {% elif teacher.username %}
+
+                        {{ teacher.username }}
+
+                    {% else %}
+
+                        Unknown Teacher
+
+                    {% endif %}
+
+                </h2>
+
+
+                <span class="profile-role">
+                    Teacher
+                </span>
+
+
+                <p class="profile-username">
+
+                    Username:
+                    <strong>
+                        {{ teacher.username }}
+                    </strong>
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- PROFILE INFORMATION -->
+
+        <div class="profile-info">
+
+            <div class="info-item">
+
+                <div class="info-label">
+                    First Name
+                </div>
+
+                <div class="info-value">
+
+                    {% if teacher.first_name %}
+                        {{ teacher.first_name }}
+                    {% else %}
+                        —
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <div class="info-label">
+                    Last Name
+                </div>
+
+                <div class="info-value">
+
+                    {% if teacher.last_name %}
+                        {{ teacher.last_name }}
+                    {% else %}
+                        —
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <div class="info-label">
+                    Email
+                </div>
+
+                <div class="info-value">
+
+                    {% if teacher.email %}
+                        {{ teacher.email }}
+                    {% else %}
+                        —
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <div class="info-label">
+                    Account Status
+                </div>
+
+                <div class="info-value">
+
+                    {% if teacher.is_active %}
+                        <span class="status">
+                            Active
+                        </span>
+                    {% else %}
+                        <span class="status status-inactive">
+                            Inactive
+                        </span>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ASSIGNMENTS CARD
+    ====================================================== -->
+
+    <div class="assignment-card">
+
+        <div class="card-header">
+
+            <h2 class="card-title">
+                Teacher Assignments
+            </h2>
+
+            <span class="assignment-count">
+                {{ assignments|length }}
+            </span>
+
+        </div>
+
+
+        {% if assignments %}
+
+            <div class="table-wrapper">
+
+                <table class="assignment-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                #
+                            </th>
+
+                            <th>
+                                Class
+                            </th>
+
+                            <th>
+                                Subject
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for assignment in assignments %}
+
+                            <tr>
+
+                                <!-- NUMBER -->
+
+                                <td>
+
+                                    <strong
+                                        style="
+                                            color:#9a5243;
+                                            font-size:12px;
+                                        "
+                                    >
+                                        {{ forloop.counter }}
+                                    </strong>
+
+                                </td>
+
+
+                                <!-- CLASS -->
+
+                                <td>
+
+                                    <div class="class-cell">
+
+                                        <div class="class-icon">
+                                            🎓
+                                        </div>
+
+                                        <span class="class-name">
+
+                                            {% if assignment.class_room %}
+
+                                                {{ assignment.class_room.name }}
+
+                                            {% else %}
+
+                                                —
+
+                                            {% endif %}
+
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- SUBJECT -->
+
+                                <td>
+
+                                    <div class="subject-cell">
+
+                                        <div class="subject-icon">
+                                            📚
+                                        </div>
+
+                                        <span class="subject-name">
+
+                                            {% if assignment.subject %}
+
+                                                {{ assignment.subject.name }}
+
+                                            {% else %}
+
+                                                —
+
+                                            {% endif %}
+
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- STATUS -->
+
+                                <td>
+
+                                    {% if assignment.status %}
+
+                                        {% if assignment.status|lower == "active" %}
+
+                                            <span class="status">
+                                                {{ assignment.status }}
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="status status-inactive">
+                                                {{ assignment.status }}
+                                            </span>
+
+                                        {% endif %}
+
+                                    {% else %}
+
+                                        <span
+                                            style="
+                                                color:#9ca3af;
+                                                font-size:12px;
+                                            "
+                                        >
+                                            Not specified
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <!-- =================================================
+                 EMPTY STATE
+            ================================================== -->
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    📚
+                </div>
+
+                <h3 class="empty-title">
+                    No Assignments Yet
+                </h3>
+
+                <p class="empty-text">
+                    This teacher has not been assigned to
+                    any class or subject yet.
+                </p>
+
+                <a
+                    href="{% url 'teacherapp:assignment-create' %}"
+                    class="empty-button"
+                >
+                    ＋ Create Assignment
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <div class="page-footer">
+
+        Teacher Management System
+        &nbsp;•&nbsp;
+        Academic Management System
+
+    </div>
+
+</div>
+
+</body>
+</html>

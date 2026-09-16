@@ -1,15 +1,75 @@
 {% extends 'main.html' %} {% block content %}
 
+<!-- ===================================================== -->
+<!-- PROJECT TITLE -->
+<!-- ===================================================== -->
+
 <h1>{{ projectObj.title }}</h1>
 
 <hr />
 
+<!-- ===================================================== -->
+<!-- PROJECT TAGS -->
+<!-- ===================================================== -->
+
 {% for tag in projectObj.tags.all %}
+
 <span style="border: 1px solid grey; padding: 3px"> {{ tag.name }} </span>
+
+{% empty %}
+
+<p>No tags available.</p>
+
 {% endfor %}
 
 <hr />
 
+<!-- ===================================================== -->
+<!-- PROJECT DESCRIPTION -->
+<!-- ===================================================== -->
+
 <p>{{ projectObj.description }}</p>
 
-{% endblock content %}
+<hr />
+
+<!-- ===================================================== -->
+<!-- PERMISSIONS -->
+<!-- ===================================================== -->
+
+<!--
+    can_edit waxaa views.py kasoo diraya.
+
+    Admin   = True
+    Manager = True
+    User    = False
+-->
+
+{% if can_edit %}
+
+<a href="{% url 'update-project' projectObj.id %}"> Edit Project </a>
+
+{% endif %}
+
+<!--
+    can_delete waxaa views.py kasoo diraya.
+
+    Manager = True
+    Admin   = False
+    User    = False
+-->
+
+{% if can_delete %} |
+
+<a href="{% url 'delete-project' projectObj.id %}"> Delete Project </a>
+
+{% endif %}
+
+<!-- ===================================================== -->
+<!-- VIEW ONLY USER -->
+<!-- ===================================================== -->
+
+{% if not can_edit and not can_delete %}
+
+<p style="color: gray">You have view-only permission.</p>
+
+{% endif %} {% endblock content %} ```

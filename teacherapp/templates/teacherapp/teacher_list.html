@@ -1,0 +1,2031 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Teachers | Student Management System</title>
+
+<style>
+
+    /* ============================================================
+       GLOBAL
+       ============================================================ */
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        background: #f6f7f9;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #222;
+        overflow-x: auto;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+
+    /* ============================================================
+       FIXED SIDEBAR
+       ALWAYS VISIBLE
+       NEVER COLLAPSES
+       ============================================================ */
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        width: 285px;
+        height: 100vh;
+
+        background:
+            linear-gradient(
+                180deg,
+                #17191d 0%,
+                #121418 100%
+            );
+
+        color: #fff;
+
+        z-index: 9999;
+
+        display: flex;
+        flex-direction: column;
+
+        overflow: hidden;
+
+        border-right: 1px solid rgba(255,255,255,0.06);
+
+        box-shadow:
+            8px 0 30px rgba(0,0,0,0.12);
+    }
+
+
+    /* ============================================================
+       SIDEBAR BRAND
+       ============================================================ */
+
+    .sidebar-brand {
+        height: 92px;
+
+        display: flex;
+        align-items: center;
+
+        padding: 0 24px;
+
+        border-bottom:
+            1px solid rgba(255,255,255,0.07);
+
+        flex-shrink: 0;
+    }
+
+    .brand-logo {
+        width: 46px;
+        height: 46px;
+
+        border-radius: 13px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #9a5243,
+                #c17865
+            );
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 22px;
+
+        box-shadow:
+            0 8px 22px rgba(154,82,67,0.30);
+
+        flex-shrink: 0;
+    }
+
+    .brand-content {
+        margin-left: 13px;
+    }
+
+    .brand-title {
+        margin: 0;
+
+        color: #fff;
+
+        font-size: 16px;
+        font-weight: 800;
+
+        letter-spacing: 0.2px;
+    }
+
+    .brand-subtitle {
+        margin-top: 4px;
+
+        color: #8d929b;
+
+        font-size: 11px;
+        font-weight: 500;
+    }
+
+
+    /* ============================================================
+       USER PROFILE
+       ============================================================ */
+
+    .sidebar-user {
+        margin: 18px 15px 10px;
+
+        padding: 14px;
+
+        border-radius: 13px;
+
+        background:
+            rgba(255,255,255,0.045);
+
+        border:
+            1px solid rgba(255,255,255,0.06);
+
+        display: flex;
+        align-items: center;
+
+        flex-shrink: 0;
+    }
+
+    .sidebar-user-avatar {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+
+        border-radius: 50%;
+
+        background:
+            linear-gradient(
+                135deg,
+                #9a5243,
+                #b76a59
+            );
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: #fff;
+
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+    .sidebar-user-info {
+        min-width: 0;
+
+        margin-left: 11px;
+    }
+
+    .sidebar-user-name {
+        color: #fff;
+
+        font-size: 13px;
+        font-weight: 700;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .sidebar-user-role {
+        margin-top: 4px;
+
+        color: #9297a0;
+
+        font-size: 10px;
+        font-weight: 600;
+
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+
+    /* ============================================================
+       NAVIGATION
+       ============================================================ */
+
+    .sidebar-navigation {
+        flex: 1;
+
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        padding: 8px 13px 18px;
+    }
+
+    .sidebar-navigation::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .sidebar-navigation::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .sidebar-navigation::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.10);
+        border-radius: 10px;
+    }
+
+    .nav-section-title {
+        padding: 15px 11px 8px;
+
+        color: #686d76;
+
+        font-size: 9px;
+        font-weight: 800;
+
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+    }
+
+    .nav-link {
+        position: relative;
+
+        display: flex;
+        align-items: center;
+
+        width: 100%;
+        min-height: 46px;
+
+        padding: 0 12px;
+        margin-bottom: 4px;
+
+        border-radius: 10px;
+
+        color: #aeb2ba;
+
+        font-size: 12px;
+        font-weight: 600;
+
+        transition:
+            background 0.20s ease,
+            color 0.20s ease,
+            transform 0.20s ease;
+    }
+
+    .nav-link:hover {
+        background:
+            rgba(255,255,255,0.055);
+
+        color: #fff;
+
+        transform: translateX(2px);
+    }
+
+    .nav-link.active {
+        background:
+            linear-gradient(
+                90deg,
+                rgba(154,82,67,0.28),
+                rgba(154,82,67,0.10)
+            );
+
+        color: #fff;
+
+        box-shadow:
+            inset 3px 0 0 #9a5243;
+    }
+
+    .nav-icon {
+        width: 32px;
+        min-width: 32px;
+
+        height: 32px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 8px;
+
+        background:
+            rgba(255,255,255,0.035);
+
+        font-size: 15px;
+
+        margin-right: 9px;
+    }
+
+    .nav-link.active .nav-icon {
+        background:
+            rgba(154,82,67,0.25);
+    }
+
+    .nav-text {
+        flex: 1;
+    }
+
+    .nav-arrow {
+        color: #686d76;
+        font-size: 11px;
+    }
+
+
+    /* ============================================================
+       SIDEBAR FOOTER
+       ============================================================ */
+
+    .sidebar-footer {
+        padding: 13px;
+
+        border-top:
+            1px solid rgba(255,255,255,0.07);
+
+        flex-shrink: 0;
+    }
+
+    .logout-button {
+        width: 100%;
+        min-height: 44px;
+
+        border: 0;
+        border-radius: 10px;
+
+        background:
+            rgba(255,255,255,0.045);
+
+        color: #aeb2ba;
+
+        cursor: pointer;
+
+        display: flex;
+        align-items: center;
+
+        padding: 0 12px;
+
+        font-family: inherit;
+
+        font-size: 12px;
+        font-weight: 700;
+
+        transition:
+            background 0.2s ease,
+            color 0.2s ease;
+    }
+
+    .logout-button:hover {
+        background:
+            rgba(180,50,40,0.15);
+
+        color: #ffaaa3;
+    }
+
+    .logout-icon {
+        width: 32px;
+        min-width: 32px;
+
+        height: 32px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 15px;
+    }
+
+
+    /* ============================================================
+       MAIN WRAPPER
+       ============================================================ */
+
+    .main-wrapper {
+        margin-left: 285px;
+
+        min-height: 100vh;
+
+        width: calc(100% - 285px);
+    }
+
+
+    /* ============================================================
+       TEACHER PAGE
+       ============================================================ */
+
+    .teacher-page {
+        min-height: 100vh;
+
+        padding: 30px;
+
+        background: #f6f7f9;
+    }
+
+    .teacher-wrapper {
+        max-width: 1450px;
+
+        margin: 0 auto;
+    }
+
+
+    /* ============================================================
+       HEADER
+       ============================================================ */
+
+    .teacher-header {
+        display: flex;
+
+        justify-content: space-between;
+        align-items: center;
+
+        gap: 20px;
+
+        margin-bottom: 28px;
+    }
+
+    .header-left h1 {
+        margin: 0;
+
+        color: #222;
+
+        font-size: 30px;
+        font-weight: 800;
+    }
+
+    .header-left p {
+        margin: 8px 0 0;
+
+        color: #777;
+
+        font-size: 15px;
+    }
+
+
+    /* ============================================================
+       ADD TEACHER BUTTON
+       ============================================================ */
+
+    .btn-add {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        background: #9a5243;
+
+        color: #fff;
+
+        padding: 13px 20px;
+
+        border-radius: 10px;
+
+        font-size: 14px;
+        font-weight: 700;
+
+        box-shadow:
+            0 6px 18px rgba(154,82,67,0.22);
+
+        transition: 0.25s ease;
+    }
+
+    .btn-add:hover {
+        background: #7f4034;
+
+        color: #fff;
+
+        transform: translateY(-2px);
+    }
+
+
+    /* ============================================================
+       SEARCH CARD
+       ============================================================ */
+
+    .search-box {
+        background: #fff;
+
+        border: 1px solid #eee;
+
+        border-radius: 15px;
+
+        padding: 18px;
+
+        margin-bottom: 22px;
+
+        box-shadow:
+            0 4px 18px rgba(0,0,0,0.045);
+    }
+
+    .search-box form {
+        display: flex;
+
+        gap: 10px;
+
+        width: 100%;
+    }
+
+    .search-input {
+        flex: 1;
+
+        min-width: 0;
+
+        border: 1px solid #dce2ea;
+
+        border-radius: 9px;
+
+        padding: 13px 14px;
+
+        outline: none;
+
+        font-family: inherit;
+
+        font-size: 13px;
+
+        background: #fafafa;
+
+        transition: 0.2s ease;
+    }
+
+    .search-input:focus {
+        border-color: #9a5243;
+
+        background: #fff;
+
+        box-shadow:
+            0 0 0 3px rgba(154,82,67,0.08);
+    }
+
+    .search-button {
+        background: #172033;
+
+        color: #fff;
+
+        border: none;
+
+        border-radius: 9px;
+
+        padding: 0 22px;
+
+        font-family: inherit;
+
+        font-size: 13px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+
+        transition: 0.2s ease;
+    }
+
+    .search-button:hover {
+        background: #0f1728;
+    }
+
+
+    /* ============================================================
+       TEACHER TABLE CARD
+       ============================================================ */
+
+    .teacher-table-card {
+        background: #fff;
+
+        border-radius: 16px;
+
+        border: 1px solid #eee;
+
+        box-shadow:
+            0 5px 22px rgba(0,0,0,0.05);
+
+        overflow: hidden;
+    }
+
+
+    /* ============================================================
+       TABLE SCROLL
+       ============================================================ */
+
+    .table-scroll {
+        overflow-x: auto;
+    }
+
+    .teacher-table {
+        width: 100%;
+
+        min-width: 900px;
+
+        border-collapse: collapse;
+    }
+
+    .teacher-table th {
+        background: #fafafa;
+
+        color: #777;
+
+        text-transform: uppercase;
+
+        letter-spacing: 0.5px;
+
+        font-size: 11px;
+        font-weight: 800;
+
+        padding: 15px 20px;
+
+        text-align: left;
+
+        border-bottom: 1px solid #eee;
+
+        white-space: nowrap;
+    }
+
+    .teacher-table td {
+        padding: 17px 20px;
+
+        border-bottom: 1px solid #f0f0f0;
+
+        color: #444;
+
+        font-size: 13px;
+
+        vertical-align: middle;
+    }
+
+    .teacher-table tbody tr {
+        transition: 0.2s ease;
+    }
+
+    .teacher-table tbody tr:hover {
+        background: #fcfaf9;
+    }
+
+
+    /* ============================================================
+       TEACHER PROFILE
+       ============================================================ */
+
+    .teacher-profile {
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+    }
+
+    .teacher-avatar {
+        width: 40px;
+        height: 40px;
+
+        min-width: 40px;
+
+        border-radius: 50%;
+
+        background: #9a5243;
+
+        color: #fff;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        font-size: 13px;
+        font-weight: 800;
+    }
+
+    .teacher-name {
+        color: #252525;
+
+        font-weight: 700;
+
+        margin-bottom: 3px;
+    }
+
+    .teacher-label {
+        color: #999;
+
+        font-size: 11px;
+    }
+
+    .teacher-email {
+        color: #7b8494;
+
+        font-size: 13px;
+    }
+
+
+    /* ============================================================
+       ASSIGNMENT BADGE
+       ============================================================ */
+
+    .assignment-badge {
+        display: inline-block;
+
+        background: #f5f5f5;
+
+        color: #555;
+
+        padding: 6px 9px;
+
+        border-radius: 7px;
+
+        font-size: 11px;
+
+        font-weight: 700;
+    }
+
+
+    /* ============================================================
+       STATUS
+       ============================================================ */
+
+    .status-active {
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 6px;
+
+        padding: 6px 10px;
+
+        border-radius: 20px;
+
+        background: #eaf8ef;
+
+        color: #22824a;
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        white-space: nowrap;
+    }
+
+    .status-inactive {
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 6px;
+
+        padding: 6px 10px;
+
+        border-radius: 20px;
+
+        background: #fff0ef;
+
+        color: #b42318;
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        white-space: nowrap;
+    }
+
+    .status-dot {
+        width: 6px;
+        height: 6px;
+
+        border-radius: 50%;
+    }
+
+    .active-dot {
+        background: #27ae60;
+    }
+
+    .inactive-dot {
+        background: #b42318;
+    }
+
+
+    /* ============================================================
+       ACTION
+       ============================================================ */
+
+    .action-link {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        padding: 7px 10px;
+
+        border-radius: 7px;
+
+        background: #f1f1f1;
+
+        color: #555;
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        transition: 0.2s ease;
+
+        white-space: nowrap;
+    }
+
+    .action-link:hover {
+        background: #dedede;
+
+        color: #333;
+    }
+
+
+    /* ============================================================
+       EMPTY STATE
+       ============================================================ */
+
+    .empty-state {
+        padding: 65px 20px;
+
+        text-align: center;
+    }
+
+    .empty-icon {
+        width: 70px;
+        height: 70px;
+
+        margin: 0 auto 15px;
+
+        border-radius: 50%;
+
+        background: #f6ebe8;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        font-size: 30px;
+    }
+
+    .empty-state h3 {
+        margin: 0 0 7px;
+
+        color: #333;
+
+        font-size: 18px;
+    }
+
+    .empty-state p {
+        margin: 0;
+
+        color: #888;
+
+        font-size: 13px;
+    }
+
+
+    /* ============================================================
+       TABLE FOOTER
+       ============================================================ */
+
+    .table-footer {
+        padding: 15px 22px;
+
+        border-top: 1px solid #eee;
+
+        color: #888;
+
+        font-size: 12px;
+    }
+
+    .table-footer strong {
+        color: #555;
+    }
+
+
+    /* ============================================================
+       LOGOUT MODAL
+       ============================================================ */
+
+    .logout-overlay {
+        position: fixed;
+
+        inset: 0;
+
+        background:
+            rgba(0,0,0,0.55);
+
+        backdrop-filter: blur(4px);
+
+        z-index: 20000;
+
+        display: none;
+
+        align-items: center;
+        justify-content: center;
+
+        padding: 20px;
+    }
+
+    .logout-overlay.show {
+        display: flex;
+    }
+
+    .logout-modal {
+        width: 100%;
+
+        max-width: 420px;
+
+        background: #fff;
+
+        border-radius: 18px;
+
+        padding: 28px;
+
+        box-shadow:
+            0 25px 70px rgba(0,0,0,0.25);
+
+        animation: modalIn 0.2s ease;
+    }
+
+    @keyframes modalIn {
+
+        from {
+            opacity: 0;
+
+            transform:
+                translateY(10px)
+                scale(0.98);
+        }
+
+        to {
+            opacity: 1;
+
+            transform:
+                translateY(0)
+                scale(1);
+        }
+    }
+
+    .logout-modal-icon {
+        width: 55px;
+        height: 55px;
+
+        border-radius: 15px;
+
+        background: #fff0ef;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        font-size: 25px;
+
+        margin-bottom: 16px;
+    }
+
+    .logout-modal h3 {
+        margin: 0 0 8px;
+
+        color: #222;
+
+        font-size: 20px;
+    }
+
+    .logout-modal p {
+        margin: 0;
+
+        color: #777;
+
+        font-size: 13px;
+
+        line-height: 1.6;
+    }
+
+    .logout-modal-actions {
+        display: flex;
+
+        justify-content: flex-end;
+
+        gap: 10px;
+
+        margin-top: 25px;
+    }
+
+    .modal-btn {
+        border: 0;
+
+        border-radius: 9px;
+
+        padding: 11px 17px;
+
+        font-family: inherit;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+    }
+
+    .cancel-btn {
+        background: #f2f2f2;
+
+        color: #555;
+    }
+
+    .cancel-btn:hover {
+        background: #e5e5e5;
+    }
+
+    .confirm-logout-btn {
+        background: #9a5243;
+
+        color: #fff;
+    }
+
+    .confirm-logout-btn:hover {
+        background: #7f4034;
+    }
+
+
+    /* ============================================================
+       RESPONSIVE
+       SIDEBAR NEVER DISAPPEARS
+       SIDEBAR NEVER COLLAPSES
+       ============================================================ */
+
+    @media (max-width: 700px) {
+
+        .sidebar {
+            width: 285px;
+
+            left: 0 !important;
+
+            transform: none !important;
+        }
+
+        .main-wrapper {
+            margin-left: 285px;
+
+            width: calc(100% - 285px);
+
+            min-width: 650px;
+        }
+
+        .teacher-page {
+            padding: 18px 12px;
+        }
+
+        .teacher-header {
+            flex-direction: column;
+
+            align-items: stretch;
+        }
+
+        .btn-add {
+            width: 100%;
+        }
+
+        .search-box form {
+            flex-direction: column;
+        }
+
+        .search-input {
+            width: 100%;
+        }
+
+        .search-button {
+            width: 100%;
+
+            padding: 13px;
+        }
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+```
+<!-- ============================================================
+     FIXED SIDEBAR
+     ============================================================ -->
+
+<aside class="sidebar">
+
+
+    <!-- BRAND -->
+
+    <div class="sidebar-brand">
+
+        <div class="brand-logo">
+            🎓
+        </div>
+
+        <div class="brand-content">
+
+            <div class="brand-title">
+                Student Management
+            </div>
+
+            <div class="brand-subtitle">
+                Academic Administration
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- USER -->
+
+    <div class="sidebar-user">
+
+        <div class="sidebar-user-avatar">
+
+            {% if request.user.first_name %}
+
+                {{ request.user.first_name|first|upper }}
+
+            {% else %}
+
+                {{ request.user.username|first|upper }}
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="sidebar-user-info">
+
+            <div class="sidebar-user-name">
+
+                {% if request.user.get_full_name %}
+
+                    {{ request.user.get_full_name }}
+
+                {% else %}
+
+                    {{ request.user.username }}
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="sidebar-user-role">
+
+                {% if current_role %}
+
+                    {{ current_role }}
+
+                {% elif request.user.profile.role %}
+
+                    {{ request.user.profile.role }}
+
+                {% elif request.user.is_superuser %}
+
+                    Administrator
+
+                {% else %}
+
+                    User
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="sidebar-navigation">
+
+
+        <!-- MAIN -->
+
+        <div class="nav-section-title">
+            Main
+        </div>
+
+
+        <!-- DASHBOARD -->
+
+        <a
+            href="{% url 'student-home' %}"
+            class="nav-link"
+        >
+
+            <span class="nav-icon">
+                🏠
+            </span>
+
+            <span class="nav-text">
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <!-- STUDENTS -->
+
+        <a
+            href="{% url 'student-list' %}"
+            class="nav-link"
+        >
+
+            <span class="nav-icon">
+                👨‍🎓
+            </span>
+
+            <span class="nav-text">
+                Students
+            </span>
+
+        </a>
+
+
+        <!-- MANAGEMENT -->
+
+        {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" or request.user.profile.role == "Teacher" %}
+
+            <div class="nav-section-title">
+                Management
+            </div>
+
+
+            <!-- TEACHERS -->
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                <a
+                    href="{% url 'teacherapp:teacher-list' %}"
+                    class="nav-link active"
+                >
+
+                    <span class="nav-icon">
+                        👨‍🏫
+                    </span>
+
+                    <span class="nav-text">
+                        Teachers
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% elif request.user.profile.role == "Teacher" %}
+
+                <a
+                    href="{% url 'teacherapp:teacher-dashboard' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        👨‍🏫
+                    </span>
+
+                    <span class="nav-text">
+                        Teacher Area
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+
+            <!-- CLASSES -->
+
+            <a
+                href="{% url 'class-list' %}"
+                class="nav-link"
+            >
+
+                <span class="nav-icon">
+                    🏫
+                </span>
+
+                <span class="nav-text">
+                    Classes
+                </span>
+
+                <span class="nav-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- SUBJECTS -->
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                <a
+                    href="{% url 'subject-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📚
+                    </span>
+
+                    <span class="nav-text">
+                        Subjects
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+        {% endif %}
+
+
+        <!-- ACADEMIC -->
+
+        {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" or request.user.profile.role == "Teacher" %}
+
+            <div class="nav-section-title">
+                Academic
+            </div>
+
+
+            <!-- ENROLLMENT -->
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                <a
+                    href="{% url 'student-enrollment' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📝
+                    </span>
+
+                    <span class="nav-text">
+                        Enrollment
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+
+            <!-- ASSIGNMENTS -->
+
+            {% if request.user.profile.role == "Teacher" %}
+
+                <a
+                    href="{% url 'teacherapp:assignment-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📋
+                    </span>
+
+                    <span class="nav-text">
+                        My Assignments
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+
+            <!-- ATTENDANCE -->
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Teacher" %}
+
+                <a
+                    href="{% url 'attendance-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📅
+                    </span>
+
+                    <span class="nav-text">
+                        Attendance
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+
+            <!-- GRADES -->
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Teacher" %}
+
+                <a
+                    href="{% url 'grade-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📊
+                    </span>
+
+                    <span class="nav-text">
+                        Grades
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+        {% endif %}
+
+
+        <!-- SYSTEM -->
+
+        {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+            <div class="nav-section-title">
+                System
+            </div>
+
+
+            <!-- LOGS -->
+
+            <a
+                href="/dashboard/logs/"
+                class="nav-link"
+            >
+
+                <span class="nav-icon">
+                    🛡
+                </span>
+
+                <span class="nav-text">
+                    System Logs
+                </span>
+
+                <span class="nav-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- CONVERSATIONS -->
+
+            <a
+                href="/conversations/"
+                class="nav-link"
+            >
+
+                <span class="nav-icon">
+                    💬
+                </span>
+
+                <span class="nav-text">
+                    Conversations
+                </span>
+
+                <span class="nav-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- MANAGE USERS -->
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" %}
+
+                <a
+                    href="{% url 'users:manage-users' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        👥
+                    </span>
+
+                    <span class="nav-text">
+                        Manage Users
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+        {% endif %}
+
+    </nav>
+
+
+    <!-- SIDEBAR FOOTER -->
+
+    <div class="sidebar-footer">
+
+        <button
+            type="button"
+            class="logout-button"
+            onclick="openLogoutModal()"
+        >
+
+            <span class="logout-icon">
+                🚪
+            </span>
+
+            <span>
+                Logout
+            </span>
+
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- ============================================================
+     MAIN WRAPPER
+     ============================================================ -->
+
+<div class="main-wrapper">
+
+
+    <div class="teacher-page">
+
+        <div class="teacher-wrapper">
+
+
+            <!-- ====================================================
+                 HEADER
+                 ==================================================== -->
+
+            <div class="teacher-header">
+
+                <div class="header-left">
+
+                    <h1>
+                        👨‍🏫 Teacher Management
+                    </h1>
+
+                    <p>
+                        Manage teachers and their academic assignments.
+                    </p>
+
+                </div>
+
+
+                {% if is_administrator %}
+
+                    <a
+                        href="{% url 'teacherapp:teacher-create' %}"
+                        class="btn-add"
+                    >
+                        ＋ Add Teacher
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- ====================================================
+                 SEARCH
+                 ==================================================== -->
+
+            <div class="search-box">
+
+                <form method="GET">
+
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ search }}"
+                        class="search-input"
+                        placeholder="Search teacher by name, username or email..."
+                        autocomplete="off"
+                    >
+
+                    <button
+                        type="submit"
+                        class="search-button"
+                    >
+                        Search
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- ====================================================
+                 TEACHER TABLE
+                 ==================================================== -->
+
+            <div class="teacher-table-card">
+
+                <div class="table-scroll">
+
+                    <table class="teacher-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Teacher
+                                </th>
+
+                                <th>
+                                    Username
+                                </th>
+
+                                <th>
+                                    Email
+                                </th>
+
+                                <th>
+                                    Assignments
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for teacher in teachers %}
+
+                                <tr>
+
+                                    <!-- TEACHER -->
+
+                                    <td>
+
+                                        <div class="teacher-profile">
+
+                                            <div class="teacher-avatar">
+
+                                                {% if teacher.first_name %}
+
+                                                    {{ teacher.first_name|first|upper }}
+
+                                                {% else %}
+
+                                                    {{ teacher.username|first|upper }}
+
+                                                {% endif %}
+
+                                            </div>
+
+
+                                            <div>
+
+                                                <div class="teacher-name">
+
+                                                    {% if teacher.get_full_name %}
+
+                                                        {{ teacher.get_full_name }}
+
+                                                    {% else %}
+
+                                                        {{ teacher.username }}
+
+                                                    {% endif %}
+
+                                                </div>
+
+                                                <div class="teacher-label">
+                                                    Teacher
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- USERNAME -->
+
+                                    <td>
+                                        {{ teacher.username }}
+                                    </td>
+
+
+                                    <!-- EMAIL -->
+
+                                    <td>
+
+                                        <div class="teacher-email">
+
+                                            {{ teacher.email|default:"No email" }}
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- ASSIGNMENTS -->
+
+                                    <td>
+
+                                        <span class="assignment-badge">
+
+                                            {{ teacher.assignment_count }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+                                        {% if teacher.is_active %}
+
+                                            <span class="status-active">
+
+                                                <span class="status-dot active-dot"></span>
+
+                                                Active
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="status-inactive">
+
+                                                <span class="status-dot inactive-dot"></span>
+
+                                                Inactive
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- ACTION -->
+
+                                    <td>
+
+                                        <a
+                                            href="{% url 'teacherapp:teacher-detail' teacher.pk %}"
+                                            class="action-link"
+                                        >
+                                            👁 View
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+
+
+                            {% empty %}
+
+
+                                <!-- NO TEACHERS -->
+
+                                <tr>
+
+                                    <td
+                                        colspan="6"
+                                        class="empty-state"
+                                    >
+
+                                        <div class="empty-icon">
+                                            👨‍🏫
+                                        </div>
+
+                                        <h3>
+                                            No Teachers Found
+                                        </h3>
+
+                                        <p>
+                                            There are currently no teacher accounts
+                                            matching your search.
+                                        </p>
+
+                                    </td>
+
+                                </tr>
+
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- TABLE FOOTER -->
+
+                <div class="table-footer">
+
+                    Showing
+
+                    <strong>
+                        {{ teachers|length }}
+                    </strong>
+
+                    teacher(s)
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================
+     LOGOUT MODAL
+     ============================================================ -->
+
+<div
+    id="logoutOverlay"
+    class="logout-overlay"
+    onclick="closeLogoutModal(event)"
+>
+
+    <div
+        class="logout-modal"
+        onclick="event.stopPropagation()"
+    >
+
+        <div class="logout-modal-icon">
+            🚪
+        </div>
+
+        <h3>
+            Logout
+        </h3>
+
+        <p>
+            Are you sure you want to logout from the
+            Student Management System?
+        </p>
+
+
+        <div class="logout-modal-actions">
+
+            <button
+                type="button"
+                class="modal-btn cancel-btn"
+                onclick="closeLogoutModal()"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                class="modal-btn confirm-logout-btn"
+                onclick="confirmLogout()"
+            >
+                Yes, Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+
+<script>
+
+    function openLogoutModal() {
+
+        const overlay =
+            document.getElementById("logoutOverlay");
+
+        if (overlay) {
+
+            overlay.classList.add("show");
+
+        }
+
+    }
+
+
+    function closeLogoutModal(event) {
+
+        if (
+            event &&
+            event.target !== event.currentTarget
+        ) {
+            return;
+        }
+
+        const overlay =
+            document.getElementById("logoutOverlay");
+
+        if (overlay) {
+
+            overlay.classList.remove("show");
+
+        }
+
+    }
+
+
+    function confirmLogout() {
+
+        window.location.href =
+            "{% url 'users:logout' %}";
+
+    }
+
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+
+                const overlay =
+                    document.getElementById("logoutOverlay");
+
+                if (
+                    overlay &&
+                    overlay.classList.contains("show")
+                ) {
+
+                    overlay.classList.remove("show");
+
+                }
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,385 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+<style>
+
+.assignment-wrapper {
+    max-width: 950px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.assignment-header {
+    margin-bottom: 30px;
+}
+
+.assignment-header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #172033;
+    margin-bottom: 8px;
+}
+
+.assignment-header p {
+    color: #718096;
+    font-size: 15px;
+}
+
+.assignment-card {
+    background: #ffffff;
+    border: 1px solid #e6eaf0;
+    border-radius: 18px;
+    padding: 35px;
+    box-shadow: 0 10px 35px rgba(15, 23, 42, 0.06);
+}
+
+.step {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 28px;
+}
+
+.step-number {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border-radius: 50%;
+    background: #9A5243;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+}
+
+.step-content {
+    width: 100%;
+}
+
+.step-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #172033;
+    margin-bottom: 9px;
+}
+
+.form-select,
+.form-control {
+    width: 100%;
+    min-height: 50px;
+    border: 1px solid #dce2ea;
+    border-radius: 10px;
+    padding: 0 14px;
+    font-size: 15px;
+    background: #fff;
+    color: #172033;
+}
+
+.form-select:focus,
+.form-control:focus {
+    outline: none;
+    border-color: #9A5243;
+    box-shadow: 0 0 0 3px rgba(154, 82, 67, 0.12);
+}
+
+.help-text {
+    margin-top: 8px;
+    color: #8892a3;
+    font-size: 13px;
+}
+
+.form-actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.btn-primary {
+    background: #9A5243;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 13px 24px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: #824335;
+}
+
+.btn-secondary {
+    background: #f4f6f8;
+    color: #344054;
+    border-radius: 10px;
+    padding: 13px 24px;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.error-box {
+    background: #fff5f5;
+    border: 1px solid #fecaca;
+    color: #b42318;
+    padding: 14px 16px;
+    border-radius: 10px;
+    margin-bottom: 22px;
+}
+
+</style>
+
+
+<div class="assignment-wrapper">
+
+    <div class="assignment-header">
+
+        <h1>
+            📚 Assign Teacher
+        </h1>
+
+        <p>
+            Select a teacher, class and subject to create
+            an academic assignment.
+        </p>
+
+    </div>
+
+
+    <div class="assignment-card">
+
+        {% if form.non_field_errors %}
+
+            <div class="error-box">
+
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            <!-- ================================================= -->
+            <!-- STEP 1 -->
+            <!-- ================================================= -->
+
+            <div class="step">
+
+                <div class="step-number">
+                    1
+                </div>
+
+                <div class="step-content">
+
+                    <div class="step-title">
+                        Select Teacher
+                    </div>
+
+                    {{ form.teacher }}
+
+                    {% if form.teacher.errors %}
+                        <div class="error-box">
+                            {{ form.teacher.errors }}
+                        </div>
+                    {% endif %}
+
+                    <div class="help-text">
+                        Choose an active teacher from the system.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- STEP 2 -->
+            <!-- ================================================= -->
+
+            <div class="step">
+
+                <div class="step-number">
+                    2
+                </div>
+
+                <div class="step-content">
+
+                    <div class="step-title">
+                        Select Class
+                    </div>
+
+                    {{ form.class_room }}
+
+                    {% if form.class_room.errors %}
+                        <div class="error-box">
+                            {{ form.class_room.errors }}
+                        </div>
+                    {% endif %}
+
+                    <div class="help-text">
+                        Choose the class where the teacher will teach.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- STEP 3 -->
+            <!-- ================================================= -->
+
+            <div class="step">
+
+                <div class="step-number">
+                    3
+                </div>
+
+                <div class="step-content">
+
+                    <div class="step-title">
+                        Select Subject
+                    </div>
+
+                    {{ form.subject }}
+
+                    {% if form.subject.errors %}
+                        <div class="error-box">
+                            {{ form.subject.errors }}
+                        </div>
+                    {% endif %}
+
+                    <div class="help-text">
+                        Only subjects assigned to the selected class
+                        will be available.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <a
+                    href="{% url 'teacherapp:assignment-list' %}"
+                    class="btn-secondary"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                >
+                    ✓ Assign Teacher
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const classSelect =
+            document.getElementById(
+                "id_class_room"
+            );
+
+        const subjectSelect =
+            document.getElementById(
+                "id_subject"
+            );
+
+
+        if (!classSelect || !subjectSelect) {
+            return;
+        }
+
+
+        classSelect.addEventListener(
+            "change",
+            function () {
+
+                const classId =
+                    this.value;
+
+
+                subjectSelect.innerHTML =
+                    '<option value="">Loading subjects...</option>';
+
+                subjectSelect.disabled = true;
+
+
+                if (!classId) {
+
+                    subjectSelect.innerHTML =
+                        '<option value="">Select Subject</option>';
+
+                    subjectSelect.disabled = false;
+
+                    return;
+                }
+
+
+                fetch(
+                    "{% url 'teacherapp:class-subjects' %}?class_id="
+                    + encodeURIComponent(classId)
+                )
+
+                .then(
+                    response => response.text()
+                )
+
+                .then(
+                    html => {
+
+                        subjectSelect.innerHTML =
+                            '<option value="">Select Subject</option>'
+                            + html;
+
+                        subjectSelect.disabled = false;
+
+                    }
+                )
+
+                .catch(
+                    error => {
+
+                        console.error(error);
+
+                        subjectSelect.innerHTML =
+                            '<option value="">Unable to load subjects</option>';
+
+                        subjectSelect.disabled = false;
+
+                    }
+                );
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+{% endblock %}

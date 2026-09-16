@@ -1,0 +1,566 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <!-- ============================================================
+             LOGIN HEADER
+             ============================================================ -->
+
+        <div class="login-header">
+            <div class="login-icon">
+                🔐
+            </div>
+
+            <h1>Welcome Back</h1>
+
+            <p>
+                Login to your Student Management System
+            </p>
+        </div>
+
+
+        <!-- ============================================================
+             ERROR MESSAGE
+             ============================================================ -->
+
+        {% if error %}
+            <div class="alert alert-error">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        {% if form.errors %}
+            <div class="alert alert-error">
+                Please check your username and password.
+            </div>
+        {% endif %}
+
+
+        <!-- ============================================================
+             LOGIN FORM
+             ============================================================ -->
+
+        <form method="POST" action="{% url 'users:login' %}">
+
+            {% csrf_token %}
+
+            <!-- IMPORTANT:
+                 Do not use request.POST.next here.
+                 request.POST may not contain "next".
+            -->
+            <input
+                type="hidden"
+                name="next"
+                value="{{ request.GET.next|default:'' }}"
+            >
+
+
+            <!-- ========================================================
+                 USERNAME
+                 ======================================================== -->
+
+            <div class="form-group">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">
+                        👤
+                    </span>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Enter your username"
+                        value="{{ username|default:'' }}"
+                        autocomplete="username"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================================================
+                 PASSWORD
+                 ======================================================== -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">
+                        🔒
+                    </span>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================================================
+                 LOGIN BUTTON
+                 ======================================================== -->
+
+            <button
+                type="submit"
+                class="login-btn"
+            >
+                <span>Login</span>
+                <span class="arrow">→</span>
+            </button>
+
+        </form>
+
+
+        <!-- ============================================================
+             REGISTER
+             ============================================================ -->
+
+        <div class="register-section">
+
+            <span>
+                Don't have an account?
+            </span>
+
+            <a href="{% url 'users:register' %}">
+                Create Account
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================================
+     PAGE STYLE
+     ================================================================ -->
+
+<style>
+
+    /* ================================================================
+       GLOBAL
+       ================================================================ */
+
+    * {
+        box-sizing: border-box;
+    }
+
+
+    body {
+        margin: 0;
+        font-family:
+            Inter,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            Roboto,
+            Arial,
+            sans-serif;
+        background:
+            linear-gradient(
+                135deg,
+                #f5f6f8 0%,
+                #eef0f3 100%
+            );
+    }
+
+
+    /* ================================================================
+       LOGIN CONTAINER
+       ================================================================ */
+
+    .login-container {
+        min-height: calc(100vh - 80px);
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        padding: 40px 20px;
+    }
+
+
+    /* ================================================================
+       LOGIN CARD
+       ================================================================ */
+
+    .login-card {
+        width: 100%;
+
+        max-width: 460px;
+
+        background: #ffffff;
+
+        border-radius: 22px;
+
+        padding: 42px;
+
+        box-shadow:
+            0 20px 60px rgba(0, 0, 0, 0.10),
+            0 5px 15px rgba(0, 0, 0, 0.05);
+
+        border: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+
+    /* ================================================================
+       HEADER
+       ================================================================ */
+
+    .login-header {
+        text-align: center;
+
+        margin-bottom: 32px;
+    }
+
+
+    .login-icon {
+        width: 72px;
+
+        height: 72px;
+
+        margin: 0 auto 18px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 20px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #9a5243,
+                #c17865
+            );
+
+        color: white;
+
+        font-size: 30px;
+
+        box-shadow:
+            0 10px 25px rgba(154, 82, 67, 0.25);
+    }
+
+
+    .login-header h1 {
+        margin: 0 0 8px;
+
+        color: #17191d;
+
+        font-size: 30px;
+
+        font-weight: 800;
+
+        letter-spacing: -0.5px;
+    }
+
+
+    .login-header p {
+        margin: 0;
+
+        color: #777;
+
+        font-size: 14px;
+
+        line-height: 1.6;
+    }
+
+
+    /* ================================================================
+       ALERT
+       ================================================================ */
+
+    .alert {
+        padding: 13px 16px;
+
+        margin-bottom: 22px;
+
+        border-radius: 12px;
+
+        font-size: 14px;
+
+        line-height: 1.5;
+    }
+
+
+    .alert-error {
+        background: #fff1f1;
+
+        color: #b42318;
+
+        border: 1px solid #f5c2c0;
+    }
+
+
+    /* ================================================================
+       FORM
+       ================================================================ */
+
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+
+    .form-group label {
+        display: block;
+
+        margin-bottom: 9px;
+
+        color: #292c31;
+
+        font-size: 14px;
+
+        font-weight: 700;
+    }
+
+
+    /* ================================================================
+       INPUT WRAPPER
+       ================================================================ */
+
+    .input-wrapper {
+        position: relative;
+    }
+
+
+    .input-icon {
+        position: absolute;
+
+        left: 16px;
+
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        font-size: 17px;
+
+        opacity: 0.65;
+
+        pointer-events: none;
+    }
+
+
+    .input-wrapper input {
+        width: 100%;
+
+        height: 52px;
+
+        padding:
+            0 16px 0 46px;
+
+        border-radius: 12px;
+
+        border: 1px solid #dfe2e6;
+
+        background: #fafafa;
+
+        color: #17191d;
+
+        font-size: 14px;
+
+        outline: none;
+
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+    }
+
+
+    .input-wrapper input::placeholder {
+        color: #a0a3a8;
+    }
+
+
+    .input-wrapper input:hover {
+        border-color: #c8ccd1;
+
+        background: #ffffff;
+    }
+
+
+    .input-wrapper input:focus {
+        border-color: #9a5243;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 0 0 4px rgba(154, 82, 67, 0.10);
+    }
+
+
+    /* ================================================================
+       LOGIN BUTTON
+       ================================================================ */
+
+    .login-btn {
+        width: 100%;
+
+        height: 54px;
+
+        margin-top: 4px;
+
+        border: none;
+
+        border-radius: 12px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #9a5243,
+                #b96958
+            );
+
+        color: #ffffff;
+
+        font-size: 15px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 12px;
+
+        box-shadow:
+            0 10px 25px rgba(154, 82, 67, 0.22);
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            filter 0.2s ease;
+    }
+
+
+    .login-btn:hover {
+        transform: translateY(-2px);
+
+        filter: brightness(1.04);
+
+        box-shadow:
+            0 14px 30px rgba(154, 82, 67, 0.28);
+    }
+
+
+    .login-btn:active {
+        transform: translateY(0);
+    }
+
+
+    .login-btn .arrow {
+        font-size: 20px;
+
+        line-height: 1;
+    }
+
+
+    /* ================================================================
+       REGISTER SECTION
+       ================================================================ */
+
+    .register-section {
+        margin-top: 28px;
+
+        padding-top: 22px;
+
+        border-top: 1px solid #eceef1;
+
+        text-align: center;
+
+        font-size: 14px;
+
+        color: #777;
+    }
+
+
+    .register-section a {
+        margin-left: 5px;
+
+        color: #9a5243;
+
+        text-decoration: none;
+
+        font-weight: 700;
+
+        transition: color 0.2s ease;
+    }
+
+
+    .register-section a:hover {
+        color: #753d32;
+
+        text-decoration: underline;
+    }
+
+
+    /* ================================================================
+       RESPONSIVE
+       ================================================================ */
+
+    @media (max-width: 600px) {
+
+        .login-container {
+            padding: 25px 15px;
+        }
+
+
+        .login-card {
+            padding: 30px 22px;
+
+            border-radius: 18px;
+        }
+
+
+        .login-header h1 {
+            font-size: 26px;
+        }
+
+
+        .login-icon {
+            width: 64px;
+
+            height: 64px;
+
+            font-size: 26px;
+        }
+
+    }
+
+</style>
+
+{% endblock content %}

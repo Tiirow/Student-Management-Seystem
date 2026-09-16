@@ -1,46 +1,155 @@
 {% extends 'main.html' %} {% block content %}
 
+<!-- =====================================================
+     PROJECTS PAGE
+====================================================== -->
+
 <h1>Projects</h1>
 
-<table border="1" cellpadding="10">
-  <tr>
-    <th>ID</th>
-    <th>Project</th>
-    <th>Positive Votes</th>
-    <th>Votes</th>
-    <th>Created</th>
-    <th>View</th>
-    <th>Edit</th>
-    <th>Delete</th>
-  </tr>
+<!-- =====================================================
+     ADD PROJECT
+====================================================== -->
+<!--
+     Haddii user-ku leeyahay:
+         can_add = True
 
-  {% for project in projects %}
+     Add Project button ayaa muuqanaya.
 
-  <tr>
-    <td>{{ project.id }}</td>
+     Haddii:
+         can_add = False
 
-    <td>{{ project.title }}</td>
+     button-ka gabi ahaanba lama tusayo.
+====================================================== -->
 
-    <td>{{ project.vote_total }}%</td>
+{% if can_add %}
 
-    <td>{{ project.vote_ratio }}</td>
+<a href="{% url 'create-project' %}"> Add Project </a>
 
-    <td>{{ project.created }}</td>
+{% endif %}
 
-    <td>
-      <a href="{% url 'project' project.id %}">View</a>
-    </td>
+<br />
+<br />
 
-    <td>
-      <a href="{% url 'update-project' project.id %}">Edit</a>
-    </td>
+<!-- =====================================================
+     PROJECT TABLE
+====================================================== -->
 
-    <td>
-      <a href="{% url 'delete-project' project.id %}">Delete</a>
-    </td>
-  </tr>
+<table>
+  <!-- =================================================
+         TABLE HEADER
+    ================================================== -->
 
-  {% endfor %}
+  <thead>
+    <tr>
+      <th>Title</th>
+
+      <th>Vote Total</th>
+
+      <th>Vote Ratio</th>
+
+      <th>Created</th>
+
+      <th>View</th>
+
+      <!-- =========================================
+                 EDIT
+            ========================================== -->
+
+      {% if can_edit %}
+
+      <th>Edit</th>
+
+      {% endif %}
+
+      <!-- =========================================
+                 DELETE
+            ========================================== -->
+
+      {% if can_delete %}
+
+      <th>Delete</th>
+
+      {% endif %}
+    </tr>
+  </thead>
+
+  <!-- =================================================
+         TABLE BODY
+    ================================================== -->
+
+  <tbody>
+    {% for project in projects %}
+
+    <tr>
+      <!-- =========================================
+                 PROJECT TITLE
+            ========================================== -->
+
+      <td>{{ project.title }}</td>
+
+      <!-- =========================================
+                 VOTE TOTAL
+            ========================================== -->
+
+      <td>{{ project.vote_total }}%</td>
+
+      <!-- =========================================
+                 VOTE RATIO
+            ========================================== -->
+
+      <td>{{ project.vote_ratio }}</td>
+
+      <!-- =========================================
+                 CREATED
+            ========================================== -->
+
+      <td>{{ project.created }}</td>
+
+      <!-- =========================================
+                 VIEW
+            ========================================== -->
+
+      <td>
+        <a href="{% url 'project' project.id %}"> View </a>
+      </td>
+
+      <!-- =========================================
+                 EDIT
+            ========================================== -->
+
+      {% if can_edit %}
+
+      <td>
+        <a href="{% url 'update-project' project.id %}"> Edit </a>
+      </td>
+
+      {% endif %}
+
+      <!-- =========================================
+                 DELETE
+            ========================================== -->
+
+      {% if can_delete %}
+
+      <td>
+        <a href="{% url 'delete-project' project.id %}"> Delete </a>
+      </td>
+
+      {% endif %}
+    </tr>
+
+    <!-- =================================================
+             NO PROJECTS
+        ================================================== -->
+
+    {% empty %}
+
+    <tr>
+      <td colspan="7">No projects found.</td>
+    </tr>
+
+    {% endfor %}
+  </tbody>
 </table>
 
 {% endblock content %}

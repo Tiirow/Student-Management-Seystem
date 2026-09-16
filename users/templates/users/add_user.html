@@ -1,0 +1,2382 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Add User | Student Management System
+    </title>
+
+
+    <style>
+
+        /* ============================================================
+           GLOBAL
+           ============================================================ */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+
+            background: #f5f7fb;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            color: #222;
+
+            overflow-x: auto;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+
+        /* ============================================================
+           FIXED SIDEBAR
+           ============================================================ */
+
+        .sidebar {
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 285px;
+            height: 100vh;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #17191d 0%,
+                    #121418 100%
+                );
+
+            color: #fff;
+
+            z-index: 9999;
+
+            display: flex;
+
+            flex-direction: column;
+
+            overflow: hidden;
+
+            border-right:
+                1px solid rgba(255,255,255,0.06);
+
+            box-shadow:
+                8px 0 30px rgba(0,0,0,0.12);
+        }
+
+
+        /* ============================================================
+           BRAND
+           ============================================================ */
+
+        .sidebar-brand {
+            height: 92px;
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 0 24px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.07);
+
+            flex-shrink: 0;
+        }
+
+        .brand-logo {
+            width: 46px;
+            height: 46px;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #9a5243,
+                    #c17865
+                );
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 22px;
+
+            box-shadow:
+                0 8px 22px rgba(154,82,67,0.30);
+
+            flex-shrink: 0;
+        }
+
+        .brand-content {
+            margin-left: 13px;
+        }
+
+        .brand-title {
+            margin: 0;
+
+            color: #fff;
+
+            font-size: 16px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.2px;
+        }
+
+        .brand-subtitle {
+            margin-top: 4px;
+
+            color: #8d929b;
+
+            font-size: 11px;
+
+            font-weight: 500;
+        }
+
+
+        /* ============================================================
+           CURRENT USER PROFILE
+           ============================================================ */
+
+        .sidebar-user {
+            margin: 18px 15px 10px;
+
+            padding: 14px;
+
+            border-radius: 13px;
+
+            background:
+                rgba(255,255,255,0.045);
+
+            border:
+                1px solid rgba(255,255,255,0.06);
+
+            display: flex;
+
+            align-items: center;
+
+            flex-shrink: 0;
+        }
+
+        .sidebar-user-avatar {
+            width: 42px;
+            height: 42px;
+
+            min-width: 42px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #9a5243,
+                    #b76a59
+                );
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: #fff;
+
+            font-size: 14px;
+
+            font-weight: 800;
+        }
+
+        .sidebar-user-info {
+            min-width: 0;
+
+            margin-left: 11px;
+        }
+
+        .sidebar-user-name {
+            color: #fff;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-user-role {
+            margin-top: 4px;
+
+            color: #9297a0;
+
+            font-size: 10px;
+
+            font-weight: 600;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.5px;
+        }
+
+
+        /* ============================================================
+           NAVIGATION
+           ============================================================ */
+
+        .sidebar-navigation {
+            flex: 1;
+
+            overflow-y: auto;
+
+            overflow-x: hidden;
+
+            padding: 8px 13px 18px;
+        }
+
+        .sidebar-navigation::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .sidebar-navigation::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-navigation::-webkit-scrollbar-thumb {
+            background:
+                rgba(255,255,255,0.10);
+
+            border-radius: 10px;
+        }
+
+        .nav-section-title {
+            padding: 15px 11px 8px;
+
+            color: #686d76;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.2px;
+
+            text-transform: uppercase;
+        }
+
+        .nav-link {
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            width: 100%;
+
+            min-height: 46px;
+
+            padding: 0 12px;
+
+            margin-bottom: 4px;
+
+            border-radius: 10px;
+
+            color: #aeb2ba;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            transition:
+                background 0.20s ease,
+                color 0.20s ease,
+                transform 0.20s ease;
+        }
+
+        .nav-link:hover {
+            background:
+                rgba(255,255,255,0.055);
+
+            color: #fff;
+
+            transform: translateX(2px);
+        }
+
+        .nav-link.active {
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(154,82,67,0.28),
+                    rgba(154,82,67,0.10)
+                );
+
+            color: #fff;
+
+            box-shadow:
+                inset 3px 0 0 #9a5243;
+        }
+
+        .nav-icon {
+            width: 32px;
+
+            min-width: 32px;
+
+            height: 32px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background:
+                rgba(255,255,255,0.035);
+
+            font-size: 15px;
+
+            margin-right: 9px;
+        }
+
+        .nav-link.active .nav-icon {
+            background:
+                rgba(154,82,67,0.25);
+        }
+
+        .nav-text {
+            flex: 1;
+        }
+
+        .nav-arrow {
+            color: #686d76;
+
+            font-size: 11px;
+        }
+
+
+        /* ============================================================
+           SIDEBAR FOOTER
+           ============================================================ */
+
+        .sidebar-footer {
+            padding: 13px;
+
+            border-top:
+                1px solid rgba(255,255,255,0.07);
+
+            flex-shrink: 0;
+        }
+
+        .logout-button {
+            width: 100%;
+
+            min-height: 44px;
+
+            border: 0;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255,255,255,0.045);
+
+            color: #aeb2ba;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 0 12px;
+
+            font-family: inherit;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .logout-button:hover {
+            background:
+                rgba(180,50,40,0.15);
+
+            color: #ffaaa3;
+        }
+
+        .logout-icon {
+            width: 32px;
+
+            min-width: 32px;
+
+            height: 32px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 15px;
+        }
+
+
+        /* ============================================================
+           MAIN CONTENT
+           ============================================================ */
+
+        .main-content {
+            margin-left: 285px;
+
+            min-height: 100vh;
+
+            width: calc(100% - 285px);
+
+            padding: 1px 0 50px;
+        }
+
+
+        /* ============================================================
+           PAGE
+           ============================================================ */
+
+        .add-user-page {
+            max-width: 1100px;
+
+            margin: 40px auto;
+
+            padding: 30px;
+        }
+
+
+        /* ============================================================
+           PAGE HEADER
+           ============================================================ */
+
+        .page-header {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+
+            flex-wrap: wrap;
+        }
+
+        .page-title h1 {
+            margin: 0;
+
+            color: #111827;
+
+            font-size: 30px;
+
+            font-weight: 800;
+        }
+
+        .page-title p {
+            margin: 7px 0 0;
+
+            color: #6b7280;
+
+            font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .header-btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            min-height: 40px;
+
+            padding: 0 15px;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition: 0.2s ease;
+        }
+
+        .back-btn {
+            background: #f3f4f6;
+
+            color: #374151;
+        }
+
+        .back-btn:hover {
+            background: #e5e7eb;
+        }
+
+
+        /* ============================================================
+           FORM CARD
+           ============================================================ */
+
+        .form-card {
+            background: #fff;
+
+            border:
+                1px solid #e5e7eb;
+
+            border-radius: 17px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 6px 22px rgba(15,23,42,0.05);
+        }
+
+        .form-card-header {
+            padding: 22px 25px;
+
+            border-bottom:
+                1px solid #e5e7eb;
+        }
+
+        .form-card-header h2 {
+            margin: 0;
+
+            color: #111827;
+
+            font-size: 19px;
+
+            font-weight: 800;
+        }
+
+        .form-card-header p {
+            margin: 6px 0 0;
+
+            color: #6b7280;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        /* ============================================================
+           FORM
+           ============================================================ */
+
+        .user-form {
+            padding: 25px;
+        }
+
+        .form-section {
+            margin-bottom: 28px;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-section-title {
+            margin: 0 0 16px;
+
+            color: #111827;
+
+            font-size: 15px;
+
+            font-weight: 800;
+
+            padding-bottom: 10px;
+
+            border-bottom:
+                1px solid #eef0f2;
+        }
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            color: #374151;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .required {
+            color: #b91c1c;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+
+            height: 45px;
+
+            border:
+                1px solid #d1d5db;
+
+            border-radius: 9px;
+
+            padding: 0 13px;
+
+            outline: none;
+
+            background: #fff;
+
+            color: #374151;
+
+            font-family: inherit;
+
+            font-size: 13px;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            border-color: #9a5243;
+
+            box-shadow:
+                0 0 0 3px rgba(154,82,67,0.10);
+        }
+
+        .form-input::placeholder {
+            color: #b0b4bb;
+        }
+
+        .field-help {
+            margin: 0;
+
+            color: #9ca3af;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+
+        /* ============================================================
+           PASSWORD
+           ============================================================ */
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper .form-input {
+            padding-right: 50px;
+        }
+
+        .password-toggle {
+            position: absolute;
+
+            top: 50%;
+
+            right: 13px;
+
+            transform: translateY(-50%);
+
+            border: 0;
+
+            background: transparent;
+
+            color: #9ca3af;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            padding: 3px;
+        }
+
+        .password-toggle:hover {
+            color: #9a5243;
+        }
+
+
+        /* ============================================================
+           ROLE OPTIONS
+           ============================================================ */
+
+        .role-help {
+            margin-bottom: 13px;
+
+            color: #6b7280;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+        .role-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 12px;
+        }
+
+        .role-option {
+            position: relative;
+        }
+
+        .role-option input {
+            position: absolute;
+
+            opacity: 0;
+
+            pointer-events: none;
+        }
+
+        .role-label {
+            display: block;
+
+            min-height: 100px;
+
+            padding: 15px;
+
+            border:
+                1px solid #e5e7eb;
+
+            border-radius: 11px;
+
+            background: #fafafa;
+
+            cursor: pointer;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .role-label:hover {
+            background: #fff;
+
+            transform: translateY(-1px);
+        }
+
+        .role-option input:checked + .role-label {
+            border-color: #9a5243;
+
+            background: #fff8f6;
+
+            box-shadow:
+                0 0 0 2px rgba(154,82,67,0.08);
+        }
+
+        .role-name {
+            display: block;
+
+            color: #111827;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            margin-bottom: 6px;
+        }
+
+        .role-description {
+            color: #6b7280;
+
+            font-size: 10px;
+
+            line-height: 1.5;
+        }
+
+        .role-check {
+            display: inline-flex;
+
+            margin-bottom: 8px;
+
+            padding: 4px 8px;
+
+            border-radius: 999px;
+
+            background: #f3f4f6;
+
+            color: #6b7280;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.4px;
+        }
+
+        .role-option input:checked + .role-label .role-check {
+            background: #f6ebe8;
+
+            color: #9a5243;
+        }
+
+
+        /* ============================================================
+           FORM ACTIONS
+           ============================================================ */
+
+        .form-actions {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            gap: 10px;
+
+            padding-top: 22px;
+
+            margin-top: 28px;
+
+            border-top:
+                1px solid #eef0f2;
+        }
+
+        .form-btn {
+            min-height: 43px;
+
+            padding: 0 18px;
+
+            border-radius: 9px;
+
+            border: 0;
+
+            font-family: inherit;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .cancel-btn {
+            background: #f3f4f6;
+
+            color: #374151;
+        }
+
+        .cancel-btn:hover {
+            background: #e5e7eb;
+        }
+
+        .submit-btn {
+            background: #9a5243;
+
+            color: #fff;
+        }
+
+        .submit-btn:hover {
+            background: #824536;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* ============================================================
+           MESSAGE
+           ============================================================ */
+
+        .message-box {
+            margin-bottom: 20px;
+
+            padding: 13px 16px;
+
+            border-radius: 10px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+        .message-success {
+            background: #ecfdf5;
+
+            color: #047857;
+
+            border:
+                1px solid #a7f3d0;
+        }
+
+        .message-error {
+            background: #fef2f2;
+
+            color: #b91c1c;
+
+            border:
+                1px solid #fecaca;
+        }
+
+        .message-warning {
+            background: #fff7ed;
+
+            color: #c2410c;
+
+            border:
+                1px solid #fed7aa;
+        }
+
+
+        /* ============================================================
+           LOGOUT MODAL
+           ============================================================ */
+
+        .logout-overlay {
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(0,0,0,0.55);
+
+            backdrop-filter: blur(4px);
+
+            z-index: 20000;
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+        .logout-overlay.show {
+            display: flex;
+        }
+
+        .logout-modal {
+            width: 100%;
+
+            max-width: 420px;
+
+            background: #fff;
+
+            border-radius: 18px;
+
+            padding: 28px;
+
+            box-shadow:
+                0 25px 70px rgba(0,0,0,0.25);
+
+            animation:
+                modalIn 0.2s ease;
+        }
+
+        @keyframes modalIn {
+
+            from {
+                opacity: 0;
+
+                transform:
+                    translateY(10px)
+                    scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+
+        }
+
+        .logout-modal-icon {
+            width: 55px;
+
+            height: 55px;
+
+            border-radius: 15px;
+
+            background: #fff0ef;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 25px;
+
+            margin-bottom: 16px;
+        }
+
+        .logout-modal h3 {
+            margin: 0 0 8px;
+
+            color: #222;
+
+            font-size: 20px;
+        }
+
+        .logout-modal p {
+            margin: 0;
+
+            color: #777;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+        .logout-modal-actions {
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 10px;
+
+            margin-top: 25px;
+        }
+
+        .modal-btn {
+            border: 0;
+
+            border-radius: 9px;
+
+            padding: 11px 17px;
+
+            font-family: inherit;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .modal-cancel-btn {
+            background: #f2f2f2;
+
+            color: #555;
+        }
+
+        .modal-cancel-btn:hover {
+            background: #e5e5e5;
+        }
+
+        .confirm-logout-btn {
+            background: #9a5243;
+
+            color: #fff;
+        }
+
+        .confirm-logout-btn:hover {
+            background: #7f4034;
+        }
+
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+
+        @media (max-width: 1000px) {
+
+            .role-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                width: 285px;
+
+                transform: none !important;
+
+                left: 0 !important;
+            }
+
+            .main-content {
+                margin-left: 285px;
+
+                width: calc(100% - 285px);
+
+                min-width: 700px;
+            }
+
+            .add-user-page {
+                margin: 20px auto;
+
+                padding: 10px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .role-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header {
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================================================================
+     FIXED SIDEBAR
+     ================================================================ -->
+
+<aside class="sidebar">
+
+
+    <!-- BRAND -->
+
+    <div class="sidebar-brand">
+
+        <div class="brand-logo">
+            🎓
+        </div>
+
+        <div class="brand-content">
+
+            <div class="brand-title">
+                Student Management
+            </div>
+
+            <div class="brand-subtitle">
+                Academic Administration
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CURRENT USER -->
+
+    <div class="sidebar-user">
+
+        <div class="sidebar-user-avatar">
+
+            {% if request.user.first_name %}
+
+                {{ request.user.first_name|first|upper }}
+
+            {% else %}
+
+                {{ request.user.username|first|upper }}
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="sidebar-user-info">
+
+            <div class="sidebar-user-name">
+
+                {% if request.user.get_full_name %}
+
+                    {{ request.user.get_full_name }}
+
+                {% else %}
+
+                    {{ request.user.username }}
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="sidebar-user-role">
+
+                {% if current_role %}
+
+                    {{ current_role }}
+
+                {% elif request.user.profile.role %}
+
+                    {{ request.user.profile.role }}
+
+                {% elif request.user.is_superuser %}
+
+                    Administrator
+
+                {% else %}
+
+                    User
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="sidebar-navigation">
+
+
+        <!-- MAIN -->
+
+        <div class="nav-section-title">
+            Main
+        </div>
+
+
+        <a
+            href="{% url 'student-home' %}"
+            class="nav-link"
+        >
+
+            <span class="nav-icon">
+                🏠
+            </span>
+
+            <span class="nav-text">
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <a
+            href="{% url 'student-list' %}"
+            class="nav-link"
+        >
+
+            <span class="nav-icon">
+                👨‍🎓
+            </span>
+
+            <span class="nav-text">
+                Students
+            </span>
+
+        </a>
+
+
+        <!-- MANAGEMENT -->
+
+        {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" or request.user.profile.role == "Teacher" %}
+
+
+            <div class="nav-section-title">
+                Management
+            </div>
+
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                <a
+                    href="{% url 'teacherapp:teacher-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        👨‍🏫
+                    </span>
+
+                    <span class="nav-text">
+                        Teachers
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% elif request.user.profile.role == "Teacher" %}
+
+                <a
+                    href="{% url 'teacherapp:teacher-dashboard' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        👨‍🏫
+                    </span>
+
+                    <span class="nav-text">
+                        Teacher Area
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+
+            <a
+                href="{% url 'class-list' %}"
+                class="nav-link"
+            >
+
+                <span class="nav-icon">
+                    🏫
+                </span>
+
+                <span class="nav-text">
+                    Classes
+                </span>
+
+                <span class="nav-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                <a
+                    href="{% url 'subject-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📚
+                    </span>
+
+                    <span class="nav-text">
+                        Subjects
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+        {% endif %}
+
+
+        <!-- ACADEMIC -->
+
+        {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" or request.user.profile.role == "Teacher" %}
+
+
+            <div class="nav-section-title">
+                Academic
+            </div>
+
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                <a
+                    href="{% url 'student-enrollment' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📝
+                    </span>
+
+                    <span class="nav-text">
+                        Enrollment
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+
+            {% if request.user.profile.role == "Teacher" %}
+
+                <a
+                    href="{% url 'teacherapp:assignment-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📋
+                    </span>
+
+                    <span class="nav-text">
+                        My Assignments
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Teacher" %}
+
+
+                <a
+                    href="{% url 'attendance-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📅
+                    </span>
+
+                    <span class="nav-text">
+                        Attendance
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{% url 'grade-list' %}"
+                    class="nav-link"
+                >
+
+                    <span class="nav-icon">
+                        📊
+                    </span>
+
+                    <span class="nav-text">
+                        Grades
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+        {% endif %}
+
+
+        <!-- SYSTEM -->
+
+        {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+
+            <div class="nav-section-title">
+                System
+            </div>
+
+
+            <a
+                href="/dashboard/logs/"
+                class="nav-link"
+            >
+
+                <span class="nav-icon">
+                    🛡
+                </span>
+
+                <span class="nav-text">
+                    System Logs
+                </span>
+
+                <span class="nav-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a
+                href="{% url 'conversations:conversation-list' %}"
+                class="nav-link"
+            >
+
+                <span class="nav-icon">
+                    💬
+                </span>
+
+                <span class="nav-text">
+                    Conversations
+                </span>
+
+                <span class="nav-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" %}
+
+                <a
+                    href="{% url 'users:manage-users' %}"
+                    class="nav-link active"
+                >
+
+                    <span class="nav-icon">
+                        👥
+                    </span>
+
+                    <span class="nav-text">
+                        Manage Users
+                    </span>
+
+                    <span class="nav-arrow">
+                        ›
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+        {% endif %}
+
+
+    </nav>
+
+
+    <!-- FOOTER -->
+
+    <div class="sidebar-footer">
+
+        <button
+            type="button"
+            class="logout-button"
+            onclick="openLogoutModal()"
+        >
+
+            <span class="logout-icon">
+                🚪
+            </span>
+
+            <span>
+                Logout
+            </span>
+
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- ================================================================
+     MAIN CONTENT
+     ================================================================ -->
+
+<main class="main-content">
+
+
+    <div class="add-user-page">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header">
+
+
+            <div class="page-title">
+
+                <h1>
+                    Add User
+                </h1>
+
+                <p>
+                    Create a new system account and assign its role.
+                </p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <a
+                    href="{% url 'users:manage-users' %}"
+                    class="header-btn back-btn"
+                >
+
+                    ← Back to Users
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- MESSAGES -->
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div
+                    class="message-box
+                    {% if message.tags == 'success' %}
+                        message-success
+                    {% elif message.tags == 'error' %}
+                        message-error
+                    {% else %}
+                        message-warning
+                    {% endif %}"
+                >
+
+                    {{ message }}
+
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+
+        <!-- ========================================================
+             FORM CARD
+             ======================================================== -->
+
+        <div class="form-card">
+
+
+            <div class="form-card-header">
+
+                <h2>
+                    User Account Information
+                </h2>
+
+                <p>
+                    Enter the user's information below and select
+                    the appropriate system role.
+                </p>
+
+            </div>
+
+
+            <!-- ====================================================
+                 FORM
+                 ==================================================== -->
+
+            <form
+                method="POST"
+                class="user-form"
+                novalidate
+            >
+
+                {% csrf_token %}
+
+
+                <!-- ==================================================
+                     PERSONAL INFORMATION
+                     ================================================== -->
+
+                <div class="form-section">
+
+
+                    <h3 class="form-section-title">
+                        Personal Information
+                    </h3>
+
+
+                    <div class="form-grid">
+
+
+                        <!-- FIRST NAME -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="first_name"
+                                class="form-label"
+                            >
+
+                                First Name
+
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="first_name"
+                                name="first_name"
+                                class="form-input"
+                                value="{{ first_name|default:'' }}"
+                                placeholder="Enter first name"
+                                autocomplete="given-name"
+                            >
+
+                        </div>
+
+
+                        <!-- LAST NAME -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="last_name"
+                                class="form-label"
+                            >
+
+                                Last Name
+
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="last_name"
+                                name="last_name"
+                                class="form-input"
+                                value="{{ last_name|default:'' }}"
+                                placeholder="Enter last name"
+                                autocomplete="family-name"
+                            >
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="form-group full">
+
+                            <label
+                                for="email"
+                                class="form-label"
+                            >
+
+                                Email Address
+
+                            </label>
+
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="form-input"
+                                value="{{ email|default:'' }}"
+                                placeholder="Enter email address"
+                                autocomplete="email"
+                            >
+
+                            <p class="field-help">
+                                Email is optional but recommended.
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- ==================================================
+                     ACCOUNT INFORMATION
+                     ================================================== -->
+
+                <div class="form-section">
+
+
+                    <h3 class="form-section-title">
+                        Account Information
+                    </h3>
+
+
+                    <div class="form-grid">
+
+
+                        <!-- USERNAME -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="username"
+                                class="form-label"
+                            >
+
+                                Username
+                                <span class="required">*</span>
+
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                class="form-input"
+                                value="{{ username|default:'' }}"
+                                placeholder="Enter username"
+                                autocomplete="username"
+                                required
+                            >
+
+                            <p class="field-help">
+                                The username must be unique.
+                            </p>
+
+                        </div>
+
+
+                        <!-- PASSWORD -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="password"
+                                class="form-label"
+                            >
+
+                                Password
+                                <span class="required">*</span>
+
+                            </label>
+
+
+                            <div class="password-wrapper">
+
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    class="form-input"
+                                    placeholder="Enter password"
+                                    autocomplete="new-password"
+                                    required
+                                >
+
+
+                                <button
+                                    type="button"
+                                    class="password-toggle"
+                                    onclick="togglePassword()"
+                                    aria-label="Show password"
+                                >
+
+                                    👁
+
+                                </button>
+
+                            </div>
+
+
+                            <p class="field-help">
+                                Use a strong password for the new account.
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- ==================================================
+                     ROLE
+                     ================================================== -->
+
+                <div class="form-section">
+
+
+                    <h3 class="form-section-title">
+                        System Role
+                    </h3>
+
+
+                    <p class="role-help">
+                        Select the role that determines the user's
+                        responsibilities and system access.
+                    </p>
+
+
+                    <div class="role-grid">
+
+
+                        <!-- ADMINISTRATOR -->
+
+                        <div class="role-option">
+
+                            <input
+                                type="radio"
+                                id="role_administrator"
+                                name="role"
+                                value="Administrator"
+                                {% if role == "Administrator" %}
+                                    checked
+                                {% endif %}
+                            >
+
+
+                            <label
+                                for="role_administrator"
+                                class="role-label"
+                            >
+
+                                <span class="role-check">
+                                    Full Access
+                                </span>
+
+                                <span class="role-name">
+                                    Administrator
+                                </span>
+
+                                <span class="role-description">
+                                    Full system management including
+                                    users, students, teachers, subjects,
+                                    attendance, grades and settings.
+                                </span>
+
+                            </label>
+
+                        </div>
+
+
+                        <!-- MANAGER -->
+
+                        <div class="role-option">
+
+                            <input
+                                type="radio"
+                                id="role_manager"
+                                name="role"
+                                value="Manager"
+                                {% if role == "Manager" %}
+                                    checked
+                                {% endif %}
+                            >
+
+
+                            <label
+                                for="role_manager"
+                                class="role-label"
+                            >
+
+                                <span class="role-check">
+                                    Management
+                                </span>
+
+                                <span class="role-name">
+                                    Manager
+                                </span>
+
+                                <span class="role-description">
+                                    Operational management of permitted
+                                    student, enrollment and reporting tasks.
+                                </span>
+
+                            </label>
+
+                        </div>
+
+
+                        <!-- TEACHER -->
+
+                        <div class="role-option">
+
+                            <input
+                                type="radio"
+                                id="role_teacher"
+                                name="role"
+                                value="Teacher"
+                                {% if role == "Teacher" %}
+                                    checked
+                                {% endif %}
+                            >
+
+
+                            <label
+                                for="role_teacher"
+                                class="role-label"
+                            >
+
+                                <span class="role-check">
+                                    Academic
+                                </span>
+
+                                <span class="role-name">
+                                    Teacher
+                                </span>
+
+                                <span class="role-description">
+                                    Academic management for assigned
+                                    classes, attendance and grades.
+                                </span>
+
+                            </label>
+
+                        </div>
+
+
+                        <!-- STUDENT -->
+
+                        <div class="role-option">
+
+                            <input
+                                type="radio"
+                                id="role_student"
+                                name="role"
+                                value="Student"
+                                {% if role == "Student" %}
+                                    checked
+                                {% endif %}
+                            >
+
+
+                            <label
+                                for="role_student"
+                                class="role-label"
+                            >
+
+                                <span class="role-check">
+                                    Self-Service
+                                </span>
+
+                                <span class="role-name">
+                                    Student
+                                </span>
+
+                                <span class="role-description">
+                                    Personal dashboard, subjects,
+                                    attendance, grades and notifications.
+                                </span>
+
+                            </label>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- ==================================================
+                     FORM ACTIONS
+                     ================================================== -->
+
+                <div class="form-actions">
+
+
+                    <a
+                        href="{% url 'users:manage-users' %}"
+                        class="form-btn cancel-btn"
+                    >
+
+                        Cancel
+
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="form-btn submit-btn"
+                    >
+
+                        <i class="fa-solid fa-user-plus"></i>
+
+                        Create User
+
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+
+</main>
+
+
+<!-- ================================================================
+     LOGOUT MODAL
+     ================================================================ -->
+
+<div
+    id="logoutOverlay"
+    class="logout-overlay"
+    onclick="closeLogoutModal(event)"
+>
+
+
+    <div
+        class="logout-modal"
+        onclick="event.stopPropagation()"
+    >
+
+
+        <div class="logout-modal-icon">
+            🚪
+        </div>
+
+
+        <h3>
+            Logout
+        </h3>
+
+
+        <p>
+            Are you sure you want to logout from the
+            Student Management System?
+        </p>
+
+
+        <div class="logout-modal-actions">
+
+
+            <button
+                type="button"
+                class="modal-btn modal-cancel-btn"
+                onclick="closeLogoutModal()"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                class="modal-btn confirm-logout-btn"
+                onclick="confirmLogout()"
+            >
+                Yes, Logout
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- ================================================================
+     JAVASCRIPT
+     ================================================================ -->
+
+<script>
+
+
+    /* ============================================================
+       PASSWORD TOGGLE
+       ============================================================ */
+
+    function togglePassword() {
+
+        const passwordInput =
+            document.getElementById("password");
+
+        const button =
+            document.querySelector(".password-toggle");
+
+
+        if (!passwordInput) {
+            return;
+        }
+
+
+        if (passwordInput.type === "password") {
+
+            passwordInput.type = "text";
+
+            if (button) {
+                button.textContent = "🙈";
+            }
+
+        } else {
+
+            passwordInput.type = "password";
+
+            if (button) {
+                button.textContent = "👁";
+            }
+
+        }
+
+    }
+
+
+    /* ============================================================
+       LOGOUT MODAL
+       ============================================================ */
+
+    function openLogoutModal() {
+
+        const overlay =
+            document.getElementById("logoutOverlay");
+
+        if (overlay) {
+
+            overlay.classList.add("show");
+
+        }
+
+    }
+
+
+    function closeLogoutModal(event) {
+
+        if (
+            event &&
+            event.target !== event.currentTarget
+        ) {
+
+            return;
+
+        }
+
+
+        const overlay =
+            document.getElementById("logoutOverlay");
+
+        if (overlay) {
+
+            overlay.classList.remove("show");
+
+        }
+
+    }
+
+
+    function confirmLogout() {
+
+        window.location.href =
+            "{% url 'users:logout' %}";
+
+    }
+
+
+    /* ============================================================
+       ESC KEY
+       ============================================================ */
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Escape") {
+
+                const overlay =
+                    document.getElementById("logoutOverlay");
+
+                if (
+                    overlay &&
+                    overlay.classList.contains("show")
+                ) {
+
+                    overlay.classList.remove("show");
+
+                }
+
+            }
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>
+

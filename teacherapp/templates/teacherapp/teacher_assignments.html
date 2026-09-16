@@ -1,0 +1,595 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+<style>
+    .assignments-page {
+        max-width: 1200px;
+        margin: 35px auto;
+        padding: 0 20px;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 28px;
+    }
+
+    .page-title h1 {
+        margin: 0;
+        color: #172033;
+        font-size: 30px;
+        font-weight: 800;
+    }
+
+    .page-title p {
+        margin: 7px 0 0;
+        color: #7b8494;
+        font-size: 14px;
+    }
+
+    .add-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #9A5243;
+        color: white;
+        text-decoration: none;
+        padding: 13px 19px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .add-btn:hover {
+        background: #824335;
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-bottom: 25px;
+    }
+
+    .stat-card {
+        background: white;
+        border: 1px solid #e7eaf0;
+        border-radius: 16px;
+        padding: 22px;
+        box-shadow: 0 7px 25px rgba(15, 23, 42, 0.05);
+    }
+
+    .stat-label {
+        color: #7b8494;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .stat-value {
+        margin-top: 8px;
+        color: #172033;
+        font-size: 27px;
+        font-weight: 800;
+    }
+
+    .table-card {
+        background: white;
+        border: 1px solid #e7eaf0;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    }
+
+    .table-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid #edf0f4;
+    }
+
+    .table-header h2 {
+        margin: 0;
+        color: #172033;
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    .table-header p {
+        margin: 5px 0 0;
+        color: #8a94a6;
+        font-size: 13px;
+    }
+
+    .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 800px;
+    }
+
+    th {
+        text-align: left;
+        padding: 15px 20px;
+        background: #f8f9fb;
+        color: #667085;
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    td {
+        padding: 17px 20px;
+        border-top: 1px solid #edf0f4;
+        color: #344054;
+        font-size: 14px;
+        vertical-align: middle;
+    }
+
+    tbody tr:hover {
+        background: #fcfcfd;
+    }
+
+    .teacher-name {
+        color: #172033;
+        font-weight: 700;
+    }
+
+    .username {
+        color: #98a2b3;
+        font-size: 12px;
+        margin-top: 3px;
+    }
+
+    .class-name {
+        font-weight: 700;
+        color: #344054;
+    }
+
+    .subject-name {
+        font-weight: 600;
+        color: #344054;
+    }
+
+    .status {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 11px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .status-active {
+        background: #ecfdf3;
+        color: #027a48;
+    }
+
+    .status-inactive {
+        background: #fef3f2;
+        color: #b42318;
+    }
+
+    .empty-state {
+        padding: 65px 25px;
+        text-align: center;
+    }
+
+    .empty-icon {
+        font-size: 45px;
+        margin-bottom: 12px;
+    }
+
+    .empty-state h3 {
+        margin: 0;
+        color: #172033;
+        font-size: 18px;
+    }
+
+    .empty-state p {
+        color: #8a94a6;
+        margin: 8px 0 20px;
+        font-size: 14px;
+    }
+
+    .empty-btn {
+        display: inline-block;
+        background: #9A5243;
+        color: white;
+        text-decoration: none;
+        padding: 11px 18px;
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .filter-box {
+        margin-bottom: 20px;
+        background: white;
+        border: 1px solid #e7eaf0;
+        border-radius: 14px;
+        padding: 15px;
+    }
+
+    .filter-box input {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #d8dee8;
+        border-radius: 9px;
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+
+    .filter-box input:focus {
+        outline: none;
+        border-color: #9A5243;
+        box-shadow: 0 0 0 3px rgba(154, 82, 67, 0.10);
+    }
+
+    @media (max-width: 800px) {
+        .stats {
+            grid-template-columns: 1fr;
+        }
+
+        .page-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .add-btn {
+            width: 100%;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+    }
+</style>
+
+
+<div class="assignments-page">
+
+    <!-- ===================================================== -->
+    <!-- HEADER -->
+    <!-- ===================================================== -->
+
+    <div class="page-header">
+
+        <div class="page-title">
+
+            <h1>
+                📚 Teacher Assignments
+            </h1>
+
+            <p>
+                Manage teacher, class and subject assignments.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'teacherapp:assignment-create' %}"
+            class="add-btn"
+        >
+            ➕ Assign Teacher
+        </a>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- STATISTICS -->
+    <!-- ===================================================== -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Total Assignments
+            </div>
+
+            <div class="stat-value">
+                {{ assignments|length }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Active Assignments
+            </div>
+
+            <div class="stat-value">
+                {% if active_count %}
+                    {{ active_count }}
+                {% else %}
+                    0
+                {% endif %}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Inactive Assignments
+            </div>
+
+            <div class="stat-value">
+                {% if inactive_count %}
+                    {{ inactive_count }}
+                {% else %}
+                    0
+                {% endif %}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- SEARCH -->
+    <!-- ===================================================== -->
+
+    <div class="filter-box">
+
+        <input
+            type="text"
+            id="assignmentSearch"
+            placeholder="Search teacher, class or subject..."
+        >
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- TABLE -->
+    <!-- ===================================================== -->
+
+    <div class="table-card">
+
+        <div class="table-header">
+
+            <h2>
+                Assigned Classes & Subjects
+            </h2>
+
+            <p>
+                Select a teacher, class and subject when creating an assignment.
+            </p>
+
+        </div>
+
+
+        {% if assignments %}
+
+            <div class="table-wrapper">
+
+                <table id="assignmentTable">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Teacher
+                            </th>
+
+                            <th>
+                                Class
+                            </th>
+
+                            <th>
+                                Subject
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Assigned Date
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for assignment in assignments %}
+
+                            <tr>
+
+                                <td>
+
+                                    <div class="teacher-name">
+
+                                        {% if assignment.teacher.get_full_name %}
+
+                                            {{ assignment.teacher.get_full_name }}
+
+                                        {% else %}
+
+                                            {{ assignment.teacher.username }}
+
+                                        {% endif %}
+
+                                    </div>
+
+                                    <div class="username">
+                                        @{{ assignment.teacher.username }}
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+
+                                    <div class="class-name">
+                                        {{ assignment.class_room.name }}
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+
+                                    <div class="subject-name">
+                                        {{ assignment.subject.name }}
+                                    </div>
+
+                                    {% if assignment.subject.code %}
+
+                                        <div class="username">
+                                            {{ assignment.subject.code }}
+                                        </div>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td>
+
+                                    {% if assignment.status == "Active" %}
+
+                                        <span class="status status-active">
+                                            ● Active
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="status status-inactive">
+                                            ● Inactive
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td>
+
+                                    {% if assignment.created_at %}
+
+                                        {{ assignment.created_at|date:"d M Y" }}
+
+                                    {% else %}
+
+                                        —
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    📚
+                </div>
+
+                <h3>
+                    No Teacher Assignments Yet
+                </h3>
+
+                <p>
+                    Start by selecting a teacher, class and subject.
+                </p>
+
+                <a
+                    href="{% url 'teacherapp:assignment-create' %}"
+                    class="empty-btn"
+                >
+                    ➕ Create First Assignment
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- SEARCH SCRIPT -->
+<!-- ========================================================= -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const search =
+            document.getElementById("assignmentSearch");
+
+        const table =
+            document.getElementById("assignmentTable");
+
+
+        if (!search || !table) {
+            return;
+        }
+
+
+        const rows =
+            table.querySelectorAll("tbody tr");
+
+
+        search.addEventListener(
+            "input",
+            function () {
+
+                const value =
+                    this.value.toLowerCase().trim();
+
+
+                rows.forEach(
+                    function (row) {
+
+                        const text =
+                            row.textContent.toLowerCase();
+
+
+                        row.style.display =
+                            text.includes(value)
+                                ? ""
+                                : "none";
+
+                    }
+                );
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+{% endblock %}

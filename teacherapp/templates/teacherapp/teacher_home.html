@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teacher Home</title>
+</head>
+<body>
+
+    <h1>Teacher Management</h1>
+
+    <p>
+        Teacher application foundation is working.
+    </p>
+
+    {% if profile %}
+        <p>
+            Role: {{ profile.role }}
+        </p>
+    {% endif %}
+
+    <h2>My Assignments</h2>
+
+    {% if assignments %}
+        <ul>
+            {% for assignment in assignments %}
+                <li>
+                    {{ assignment.class_room.name }}
+                    -
+                    {{ assignment.subject.name }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No active assignments.</p>
+    {% endif %}
+
+</body>
+</html>

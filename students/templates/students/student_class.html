@@ -1,0 +1,668 @@
+{% extends "students/student_portal_base.html" %}
+
+{% block title %}My Class{% endblock %}
+
+{% block student_portal_content %}
+
+<style>
+/* ============================================================
+   STUDENT MY CLASS PAGE
+============================================================ */
+
+.student-my-class {
+    width: 100%;
+    min-width: 0;
+}
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.student-class-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.student-class-heading h1 {
+    margin: 0;
+    color: #182033;
+    font-size: 29px;
+    font-weight: 850;
+}
+
+.student-class-heading p {
+    margin: 7px 0 0;
+    color: #7d8799;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.student-dashboard-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 37px;
+    padding: 0 13px;
+    border-radius: 9px;
+    background: #ffffff;
+    border: 1px solid #e5e8ed;
+    color: #697386;
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 800;
+    transition: 0.2s ease;
+}
+
+.student-dashboard-link:hover {
+    color: #9a5243;
+    border-color: #dfcbc6;
+    background: #fffaf8;
+}
+
+/* ============================================================
+   HERO
+============================================================ */
+
+.student-class-hero {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 20px;
+    padding: 30px;
+    border-radius: 20px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #9a5243, #b96f5b);
+    box-shadow: 0 15px 35px rgba(154, 82, 67, 0.18);
+}
+
+.student-class-hero::after {
+    content: "🎓";
+    position: absolute;
+    right: 30px;
+    bottom: 4px;
+    font-size: 105px;
+    opacity: 0.1;
+}
+
+.student-class-hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.student-class-label {
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.student-class-name {
+    color: #ffffff;
+    font-size: 31px;
+    font-weight: 850;
+}
+
+.student-class-subtitle {
+    margin-top: 6px;
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 11px;
+}
+
+/* ============================================================
+   INFO CARDS
+============================================================ */
+
+.student-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.student-info-card {
+    padding: 18px;
+    background: #ffffff;
+    border: 1px solid #e8ebf1;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(31, 41, 55, 0.035);
+}
+
+.student-info-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: #f5e9e6;
+    font-size: 17px;
+}
+
+.student-info-label {
+    margin-top: 10px;
+    color: #929aa8;
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.student-info-value {
+    margin-top: 4px;
+    color: #202735;
+    font-size: 15px;
+    font-weight: 850;
+}
+
+/* ============================================================
+   SUBJECT CARD
+============================================================ */
+
+.student-subject-card {
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e8ebf1;
+    border-radius: 17px;
+    box-shadow: 0 6px 20px rgba(31, 41, 55, 0.035);
+}
+
+.student-subject-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 18px 20px;
+    border-bottom: 1px solid #edf0f3;
+}
+
+.student-subject-header h2 {
+    margin: 0;
+    color: #29313e;
+    font-size: 15px;
+    font-weight: 850;
+}
+
+.student-subject-header p {
+    margin: 4px 0 0;
+    color: #969eac;
+    font-size: 8px;
+}
+
+.student-subject-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 27px;
+    padding: 0 9px;
+    border-radius: 7px;
+    color: #9a5243;
+    background: #faf0ed;
+    font-size: 8px;
+    font-weight: 850;
+    white-space: nowrap;
+}
+
+/* ============================================================
+   SUBJECT LIST
+============================================================ */
+
+.student-subject-list {
+    padding: 5px 20px 14px;
+}
+
+.student-subject-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 0;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.student-subject-row:last-child {
+    border-bottom: none;
+}
+
+.student-subject-left {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+}
+
+.student-subject-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #eef3ff;
+    font-size: 16px;
+}
+
+.student-subject-info {
+    min-width: 0;
+}
+
+.student-subject-info strong {
+    display: block;
+    color: #343c49;
+    font-size: 11px;
+    font-weight: 850;
+}
+
+.student-subject-info span {
+    display: block;
+    margin-top: 3px;
+    color: #969eac;
+    font-size: 8px;
+}
+
+.student-subject-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 8px;
+    border-radius: 7px;
+    background: #e8f7ee;
+    color: #22824a;
+    font-size: 7px;
+    font-weight: 850;
+    text-transform: uppercase;
+}
+
+.student-subject-status-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #22824a;
+}
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+
+.student-empty-state {
+    padding: 48px 20px;
+    text-align: center;
+}
+
+.student-empty-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 17px;
+    background: #f5e9e6;
+    font-size: 26px;
+}
+
+.student-empty-state h3 {
+    margin: 0;
+    color: #343c49;
+    font-size: 15px;
+    font-weight: 850;
+}
+
+.student-empty-state p {
+    max-width: 430px;
+    margin: 7px auto 0;
+    color: #969eac;
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+/* ============================================================
+   DARK MODE
+============================================================ */
+
+body.dark-mode .student-class-heading h1 {
+    color: #f2f4f8;
+}
+
+body.dark-mode .student-class-heading p {
+    color: #929bad;
+}
+
+body.dark-mode .student-dashboard-link {
+    background: #181c2a;
+    border-color: #303545;
+    color: #cbd0db;
+}
+
+body.dark-mode .student-dashboard-link:hover {
+    background: #202431;
+    color: #ffb19f;
+}
+
+body.dark-mode .student-info-card,
+body.dark-mode .student-subject-card {
+    background: #181c2a;
+    border-color: #292e3d;
+}
+
+body.dark-mode .student-info-value,
+body.dark-mode .student-subject-header h2,
+body.dark-mode .student-subject-info strong {
+    color: #f2f4f8;
+}
+
+body.dark-mode .student-info-label,
+body.dark-mode .student-subject-header p,
+body.dark-mode .student-subject-info span {
+    color: #929bad;
+}
+
+body.dark-mode .student-subject-row {
+    border-color: #292e3d;
+}
+
+body.dark-mode .student-empty-state h3 {
+    color: #f2f4f8;
+}
+
+body.dark-mode .student-empty-state p {
+    color: #929bad;
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 850px) {
+    .student-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 650px) {
+    .student-class-header {
+        flex-direction: column;
+    }
+
+    .student-dashboard-link {
+        width: 100%;
+    }
+
+    .student-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .student-class-hero {
+        padding: 24px;
+    }
+
+    .student-class-name {
+        font-size: 25px;
+    }
+
+    .student-subject-status {
+        display: none;
+    }
+
+    .student-subject-header {
+        align-items: flex-start;
+    }
+
+    .student-subject-count {
+        font-size: 7px;
+    }
+}
+</style>
+
+
+<div class="student-my-class">
+
+    <!-- ========================================================
+         PAGE HEADER
+    ========================================================= -->
+
+    <div class="student-class-header">
+
+        <div class="student-class-heading">
+            <h1>🏫 My Class</h1>
+            <p>
+                View only the class and subjects assigned to you.
+            </p>
+        </div>
+
+        <a href="{% url 'student-dashboard' %}"
+           class="student-dashboard-link">
+            ← Dashboard
+        </a>
+
+    </div>
+
+
+    {% if class_room %}
+
+        <!-- ====================================================
+             CLASS HERO
+        ===================================================== -->
+
+        <section class="student-class-hero">
+
+            <div class="student-class-hero-content">
+
+                <div class="student-class-label">
+                    MY CURRENT CLASS
+                </div>
+
+                <div class="student-class-name">
+                    {{ class_room.name }}
+                </div>
+
+                <div class="student-class-subtitle">
+                    Officially assigned academic class
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ====================================================
+             STUDENT / CLASS INFORMATION
+        ===================================================== -->
+
+        <div class="student-info-grid">
+
+            <div class="student-info-card">
+
+                <div class="student-info-icon">
+                    🏫
+                </div>
+
+                <div class="student-info-label">
+                    Class
+                </div>
+
+                <div class="student-info-value">
+                    {{ class_room.name }}
+                </div>
+
+            </div>
+
+
+            <div class="student-info-card">
+
+                <div class="student-info-icon">
+                    🪪
+                </div>
+
+                <div class="student-info-label">
+                    Student ID
+                </div>
+
+                <div class="student-info-value">
+                    {{ student.student_id }}
+                </div>
+
+            </div>
+
+
+            <div class="student-info-card">
+
+                <div class="student-info-icon">
+                    📅
+                </div>
+
+                <div class="student-info-label">
+                    Academic Year
+                </div>
+
+                <div class="student-info-value">
+                    {{ academic_year|default:"Current Academic Year" }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ====================================================
+             CLASS SUBJECTS
+        ===================================================== -->
+
+        <section class="student-subject-card">
+
+            <div class="student-subject-header">
+
+                <div>
+
+                    <h2>
+                        📚 Class Subjects
+                    </h2>
+
+                    <p>
+                        Subjects currently assigned to {{ class_room.name }}.
+                    </p>
+
+                </div>
+
+                <div class="student-subject-count">
+                    {{ subject_count|default:0 }}
+                    Subject{{ subject_count|pluralize }}
+                </div>
+
+            </div>
+
+
+            {% if class_subjects %}
+
+                <div class="student-subject-list">
+
+                    {% for class_subject in class_subjects %}
+
+                        <div class="student-subject-row">
+
+                            <div class="student-subject-left">
+
+                                <div class="student-subject-icon">
+                                    📚
+                                </div>
+
+                                <div class="student-subject-info">
+
+                                    <strong>
+                                        {{ class_subject.subject.name }}
+                                    </strong>
+
+                                    <span>
+
+                                        {% if class_subject.subject.code %}
+                                            {{ class_subject.subject.code }}
+                                        {% endif %}
+
+                                        {% if class_subject.subject.credit_hours %}
+                                            · {{ class_subject.subject.credit_hours }}
+                                            Credit Hours
+                                        {% endif %}
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="student-subject-status">
+
+                                <span class="student-subject-status-dot"></span>
+
+                                Active
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="student-empty-state">
+
+                    <div class="student-empty-icon">
+                        📚
+                    </div>
+
+                    <h3>
+                        No Subjects Assigned
+                    </h3>
+
+                    <p>
+                        There are currently no active subjects assigned
+                        to your class.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+    {% else %}
+
+        <!-- ====================================================
+             NO CLASS ASSIGNED
+        ===================================================== -->
+
+        <section class="student-subject-card">
+
+            <div class="student-empty-state">
+
+                <div class="student-empty-icon">
+                    🏫
+                </div>
+
+                <h3>
+                    No Class Assigned
+                </h3>
+
+                <p>
+                    Your student account is not currently assigned to
+                    a class. Please contact the Administrator or Manager.
+                </p>
+
+            </div>
+
+        </section>
+
+    {% endif %}
+
+</div>
+
+{% endblock student_portal_content %}
+

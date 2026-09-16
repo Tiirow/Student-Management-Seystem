@@ -5,8 +5,7 @@ class UsersConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'users'
 
-    # UsersConfig
-# Django ayuu u sheegaa magaca app-ka
-
-# default_auto_field
-# ID-ga database-ka ayuu default ka dhigaa BigAutoField
+    def ready(self):
+    #Django marka uu app-ka bilaabayo ayuu ready() shaqaysiiyaa.
+        import users.signals
+        #"Django, marka users app-ka load-gareyso, signals-kana soo geli."

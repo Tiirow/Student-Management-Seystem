@@ -1,0 +1,381 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<style>
+    .conversation-detail-page {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .conversation-card {
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+
+    .conversation-header {
+        padding: 22px 25px;
+        border-bottom: 1px solid #eeeeee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .conversation-user {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .user-avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: #4a90e2;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 18px;
+    }
+
+    .conversation-user h2 {
+        margin: 0;
+        font-size: 19px;
+        color: #222;
+    }
+
+    .conversation-user p {
+        margin: 3px 0 0;
+        color: #888;
+        font-size: 13px;
+    }
+
+    .back-button {
+        text-decoration: none;
+        background: #eeeeee;
+        color: #333;
+        padding: 9px 15px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .back-button:hover {
+        background: #dddddd;
+    }
+
+    .messages-container {
+        padding: 25px;
+        min-height: 350px;
+        max-height: 550px;
+        overflow-y: auto;
+        background: #fafafa;
+    }
+
+    .message-row {
+        display: flex;
+        margin-bottom: 18px;
+    }
+
+    .message-row.mine {
+        justify-content: flex-end;
+    }
+
+    .message-row.other {
+        justify-content: flex-start;
+    }
+
+    .message {
+        max-width: 70%;
+        padding: 12px 15px;
+        border-radius: 14px;
+        position: relative;
+    }
+
+    .message.mine {
+        background: #4a90e2;
+        color: white;
+        border-bottom-right-radius: 4px;
+    }
+
+    .message.other {
+        background: white;
+        color: #333;
+        border: 1px solid #eeeeee;
+        border-bottom-left-radius: 4px;
+    }
+
+    .message-sender {
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .message-body {
+        font-size: 15px;
+        line-height: 1.5;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+    }
+
+    .message-time {
+        margin-top: 6px;
+        font-size: 11px;
+        opacity: 0.7;
+        text-align: right;
+    }
+
+    .empty-messages {
+        text-align: center;
+        color: #888;
+        padding: 80px 20px;
+    }
+
+    .reply-area {
+        padding: 20px 25px;
+        border-top: 1px solid #eeeeee;
+        background: white;
+    }
+
+    .reply-form {
+        display: flex;
+        gap: 12px;
+        align-items: flex-end;
+    }
+
+    .reply-input {
+        flex: 1;
+    }
+
+    .reply-input textarea {
+        width: 100%;
+        min-height: 55px;
+        max-height: 150px;
+        padding: 12px 14px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        resize: vertical;
+        box-sizing: border-box;
+        font-size: 15px;
+        outline: none;
+    }
+
+    .reply-input textarea:focus {
+        border-color: #4a90e2;
+        box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.10);
+    }
+
+    .send-button {
+        padding: 13px 22px;
+        border: none;
+        border-radius: 10px;
+        background: #4a90e2;
+        color: white;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .send-button:hover {
+        background: #357abd;
+    }
+
+    .closed-message {
+        padding: 15px;
+        text-align: center;
+        background: #f8d7da;
+        color: #842029;
+        border-radius: 10px;
+    }
+
+    @media (max-width: 600px) {
+        .conversation-detail-page {
+            margin: 20px auto;
+            padding: 10px;
+        }
+
+        .conversation-header {
+            padding: 18px;
+            align-items: flex-start;
+        }
+
+        .messages-container {
+            padding: 18px;
+        }
+
+        .reply-area {
+            padding: 15px;
+        }
+
+        .reply-form {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .send-button {
+            width: 100%;
+        }
+
+        .message {
+            max-width: 85%;
+        }
+    }
+</style>
+
+
+<div class="conversation-detail-page">
+
+    <div class="conversation-card">
+
+        <!-- HEADER -->
+        <div class="conversation-header">
+
+            <div class="conversation-user">
+
+                <div class="user-avatar">
+                    {{ other_user.username|first|upper }}
+                </div>
+
+                <div>
+                    <h2>
+                        {{ other_user.username }}
+                    </h2>
+
+                    <p>
+                        Conversation
+                    </p>
+                </div>
+
+            </div>
+
+
+            <a
+                href="/conversations/"
+                class="back-button"
+            >
+                ← Back
+            </a>
+
+        </div>
+
+
+        <!-- MESSAGES -->
+        <div class="messages-container">
+
+            {% if messages_list %}
+
+                {% for message in messages_list %}
+
+                    {% if message.sender_id == request.user.id %}
+
+                        <div class="message-row mine">
+
+                            <div class="message mine">
+
+                                <div class="message-sender">
+                                    You
+                                </div>
+
+                                <div class="message-body">
+                                    {{ message.body }}
+                                </div>
+
+                                <div class="message-time">
+                                    {{ message.created_at|date:"M d, Y H:i" }}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="message-row other">
+
+                            <div class="message other">
+
+                                <div class="message-sender">
+                                    {{ message.sender.username }}
+                                </div>
+
+                                <div class="message-body">
+                                    {{ message.body }}
+                                </div>
+
+                                <div class="message-time">
+                                    {{ message.created_at|date:"M d, Y H:i" }}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="empty-messages">
+                    No messages yet.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- REPLY -->
+        <div class="reply-area">
+
+            {% if conversation.is_active %}
+
+                <form
+                    method="POST"
+                    action="/conversations/{{ conversation.id }}/send/"
+                    class="reply-form"
+                >
+
+                    {% csrf_token %}
+
+                    <div class="reply-input">
+
+                        <textarea
+                            name="body"
+                            placeholder="Write a message..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="send-button"
+                    >
+                        Send
+                    </button>
+
+                </form>
+
+            {% else %}
+
+                <div class="closed-message">
+                    This conversation is closed.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

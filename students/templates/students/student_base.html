@@ -1,0 +1,1238 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}Student Portal{% endblock %}
+    </title>
+
+    <style>
+
+        /* =========================================================
+           RESET
+        ========================================================= */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition:
+                background .25s ease,
+                color .25s ease;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+
+        /* =========================================================
+           FIXED STUDENT SIDEBAR
+        ========================================================= */
+        .student-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 260px;
+            background: #172033;
+            color: #ffffff;
+            padding: 22px 15px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            z-index: 9999;
+            box-shadow:
+                4px 0 20px rgba(15, 23, 42, .12);
+            transition:
+                transform .25s ease;
+        }
+
+        .student-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .student-sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,.16);
+            border-radius: 20px;
+        }
+
+
+        /* =========================================================
+           SIDEBAR BRAND
+        ========================================================= */
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 8px 24px;
+            margin-bottom: 10px;
+            border-bottom:
+                1px solid rgba(255,255,255,.08);
+        }
+
+        .sidebar-brand-icon {
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(
+                    135deg,
+                    #9a5243,
+                    #7c3f34
+                );
+            color: #ffffff;
+            font-size: 22px;
+            box-shadow:
+                0 7px 20px
+                rgba(154, 82, 67, .28);
+        }
+
+        .sidebar-brand-text {
+            min-width: 0;
+        }
+
+        .sidebar-brand-text h2 {
+            font-size: 16px;
+            font-weight: 800;
+            color: #ffffff;
+            white-space: nowrap;
+        }
+
+        .sidebar-brand-text span {
+            display: block;
+            margin-top: 3px;
+            font-size: 10px;
+            color: #98a2b5;
+            white-space: nowrap;
+        }
+
+
+        /* =========================================================
+           SIDEBAR USER
+        ========================================================= */
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 9px;
+            margin-bottom: 18px;
+            background:
+                rgba(255,255,255,.045);
+            border:
+                1px solid rgba(255,255,255,.06);
+            border-radius: 14px;
+        }
+
+        .sidebar-avatar {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(
+                    135deg,
+                    #f3dfda,
+                    #ead0ca
+                );
+            color: #8b493c;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .sidebar-user-info {
+            min-width: 0;
+        }
+
+        .sidebar-user-info strong {
+            display: block;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-user-info span {
+            display: block;
+            margin-top: 3px;
+            color: #8994a8;
+            font-size: 10px;
+        }
+
+
+        /* =========================================================
+           SIDEBAR SECTION
+        ========================================================= */
+        .sidebar-section-title {
+            padding: 0 10px 8px;
+            color: #69758b;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+
+        /* =========================================================
+           SIDEBAR LINKS
+        ========================================================= */
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .sidebar-link {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            color: #b8c1d0;
+            font-size: 13px;
+            font-weight: 600;
+            transition:
+                background .2s ease,
+                color .2s ease,
+                transform .2s ease;
+        }
+
+        .sidebar-link:hover {
+            background:
+                rgba(255,255,255,.07);
+            color: #ffffff;
+            transform:
+                translateX(2px);
+        }
+
+        .sidebar-link.active {
+            background:
+                linear-gradient(
+                    135deg,
+                    #9a5243,
+                    #874638
+                );
+            color: #ffffff;
+            box-shadow:
+                0 7px 18px
+                rgba(154, 82, 67, .22);
+        }
+
+        .sidebar-icon {
+            width: 22px;
+            min-width: 22px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .sidebar-link-text {
+            flex: 1;
+        }
+
+
+        /* =========================================================
+           SIDEBAR DIVIDER
+        ========================================================= */
+        .sidebar-divider {
+            height: 1px;
+            margin: 18px 8px;
+            background:
+                rgba(255,255,255,.08);
+        }
+
+
+        /* =========================================================
+           LOGOUT
+        ========================================================= */
+        .sidebar-link.logout-link {
+            color: #e2a9a0;
+        }
+
+        .sidebar-link.logout-link:hover {
+            background:
+                rgba(154, 82, 67, .15);
+            color: #ffffff;
+        }
+
+
+        /* =========================================================
+           MAIN AREA
+        ========================================================= */
+        .student-main {
+            margin-left: 260px;
+            width:
+                calc(100% - 260px);
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        /* =========================================================
+           TOP NAVBAR
+        ========================================================= */
+        .student-navbar {
+            height: 72px;
+            flex-shrink: 0;
+            background: #ffffff;
+            border-bottom:
+                1px solid #e7eaf0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-page-title {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-page-title strong {
+            font-size: 16px;
+            font-weight: 800;
+            color: #182033;
+        }
+
+        .navbar-page-title span {
+            margin-top: 3px;
+            font-size: 11px;
+            color: #8992a5;
+        }
+
+
+        /* =========================================================
+           NAVBAR RIGHT
+        ========================================================= */
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+
+        /* =========================================================
+           THEME BUTTON
+        ========================================================= */
+        .theme-button {
+            width: 42px;
+            height: 42px;
+            border:
+                1px solid #e5e8ef;
+            background: #f8f9fc;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: .2s ease;
+        }
+
+        .theme-button:hover {
+            transform:
+                translateY(-2px);
+            border-color:
+                #cfd4df;
+        }
+
+
+        /* =========================================================
+           NAVBAR USER
+        ========================================================= */
+        .student-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding:
+                5px 10px 5px 5px;
+            border-radius: 14px;
+        }
+
+        .student-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background:
+                linear-gradient(
+                    135deg,
+                    #f3dfda,
+                    #ead0ca
+                );
+            color: #8b493c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 750;
+            font-size: 14px;
+        }
+
+        .student-user-info strong {
+            display: block;
+            font-size: 13px;
+            color: #20283a;
+        }
+
+        .student-user-info span {
+            display: block;
+            font-size: 11px;
+            color: #8b94a7;
+            margin-top: 2px;
+        }
+
+
+        /* =========================================================
+           PAGE CONTENT
+        ========================================================= */
+        .student-page {
+            width:
+                min(1180px, calc(100% - 50px));
+            margin: 0 auto;
+            padding:
+                34px 0 50px;
+            flex: 1;
+        }
+
+
+        /* =========================================================
+           PAGE HEADER
+        ========================================================= */
+        .page-header {
+            margin-bottom: 28px;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #182033;
+        }
+
+        .page-header p {
+            margin-top: 7px;
+            color: #7d8799;
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+           CARD
+        ========================================================= */
+        .card {
+            background: #ffffff;
+            border:
+                1px solid #e8ebf1;
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow:
+                0 8px 30px
+                rgba(31, 41, 55, .05);
+        }
+
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+        .student-footer {
+            text-align: center;
+            padding:
+                22px 24px;
+            color: #9aa2b2;
+            font-size: 12px;
+            border-top:
+                1px solid #e7eaf0;
+            background: #ffffff;
+        }
+
+
+        /* =========================================================
+           MOBILE MENU
+        ========================================================= */
+        .mobile-menu-button {
+            display: none;
+            width: 42px;
+            height: 42px;
+            border:
+                1px solid #e5e8ef;
+            background: #f8f9fc;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background:
+                rgba(15, 23, 42, .45);
+            z-index: 9998;
+        }
+
+
+        /* =========================================================
+           DARK MODE
+        ========================================================= */
+        body.dark-mode {
+            background: #111522;
+            color: #edf0f7;
+        }
+
+        body.dark-mode .student-navbar {
+            background: #181c2a;
+            border-color: #292e3d;
+        }
+
+        body.dark-mode .navbar-page-title strong {
+            color: #f3f5fa;
+        }
+
+        body.dark-mode .navbar-page-title span {
+            color: #929bad;
+        }
+
+        body.dark-mode .theme-button {
+            background: #222738;
+            border-color: #33394b;
+            color: #f4f5f8;
+        }
+
+        body.dark-mode .student-user-info strong {
+            color: #f3f5fa;
+        }
+
+        body.dark-mode .student-user-info span {
+            color: #929bad;
+        }
+
+        body.dark-mode .page-header h1 {
+            color: #f3f5fa;
+        }
+
+        body.dark-mode .page-header p {
+            color: #929bad;
+        }
+
+        body.dark-mode .card {
+            background: #181c2a;
+            border-color: #292e3d;
+            box-shadow:
+                0 8px 30px
+                rgba(0, 0, 0, .18);
+        }
+
+        body.dark-mode .student-footer {
+            background: #181c2a;
+            border-color: #292e3d;
+            color: #858da0;
+        }
+
+        body.dark-mode .mobile-menu-button {
+            background: #222738;
+            border-color: #33394b;
+            color: #ffffff;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE - TABLET
+        ========================================================= */
+        @media (max-width: 900px) {
+
+            .student-sidebar {
+                transform:
+                    translateX(-100%);
+            }
+
+            .student-sidebar.open {
+                transform:
+                    translateX(0);
+            }
+
+            .student-main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .mobile-menu-button {
+                display: flex;
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+            }
+
+            .student-navbar {
+                padding:
+                    0 20px;
+            }
+
+            .student-page {
+                width:
+                    calc(100% - 36px);
+                padding-top: 28px;
+            }
+        }
+
+
+        /* =========================================================
+           RESPONSIVE - MOBILE
+        ========================================================= */
+        @media (max-width: 700px) {
+
+            .student-navbar {
+                height: 64px;
+                padding:
+                    0 14px;
+            }
+
+            .navbar-page-title span {
+                display: none;
+            }
+
+            .student-user-info {
+                display: none;
+            }
+
+            .student-page {
+                width:
+                    calc(100% - 24px);
+                padding-top: 24px;
+            }
+
+            .page-header h1 {
+                font-size: 23px;
+            }
+
+            .student-footer {
+                padding:
+                    18px 12px;
+            }
+        }
+
+
+        /* =========================================================
+           RESPONSIVE - SMALL MOBILE
+        ========================================================= */
+        @media (max-width: 400px) {
+
+            .student-navbar {
+                padding:
+                    0 10px;
+            }
+
+            .student-page {
+                width:
+                    calc(100% - 20px);
+            }
+
+            .navbar-page-title strong {
+                font-size: 14px;
+            }
+
+            .theme-button,
+            .mobile-menu-button {
+                width: 38px;
+                height: 38px;
+            }
+        }
+
+    </style>
+
+    {% block extra_css %}{% endblock %}
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+         FIXED SIDEBAR
+    ========================================================= -->
+
+    <aside
+        class="student-sidebar"
+        id="studentSidebar"
+    >
+
+
+        <!-- BRAND -->
+
+        <a
+            href="{% url 'student-home' %}"
+            class="sidebar-brand"
+        >
+
+            <div class="sidebar-brand-icon">
+                🎓
+            </div>
+
+            <div class="sidebar-brand-text">
+
+                <h2>
+                    Student Portal
+                </h2>
+
+                <span>
+                    Academic Management System
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <!-- USER -->
+
+        {% if request.user.is_authenticated %}
+
+            <div class="sidebar-user">
+
+                <div class="sidebar-avatar">
+
+                    {% if request.user.first_name %}
+
+                        {{ request.user.first_name|first|upper }}
+
+                    {% else %}
+
+                        {{ request.user.username|first|upper }}
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="sidebar-user-info">
+
+                    <strong>
+
+                        {% if request.user.first_name %}
+
+                            {{ request.user.first_name }}
+                            {{ request.user.last_name }}
+
+                        {% else %}
+
+                            {{ request.user.username }}
+
+                        {% endif %}
+
+                    </strong>
+
+                    <span>
+                        Student
+                    </span>
+
+                </div>
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- NAVIGATION -->
+
+        <div class="sidebar-section-title">
+            Main Menu
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+
+            <!-- DASHBOARD -->
+
+            <a
+                href="{% url 'student-home' %}"
+                class="sidebar-link {% block dashboard_active %}{% endblock %}"
+            >
+
+                <span class="sidebar-icon">
+                    🏠
+                </span>
+
+                <span class="sidebar-link-text">
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <!-- GRADES -->
+
+            <a
+                href="{% url 'student-grades' %}"
+                class="sidebar-link {% block grades_active %}{% endblock %}"
+            >
+
+                <span class="sidebar-icon">
+                    📊
+                </span>
+
+                <span class="sidebar-link-text">
+                    My Grades
+                </span>
+
+            </a>
+
+
+            <!-- ATTENDANCE -->
+
+            <a
+                href="{% url 'student-attendance' %}"
+                class="sidebar-link {% block attendance_active %}{% endblock %}"
+            >
+
+                <span class="sidebar-icon">
+                    📝
+                </span>
+
+                <span class="sidebar-link-text">
+                    Attendance
+                </span>
+
+            </a>
+
+
+            <!-- SUBJECTS -->
+
+            <a
+                href="{% url 'student-subjects' %}"
+                class="sidebar-link {% block subjects_active %}{% endblock %}"
+            >
+
+                <span class="sidebar-icon">
+                    📚
+                </span>
+
+                <span class="sidebar-link-text">
+                    My Subjects
+                </span>
+
+            </a>
+
+
+            <!-- =================================================
+                 CONVERSATIONS
+                 ADDED ONLY THIS ITEM
+            ================================================== -->
+
+            <a
+                href="{% url 'conversations:conversation-list' %}"
+                class="sidebar-link {% block conversations_active %}{% endblock %}"
+            >
+
+                <span class="sidebar-icon">
+                    💬
+                </span>
+
+                <span class="sidebar-link-text">
+                    Conversations
+                </span>
+
+            </a>
+
+
+            <!-- PROFILE -->
+
+            <a
+                href="{% url 'student-profile' %}"
+                class="sidebar-link {% block profile_active %}{% endblock %}"
+            >
+
+                <span class="sidebar-icon">
+                    👤
+                </span>
+
+                <span class="sidebar-link-text">
+                    My Profile
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <!-- ACCOUNT -->
+
+        <div class="sidebar-section-title">
+            Account
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+
+            <!-- LOGOUT -->
+
+            <a
+                href="{% url 'users:logout' %}"
+                class="sidebar-link logout-link"
+            >
+
+                <span class="sidebar-icon">
+                    🚪
+                </span>
+
+                <span class="sidebar-link-text">
+                    Logout
+                </span>
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- MOBILE OVERLAY -->
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+        onclick="closeStudentSidebar()"
+    ></div>
+
+
+    <!-- =========================================================
+         MAIN AREA
+    ========================================================= -->
+
+    <div class="student-main">
+
+
+        <!-- TOP NAVBAR -->
+
+        <header class="student-navbar">
+
+
+            <div
+                style="
+                    display:flex;
+                    align-items:center;
+                    gap:12px;
+                "
+            >
+
+
+                <!-- MOBILE MENU -->
+
+                <button
+                    type="button"
+                    class="mobile-menu-button"
+                    onclick="toggleStudentSidebar()"
+                    aria-label="Open menu"
+                >
+                    ☰
+                </button>
+
+
+                <!-- PAGE TITLE -->
+
+                <div class="navbar-page-title">
+
+                    <strong>
+
+                        {% block navbar_title %}
+
+                            Student Portal
+
+                        {% endblock %}
+
+                    </strong>
+
+                    <span>
+                        Academic Management System
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- NAVBAR RIGHT -->
+
+            <div class="navbar-right">
+
+
+                <!-- THEME -->
+
+                <button
+                    type="button"
+                    class="theme-button"
+                    id="themeButton"
+                    onclick="toggleStudentTheme()"
+                    aria-label="Toggle dark mode"
+                >
+                    🌙
+                </button>
+
+
+                <!-- USER -->
+
+                {% if request.user.is_authenticated %}
+
+                    <div class="student-user">
+
+                        <div class="student-avatar">
+
+                            {% if request.user.first_name %}
+
+                                {{ request.user.first_name|first|upper }}
+
+                            {% else %}
+
+                                {{ request.user.username|first|upper }}
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="student-user-info">
+
+                            <strong>
+
+                                {% if request.user.first_name %}
+
+                                    {{ request.user.first_name }}
+                                    {{ request.user.last_name }}
+
+                                {% else %}
+
+                                    {{ request.user.username }}
+
+                                {% endif %}
+
+                            </strong>
+
+                            <span>
+                                Student
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE CONTENT -->
+
+        <main class="student-page">
+
+            {% block content %}
+            {% endblock %}
+
+        </main>
+
+
+        <!-- FOOTER -->
+
+        <footer class="student-footer">
+
+            Student Portal
+            &nbsp;•&nbsp;
+            Academic Management System
+
+        </footer>
+
+    </div>
+
+
+    <!-- =========================================================
+         DARK MODE + SIDEBAR JS
+    ========================================================= -->
+
+    <script>
+
+
+        /* =====================================================
+           DARK MODE
+        ===================================================== */
+
+        function applyStudentTheme() {
+
+            const theme =
+                localStorage.getItem("student-theme");
+
+            const button =
+                document.getElementById("themeButton");
+
+            if (theme === "dark") {
+
+                document.body.classList.add("dark-mode");
+
+                if (button) {
+
+                    button.innerHTML = "☀️";
+
+                }
+
+            } else {
+
+                document.body.classList.remove("dark-mode");
+
+                if (button) {
+
+                    button.innerHTML = "🌙";
+
+                }
+
+            }
+
+        }
+
+
+        function toggleStudentTheme() {
+
+            const isDark =
+                document.body.classList.toggle("dark-mode");
+
+            localStorage.setItem(
+                "student-theme",
+                isDark ? "dark" : "light"
+            );
+
+            const button =
+                document.getElementById("themeButton");
+
+            if (button) {
+
+                button.innerHTML =
+                    isDark ? "☀️" : "🌙";
+
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE SIDEBAR
+        ===================================================== */
+
+        function toggleStudentSidebar() {
+
+            const sidebar =
+                document.getElementById("studentSidebar");
+
+            const overlay =
+                document.getElementById("sidebarOverlay");
+
+            if (sidebar) {
+
+                sidebar.classList.toggle("open");
+
+            }
+
+            if (overlay) {
+
+                overlay.classList.toggle("show");
+
+            }
+
+        }
+
+
+        function closeStudentSidebar() {
+
+            const sidebar =
+                document.getElementById("studentSidebar");
+
+            const overlay =
+                document.getElementById("sidebarOverlay");
+
+            if (sidebar) {
+
+                sidebar.classList.remove("open");
+
+            }
+
+            if (overlay) {
+
+                overlay.classList.remove("show");
+
+            }
+
+        }
+
+
+        /* =====================================================
+           INITIALIZE
+        ===================================================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                applyStudentTheme();
+
+            }
+        );
+
+    </script>
+
+
+    {% block extra_js %}
+    {% endblock %}
+
+
+</body>
+
+</html>
+

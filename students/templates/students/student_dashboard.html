@@ -1,0 +1,1928 @@
+{% extends "students/student_base.html" %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ============================================================
+   STUDENT DASHBOARD
+============================================================ */
+
+.student-dashboard {
+    width: 100%;
+}
+
+/* ============================================================
+   TOP ACTIONS
+============================================================ */
+
+.student-top-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 18px;
+}
+
+.student-logout-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 42px;
+    padding: 0 17px;
+    border-radius: 10px;
+    background: #fff4f2;
+    border: 1px solid #ebc9c4;
+    color: #b42318;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 800;
+    box-shadow: 0 4px 12px rgba(180, 35, 24, 0.06);
+    transition: all 0.2s ease;
+}
+
+.student-logout-button:hover {
+    background: #ffebe8;
+    border-color: #ddb5af;
+    transform: translateY(-1px);
+    box-shadow: 0 7px 18px rgba(180, 35, 24, 0.11);
+}
+
+.student-logout-icon {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #b42318;
+    color: #ffffff;
+    font-size: 15px;
+}
+
+/* ============================================================
+   WELCOME
+============================================================ */
+
+.welcome-section {
+    margin-bottom: 25px;
+}
+
+.welcome-section h1 {
+    margin: 0;
+    color: #182033;
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.welcome-section p {
+    margin: 8px 0 0;
+    color: #7d8799;
+    font-size: 13px;
+}
+
+/* ============================================================
+   CLASS HERO
+============================================================ */
+
+.class-hero-link {
+    display: block;
+    margin-bottom: 22px;
+    color: inherit;
+    text-decoration: none;
+}
+
+.class-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 30px;
+    border-radius: 20px;
+    color: #ffffff;
+    background: linear-gradient(
+        135deg,
+        #9a5243,
+        #b96f5b
+    );
+    box-shadow: 0 15px 35px rgba(154, 82, 67, 0.20);
+    transition: all 0.2s ease;
+}
+
+.class-hero:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 40px rgba(154, 82, 67, 0.24);
+}
+
+.class-hero::after {
+    content: "🎓";
+    position: absolute;
+    right: 30px;
+    top: 20px;
+    font-size: 85px;
+    opacity: 0.10;
+}
+
+.class-hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.class-label {
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.70);
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.class-name {
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: 850;
+}
+
+.class-description {
+    margin-top: 7px;
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 12px;
+}
+
+.view-class-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 20px;
+    padding: 10px 15px;
+    border-radius: 9px;
+    color: #9a5243;
+    background: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+/* ============================================================
+   SUMMARY GRID
+============================================================ */
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.summary-card {
+    padding: 17px;
+    background: #ffffff;
+    border: 1px solid #e8ebf1;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(31, 41, 55, 0.035);
+    transition: all 0.2s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(31, 41, 55, 0.06);
+}
+
+.summary-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    font-size: 17px;
+}
+
+.summary-card:nth-child(1) .summary-icon {
+    background: #f5e9e6;
+}
+
+.summary-card:nth-child(2) .summary-icon {
+    background: #eef3ff;
+}
+
+.summary-card:nth-child(3) .summary-icon {
+    background: #fff5df;
+}
+
+.summary-card:nth-child(4) .summary-icon {
+    background: #e8f7ee;
+}
+
+.summary-label {
+    margin-top: 11px;
+    color: #929aa8;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 800;
+}
+
+.summary-value {
+    margin-top: 4px;
+    color: #202735;
+    font-size: 19px;
+    font-weight: 850;
+}
+
+/* ============================================================
+   MAIN GRID
+============================================================ */
+
+.main-grid {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.55fr)
+        minmax(280px, 0.85fr);
+    gap: 18px;
+    align-items: start;
+}
+
+.main-column {
+    min-width: 0;
+}
+
+/* ============================================================
+   DASHBOARD CARD
+============================================================ */
+
+.dashboard-card {
+    overflow: hidden;
+    margin-bottom: 18px;
+    background: #ffffff;
+    border: 1px solid #e8ebf1;
+    border-radius: 17px;
+    box-shadow: 0 6px 20px rgba(31, 41, 55, 0.035);
+}
+
+.dashboard-card:last-child {
+    margin-bottom: 0;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 20px;
+    border-bottom: 1px solid #edf0f3;
+}
+
+.card-header h2 {
+    margin: 0;
+    color: #29313e;
+    font-size: 15px;
+    font-weight: 850;
+}
+
+.card-header p {
+    margin: 4px 0 0;
+    color: #969eac;
+    font-size: 8px;
+}
+
+.card-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 28px;
+    padding: 0 9px;
+    border-radius: 7px;
+    color: #9a5243;
+    background: #faf0ed;
+    text-decoration: none;
+    font-size: 8px;
+    font-weight: 800;
+    transition: all 0.2s ease;
+}
+
+.card-link:hover {
+    background: #f1dfda;
+}
+
+/* ============================================================
+   CLASS INFORMATION
+============================================================ */
+
+.class-information {
+    padding: 20px;
+}
+
+.class-row {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.class-icon {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: #f5e9e6;
+    font-size: 23px;
+}
+
+.class-text strong {
+    display: block;
+    color: #252c38;
+    font-size: 17px;
+    font-weight: 850;
+}
+
+.class-text span {
+    display: block;
+    margin-top: 4px;
+    color: #969eac;
+    font-size: 8px;
+}
+
+.class-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 9px;
+    margin-top: 18px;
+}
+
+.meta-box {
+    padding: 11px;
+    border: 1px solid #edf0f3;
+    border-radius: 10px;
+    background: #f8f9fb;
+}
+
+.meta-box span {
+    display: block;
+    color: #979fab;
+    font-size: 7px;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+.meta-box strong {
+    display: block;
+    margin-top: 4px;
+    color: #303846;
+    font-size: 10px;
+    font-weight: 850;
+}
+
+/* ============================================================
+   SUBJECTS
+============================================================ */
+
+.subject-list {
+    padding: 5px 20px 15px;
+}
+
+.subject-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 11px 0;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.subject-row:last-child {
+    border-bottom: none;
+}
+
+.subject-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.subject-icon {
+    width: 35px;
+    height: 35px;
+    min-width: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: #eef3ff;
+    font-size: 14px;
+}
+
+.subject-info {
+    min-width: 0;
+}
+
+.subject-info strong {
+    display: block;
+    color: #343c49;
+    font-size: 10px;
+    font-weight: 800;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.subject-info span {
+    display: block;
+    margin-top: 3px;
+    color: #9aa2ae;
+    font-size: 7px;
+}
+
+.subject-arrow {
+    color: #9a5243;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+/* ============================================================
+   GRADES
+============================================================ */
+
+.grade-list {
+    padding: 5px 20px 15px;
+}
+
+.grade-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 11px 0;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.grade-row:last-child {
+    border-bottom: none;
+}
+
+.grade-info {
+    min-width: 0;
+}
+
+.grade-info strong {
+    display: block;
+    color: #343c49;
+    font-size: 10px;
+    font-weight: 800;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.grade-info span {
+    display: block;
+    margin-top: 3px;
+    color: #9aa2ae;
+    font-size: 7px;
+}
+
+.grade-values {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.score {
+    color: #252c38;
+    font-size: 10px;
+    font-weight: 850;
+}
+
+.letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 29px;
+    height: 25px;
+    border-radius: 6px;
+    background: #eef3ff;
+    color: #3159b7;
+    font-size: 8px;
+    font-weight: 850;
+}
+
+.result {
+    padding: 5px 7px;
+    border-radius: 6px;
+    font-size: 7px;
+    font-weight: 850;
+}
+
+.result-pass {
+    color: #22824a;
+    background: #e8f7ee;
+}
+
+.result-reexam {
+    color: #9a6200;
+    background: #fff5df;
+}
+
+.result-fail {
+    color: #b42318;
+    background: #fff0ef;
+}
+
+.result-pending {
+    color: #697386;
+    background: #f0f2f5;
+}
+
+/* ============================================================
+   OVERALL
+============================================================ */
+
+.overall-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 9px;
+    padding: 0 20px 20px;
+}
+
+.overall-box {
+    padding: 12px 8px;
+    border: 1px solid #edf0f3;
+    border-radius: 10px;
+    background: #f8f9fb;
+    text-align: center;
+}
+
+.overall-box span {
+    display: block;
+    color: #979fab;
+    font-size: 7px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.overall-box strong {
+    display: block;
+    margin-top: 5px;
+    color: #303846;
+    font-size: 15px;
+    font-weight: 850;
+}
+
+/* ============================================================
+   ATTENDANCE
+============================================================ */
+
+.attendance-content {
+    padding: 20px;
+}
+
+.attendance-summary {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.attendance-circle {
+    width: 86px;
+    height: 86px;
+    min-width: 86px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #e8f7ee;
+    border: 8px solid #d5efdf;
+}
+
+.attendance-circle-content {
+    text-align: center;
+}
+
+.attendance-circle-content strong {
+    display: block;
+    color: #22824a;
+    font-size: 15px;
+    font-weight: 850;
+}
+
+.attendance-circle-content span {
+    display: block;
+    margin-top: 2px;
+    color: #6f7c8c;
+    font-size: 6px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.attendance-text strong {
+    display: block;
+    color: #343c49;
+    font-size: 11px;
+    font-weight: 850;
+}
+
+.attendance-text span {
+    display: block;
+    margin-top: 4px;
+    color: #969eac;
+    font-size: 8px;
+    line-height: 1.5;
+}
+
+.attendance-counts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.attendance-count {
+    padding: 10px 6px;
+    border: 1px solid #edf0f3;
+    border-radius: 9px;
+    background: #f8f9fb;
+    text-align: center;
+}
+
+.attendance-count span {
+    display: block;
+    color: #989fad;
+    font-size: 7px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.attendance-count strong {
+    display: block;
+    margin-top: 4px;
+    color: #303846;
+    font-size: 14px;
+    font-weight: 850;
+}
+
+/* ============================================================
+   RESULTS
+============================================================ */
+
+.result-body {
+    padding: 18px 20px 20px;
+}
+
+.result-status {
+    padding: 13px;
+    margin-bottom: 12px;
+    border: 1px solid #edf0f3;
+    border-radius: 10px;
+    background: #f8f9fb;
+    text-align: center;
+}
+
+.result-status span {
+    display: block;
+    color: #979fab;
+    font-size: 7px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.result-status strong {
+    display: block;
+    margin-top: 5px;
+    color: #303846;
+    font-size: 17px;
+    font-weight: 850;
+}
+
+/* ============================================================
+   QUICK ACCESS
+============================================================ */
+
+.quick-list {
+    padding: 6px 20px 16px;
+}
+
+.quick-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f2f5;
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.18s ease;
+}
+
+.quick-item:last-child {
+    border-bottom: none;
+}
+
+.quick-item:hover {
+    transform: translateX(2px);
+}
+
+.quick-item:hover .quick-text strong {
+    color: #9a5243;
+}
+
+.quick-icon {
+    width: 35px;
+    height: 35px;
+    min-width: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: #f5e9e6;
+    font-size: 14px;
+}
+
+.quick-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.quick-text strong {
+    display: block;
+    color: #343c49;
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.quick-text span {
+    display: block;
+    margin-top: 3px;
+    color: #969eac;
+    font-size: 7px;
+}
+
+.quick-arrow {
+    color: #9a5243;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+
+.empty-state {
+    padding: 35px 20px;
+    text-align: center;
+}
+
+.empty-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    background: #f5e9e6;
+    font-size: 20px;
+}
+
+.empty-state h3 {
+    margin: 0;
+    color: #343c49;
+    font-size: 12px;
+    font-weight: 850;
+}
+
+.empty-state p {
+    margin: 5px 0 0;
+    color: #969eac;
+    font-size: 8px;
+    line-height: 1.5;
+}
+
+/* ============================================================
+   DARK MODE
+============================================================ */
+
+body.dark-mode .student-logout-button {
+    background: #302127;
+    border-color: #4a3035;
+    color: #ffb5ae;
+}
+
+body.dark-mode .student-logout-icon {
+    background: #ff6b5f;
+    color: #ffffff;
+}
+
+body.dark-mode .summary-card,
+body.dark-mode .dashboard-card {
+    background: #181c2a;
+    border-color: #292e3d;
+}
+
+body.dark-mode .summary-value,
+body.dark-mode .card-header h2,
+body.dark-mode .class-text strong,
+body.dark-mode .meta-box strong,
+body.dark-mode .subject-info strong,
+body.dark-mode .grade-info strong,
+body.dark-mode .score,
+body.dark-mode .overall-box strong,
+body.dark-mode .attendance-text strong,
+body.dark-mode .attendance-count strong,
+body.dark-mode .result-status strong,
+body.dark-mode .quick-text strong,
+body.dark-mode .empty-state h3 {
+    color: #f2f4f8;
+}
+
+body.dark-mode .summary-label,
+body.dark-mode .card-header p,
+body.dark-mode .class-text span,
+body.dark-mode .meta-box span,
+body.dark-mode .subject-info span,
+body.dark-mode .grade-info span,
+body.dark-mode .overall-box span,
+body.dark-mode .attendance-text span,
+body.dark-mode .attendance-count span,
+body.dark-mode .result-status span,
+body.dark-mode .quick-text span,
+body.dark-mode .empty-state p {
+    color: #929bad;
+}
+
+body.dark-mode .meta-box,
+body.dark-mode .overall-box,
+body.dark-mode .attendance-count,
+body.dark-mode .result-status {
+    background: #202431;
+    border-color: #303545;
+}
+
+body.dark-mode .card-header,
+body.dark-mode .subject-row,
+body.dark-mode .grade-row,
+body.dark-mode .quick-item {
+    border-color: #292e3d;
+}
+
+body.dark-mode .attendance-circle {
+    background: #183021;
+    border-color: #244632;
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 1080px) {
+
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 850px) {
+
+    .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .student-top-actions {
+        justify-content: flex-end;
+    }
+
+    .student-logout-button {
+        min-height: 40px;
+        padding: 0 14px;
+        font-size: 11px;
+    }
+
+    .student-logout-icon {
+        width: 27px;
+        height: 27px;
+        font-size: 14px;
+    }
+
+    .welcome-section h1 {
+        font-size: 24px;
+    }
+
+    .class-hero {
+        padding: 24px;
+    }
+
+    .class-name {
+        font-size: 25px;
+    }
+
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .class-meta {
+        grid-template-columns: 1fr;
+    }
+
+    .overall-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .attendance-summary {
+        align-items: flex-start;
+    }
+
+}
+
+</style>
+
+<div class="student-dashboard">
+
+    <!-- ========================================================
+         TOP LOGOUT
+    ========================================================= -->
+
+    <div class="student-top-actions">
+
+        <a
+            href="{% url 'users:logout' %}"
+            class="student-logout-button"
+            aria-label="Logout"
+            title="Logout"
+        >
+            <span class="student-logout-icon">🚪</span>
+            <span>Logout</span>
+        </a>
+
+    </div>
+
+    <!-- ========================================================
+         WELCOME
+    ========================================================= -->
+
+    <section class="welcome-section">
+
+        <h1>
+            Welcome back,
+            {{ student.first_name }}
+            {{ student.last_name }}
+            👋
+        </h1>
+
+        <p>
+            Here is your personal academic overview.
+        </p>
+
+    </section>
+
+    <!-- ========================================================
+         MY CLASS HERO
+    ========================================================= -->
+
+    {% if student.class_room %}
+
+        <a
+            href="{% url 'student-class' %}"
+            class="class-hero-link"
+        >
+
+            <section class="class-hero">
+
+                <div class="class-hero-content">
+
+                    <div class="class-label">
+                        🏫 My Class
+                    </div>
+
+                    <div class="class-name">
+                        {{ student.class_room.name }}
+                    </div>
+
+                    <div class="class-description">
+                        Your assigned academic class
+                    </div>
+
+                    <span class="view-class-button">
+                        View My Class →
+                    </span>
+
+                </div>
+
+            </section>
+
+        </a>
+
+    {% else %}
+
+        <section class="class-hero">
+
+            <div class="class-hero-content">
+
+                <div class="class-label">
+                    🏫 My Class
+                </div>
+
+                <div class="class-name">
+                    No Class Assigned
+                </div>
+
+                <div class="class-description">
+                    Please contact your Administrator.
+                </div>
+
+            </div>
+
+        </section>
+
+    {% endif %}
+
+    <!-- ========================================================
+         SUMMARY CARDS
+    ========================================================= -->
+
+    <div class="summary-grid">
+
+        <!-- CLASS -->
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                🏫
+            </div>
+
+            <div class="summary-label">
+                My Class
+            </div>
+
+            <div class="summary-value">
+
+                {% if student.class_room %}
+                    {{ student.class_room.name }}
+                {% else %}
+                    —
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <!-- SUBJECTS -->
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                📚
+            </div>
+
+            <div class="summary-label">
+                Subjects
+            </div>
+
+            <div class="summary-value">
+                {{ subject_count|default:"0" }}
+            </div>
+
+        </div>
+
+        <!-- AVERAGE -->
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                📊
+            </div>
+
+            <div class="summary-label">
+                Average
+            </div>
+
+            <div class="summary-value">
+
+                {% if average %}
+                    {{ average }}
+                {% else %}
+                    —
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <!-- ATTENDANCE -->
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                📅
+            </div>
+
+            <div class="summary-label">
+                Attendance
+            </div>
+
+            <div class="summary-value">
+                {{ attendance_percentage|default:"0" }}%
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================================
+         MAIN GRID
+    ========================================================= -->
+
+    <div class="main-grid">
+
+        <!-- ====================================================
+             LEFT COLUMN
+        ===================================================== -->
+
+        <div class="main-column">
+
+            <!-- =================================================
+                 MY CLASS
+            ================================================== -->
+
+            <section class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            🏫 My Class
+                        </h2>
+
+                        <p>
+                            Your current class information.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="{% url 'student-class' %}"
+                        class="card-link"
+                    >
+                        View
+                    </a>
+
+                </div>
+
+                {% if student.class_room %}
+
+                    <div class="class-information">
+
+                        <div class="class-row">
+
+                            <div class="class-icon">
+                                🎓
+                            </div>
+
+                            <div class="class-text">
+
+                                <strong>
+                                    {{ student.class_room.name }}
+                                </strong>
+
+                                <span>
+                                    Official assigned class
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="class-meta">
+
+                            <div class="meta-box">
+
+                                <span>
+                                    Student ID
+                                </span>
+
+                                <strong>
+                                    {{ student.student_id }}
+                                </strong>
+
+                            </div>
+
+                            <div class="meta-box">
+
+                                <span>
+                                    Class Status
+                                </span>
+
+                                <strong>
+                                    {{ student.class_room.status|default:"Active" }}
+                                </strong>
+
+                            </div>
+
+                            <div class="meta-box">
+
+                                <span>
+                                    Subjects
+                                </span>
+
+                                <strong>
+                                    {{ subject_count|default:"0" }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            🏫
+                        </div>
+
+                        <h3>
+                            No Class Assigned
+                        </h3>
+
+                        <p>
+                            Please contact your Administrator
+                            to assign your class.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </section>
+
+            <!-- =================================================
+                 MY SUBJECTS
+            ================================================== -->
+
+            <section class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            📚 My Subjects
+                        </h2>
+
+                        <p>
+                            Subjects assigned to your class.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="{% url 'student-subjects' %}"
+                        class="card-link"
+                    >
+                        View All
+                    </a>
+
+                </div>
+
+                {% if class_subjects %}
+
+                    <div class="subject-list">
+
+                        {% for class_subject in class_subjects|slice:":6" %}
+
+                            <div class="subject-row">
+
+                                <div class="subject-left">
+
+                                    <div class="subject-icon">
+                                        📚
+                                    </div>
+
+                                    <div class="subject-info">
+
+                                        <strong>
+                                            {{ class_subject.subject.name }}
+                                        </strong>
+
+                                        <span>
+
+                                            {{ class_subject.subject.code }}
+
+                                            {% if class_subject.subject.credit_hours %}
+
+                                                ·
+                                                {{ class_subject.subject.credit_hours }}
+                                                Credits
+
+                                            {% endif %}
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="subject-arrow">
+                                    →
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            📚
+                        </div>
+
+                        <h3>
+                            No Subjects Available
+                        </h3>
+
+                        <p>
+                            There are no active subjects assigned
+                            to your class yet.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </section>
+
+            <!-- =================================================
+                 RECENT GRADES
+            ================================================== -->
+
+            <section class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            📊 Recent Grades
+                        </h2>
+
+                        <p>
+                            Your latest academic performance.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="{% url 'student-grades' %}"
+                        class="card-link"
+                    >
+                        View All
+                    </a>
+
+                </div>
+
+                {% if grades %}
+
+                    <div class="grade-list">
+
+                        {% for item in grades %}
+
+                            <div class="grade-row">
+
+                                <div class="grade-info">
+
+                                    <strong>
+                                        {{ item.grade.subject.name }}
+                                    </strong>
+
+                                    <span>
+
+                                        {% if item.grade.semester %}
+                                            {{ item.grade.semester.name }}
+                                        {% else %}
+                                            Semester
+                                        {% endif %}
+
+                                    </span>
+
+                                </div>
+
+                                <div class="grade-values">
+
+                                    <span class="score">
+
+                                        {% if item.score != None %}
+                                            {{ item.score }}
+                                        {% else %}
+                                            —
+                                        {% endif %}
+
+                                    </span>
+
+                                    {% if item.letter %}
+
+                                        <span class="letter">
+                                            {{ item.letter }}
+                                        </span>
+
+                                    {% endif %}
+
+                                    {% if item.result == "PASS" %}
+
+                                        <span class="result result-pass">
+                                            PASS
+                                        </span>
+
+                                    {% elif item.result == "RE-EXAM" %}
+
+                                        <span class="result result-reexam">
+                                            RE-EXAM
+                                        </span>
+
+                                    {% elif item.result == "FAIL" %}
+
+                                        <span class="result result-fail">
+                                            FAIL
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="result result-pending">
+                                            PENDING
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    {% if average %}
+
+                        <div class="overall-grid">
+
+                            <div class="overall-box">
+
+                                <span>
+                                    Average
+                                </span>
+
+                                <strong>
+                                    {{ average }}
+                                </strong>
+
+                            </div>
+
+                            <div class="overall-box">
+
+                                <span>
+                                    Overall Grade
+                                </span>
+
+                                <strong>
+                                    {{ overall_grade|default:"—" }}
+                                </strong>
+
+                            </div>
+
+                            <div class="overall-box">
+
+                                <span>
+                                    Overall Result
+                                </span>
+
+                                <strong>
+                                    {{ overall_result|default:"PENDING" }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+                {% else %}
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            📊
+                        </div>
+
+                        <h3>
+                            No Grades Available
+                        </h3>
+
+                        <p>
+                            Your grades will appear here
+                            when they are published.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </section>
+
+        </div>
+
+        <!-- ====================================================
+             RIGHT COLUMN
+        ===================================================== -->
+
+        <div class="main-column">
+
+            <!-- =================================================
+                 ATTENDANCE
+            ================================================== -->
+
+            <section class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            📅 My Attendance
+                        </h2>
+
+                        <p>
+                            Your attendance overview.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="{% url 'student-attendance' %}"
+                        class="card-link"
+                    >
+                        Details
+                    </a>
+
+                </div>
+
+                <div class="attendance-content">
+
+                    <div class="attendance-summary">
+
+                        <div class="attendance-circle">
+
+                            <div class="attendance-circle-content">
+
+                                <strong>
+                                    {{ attendance_percentage|default:"0" }}%
+                                </strong>
+
+                                <span>
+                                    Attendance
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="attendance-text">
+
+                            <strong>
+                                Attendance Rate
+                            </strong>
+
+                            <span>
+                                Track your attendance
+                                throughout the academic year.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="attendance-counts">
+
+                        <div class="attendance-count">
+
+                            <span>
+                                Present
+                            </span>
+
+                            <strong>
+                                {{ attendance_present|default:"0" }}
+                            </strong>
+
+                        </div>
+
+                        <div class="attendance-count">
+
+                            <span>
+                                Absent
+                            </span>
+
+                            <strong>
+                                {{ attendance_absent|default:"0" }}
+                            </strong>
+
+                        </div>
+
+                        <div class="attendance-count">
+
+                            <span>
+                                Late
+                            </span>
+
+                            <strong>
+                                {{ attendance_late|default:"0" }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- =================================================
+                 MY RESULTS
+            ================================================== -->
+
+            <section class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            📝 My Results
+                        </h2>
+
+                        <p>
+                            Your academic result summary.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="{% url 'student-results' %}"
+                        class="card-link"
+                    >
+                        View
+                    </a>
+
+                </div>
+
+                <div class="result-body">
+
+                    <div class="result-status">
+
+                        <span>
+                            Overall Result
+                        </span>
+
+                        <strong>
+                            {{ overall_result|default:"PENDING" }}
+                        </strong>
+
+                    </div>
+
+                    <div
+                        class="overall-grid"
+                        style="padding: 0;"
+                    >
+
+                        <div class="overall-box">
+
+                            <span>
+                                Passed
+                            </span>
+
+                            <strong>
+                                {{ passed|default:"0" }}
+                            </strong>
+
+                        </div>
+
+                        <div class="overall-box">
+
+                            <span>
+                                Re-Exam
+                            </span>
+
+                            <strong>
+                                {{ re_exam|default:"0" }}
+                            </strong>
+
+                        </div>
+
+                        <div class="overall-box">
+
+                            <span>
+                                Failed
+                            </span>
+
+                            <strong>
+                                {{ failed|default:"0" }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- =================================================
+                 QUICK ACCESS
+            ================================================== -->
+
+            <section class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            ⚡ Quick Access
+                        </h2>
+
+                        <p>
+                            Student portal sections.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="quick-list">
+
+                    <!-- MY CLASS -->
+
+                    <a
+                        href="{% url 'student-class' %}"
+                        class="quick-item"
+                    >
+
+                        <div class="quick-icon">
+                            🏫
+                        </div>
+
+                        <div class="quick-text">
+
+                            <strong>
+                                My Class
+                            </strong>
+
+                            <span>
+                                View your class
+                            </span>
+
+                        </div>
+
+                        <div class="quick-arrow">
+                            →
+                        </div>
+
+                    </a>
+
+                    <!-- MY SUBJECTS -->
+
+                    <a
+                        href="{% url 'student-subjects' %}"
+                        class="quick-item"
+                    >
+
+                        <div class="quick-icon">
+                            📚
+                        </div>
+
+                        <div class="quick-text">
+
+                            <strong>
+                                My Subjects
+                            </strong>
+
+                            <span>
+                                View your subjects
+                            </span>
+
+                        </div>
+
+                        <div class="quick-arrow">
+                            →
+                        </div>
+
+                    </a>
+
+                    <!-- GRADES -->
+
+                    <a
+                        href="{% url 'student-grades' %}"
+                        class="quick-item"
+                    >
+
+                        <div class="quick-icon">
+                            📊
+                        </div>
+
+                        <div class="quick-text">
+
+                            <strong>
+                                Grades &amp; Results
+                            </strong>
+
+                            <span>
+                                View scores, grades and academic results
+                            </span>
+
+                        </div>
+
+                        <div class="quick-arrow">
+                            →
+                        </div>
+
+                    </a>
+
+                    <!-- ATTENDANCE -->
+
+                    <a
+                        href="{% url 'student-attendance' %}"
+                        class="quick-item"
+                    >
+
+                        <div class="quick-icon">
+                            📅
+                        </div>
+
+                        <div class="quick-text">
+
+                            <strong>
+                                My Attendance
+                            </strong>
+
+                            <span>
+                                Track attendance
+                            </span>
+
+                        </div>
+
+                        <div class="quick-arrow">
+                            →
+                        </div>
+
+                    </a>
+
+                    <!-- PROFILE -->
+
+                    <a
+                        href="{% url 'student-profile' %}"
+                        class="quick-item"
+                    >
+
+                        <div class="quick-icon">
+                            👤
+                        </div>
+
+                        <div class="quick-text">
+
+                            <strong>
+                                My Profile
+                            </strong>
+
+                            <span>
+                                View your profile
+                            </span>
+
+                        </div>
+
+                        <div class="quick-arrow">
+                            →
+                        </div>
+
+                    </a>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock content %}

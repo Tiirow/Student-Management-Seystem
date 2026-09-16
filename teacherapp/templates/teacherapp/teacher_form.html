@@ -1,0 +1,177 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+<style>
+
+.teacher-form-page {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.teacher-form-card {
+    background: white;
+    border: 1px solid #e5e9ef;
+    border-radius: 18px;
+    padding: 35px;
+    box-shadow: 0 10px 35px rgba(15, 23, 42, 0.06);
+}
+
+.teacher-form-card h1 {
+    margin-top: 0;
+    color: #172033;
+    font-size: 30px;
+}
+
+.teacher-form-card p {
+    color: #718096;
+}
+
+.field {
+    margin-bottom: 20px;
+}
+
+.field label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #344054;
+}
+
+.form-control {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 48px;
+    border: 1px solid #dce2ea;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #9A5243;
+}
+
+.error {
+    color: #b42318;
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 28px;
+}
+
+.btn {
+    border: none;
+    border-radius: 10px;
+    padding: 13px 22px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: #9A5243;
+    color: white;
+}
+
+.btn-secondary {
+    background: #f1f3f5;
+    color: #344054;
+}
+
+</style>
+
+
+<div class="teacher-form-page">
+
+    <div class="teacher-form-card">
+
+        <h1>
+            {% if is_create %}
+                ➕ Add Teacher
+            {% else %}
+                ✏️ Edit Teacher
+            {% endif %}
+        </h1>
+
+        <p>
+            {% if is_create %}
+                Create a new teacher account.
+            {% else %}
+                Update teacher information.
+            {% endif %}
+        </p>
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            {% if form.non_field_errors %}
+
+                <div class="error">
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+
+            {% for field in form %}
+
+                <div class="field">
+
+                    <label for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.errors %}
+
+                        <div class="error">
+                            {{ field.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+
+            <div class="form-actions">
+
+                <a
+                    href="{% url 'teacherapp:teacher-list' %}"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    {% if is_create %}
+                        Create Teacher
+                    {% else %}
+                        Save Changes
+                    {% endif %}
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

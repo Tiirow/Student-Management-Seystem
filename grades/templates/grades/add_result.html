@@ -1,0 +1,248 @@
+{% extends "students/student_base.html" %}
+
+{% block title %}
+{% if editing %}
+Update Result
+{% else %}
+Add Result
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .result-page {
+        max-width: 850px;
+        margin: 40px auto;
+    }
+
+    .result-header {
+        margin-bottom: 30px;
+    }
+
+    .result-header h1 {
+        font-size: 32px;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .result-header p {
+        color: #64748b;
+        font-size: 15px;
+    }
+
+    .result-card {
+        background: white;
+        border-radius: 22px;
+        padding: 32px;
+        box-shadow:
+            0 10px 35px rgba(15, 23, 42, 0.08);
+        border: 1px solid #e2e8f0;
+    }
+
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #1e293b;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1px solid #cbd5e1;
+        border-radius: 12px;
+        font-size: 15px;
+        background: #f8fafc;
+        transition: 0.2s;
+        box-sizing: border-box;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #6366f1;
+        background: white;
+        box-shadow:
+            0 0 0 4px rgba(99, 102, 241, 0.10);
+    }
+
+    .errorlist {
+        color: #dc2626;
+        margin: 6px 0;
+        padding-left: 18px;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 30px;
+    }
+
+    .btn {
+        padding: 13px 22px;
+        border-radius: 12px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .btn-primary {
+        background: #4f46e5;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #4338ca;
+    }
+
+    .btn-secondary {
+        background: #e2e8f0;
+        color: #334155;
+    }
+
+    .score-info {
+        margin-top: 8px;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+</style>
+
+
+<div class="result-page">
+
+    <div class="result-header">
+
+        <h1>
+            {% if editing %}
+                ✏️ Update Result
+            {% else %}
+                📝 Add Student Result
+            {% endif %}
+        </h1>
+
+        <p>
+            Enter the student's academic result for a specific semester.
+        </p>
+
+    </div>
+
+
+    <div class="result-card">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            <!-- STUDENT -->
+
+            <div class="form-group">
+
+                <label for="{{ form.student.id_for_label }}">
+                    Student
+                </label>
+
+                {{ form.student }}
+
+                {% if form.student.errors %}
+                    {{ form.student.errors }}
+                {% endif %}
+
+            </div>
+
+
+            <!-- SUBJECT -->
+
+            <div class="form-group">
+
+                <label for="{{ form.subject.id_for_label }}">
+                    Subject
+                </label>
+
+                {{ form.subject }}
+
+                {% if form.subject.errors %}
+                    {{ form.subject.errors }}
+                {% endif %}
+
+            </div>
+
+
+            <!-- SEMESTER -->
+
+            <div class="form-group">
+
+                <label for="{{ form.semester.id_for_label }}">
+                    Semester
+                </label>
+
+                {{ form.semester }}
+
+                {% if form.semester.errors %}
+                    {{ form.semester.errors }}
+                {% endif %}
+
+            </div>
+
+
+            <!-- SCORE -->
+
+            <div class="form-group">
+
+                <label for="{{ form.score.id_for_label }}">
+                    Score
+                </label>
+
+                {{ form.score }}
+
+                <div class="score-info">
+                    Enter a score between 0 and 100.
+                </div>
+
+                {% if form.score.errors %}
+                    {{ form.score.errors }}
+                {% endif %}
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="buttons">
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    {% if editing %}
+                        Update Result
+                    {% else %}
+                        Create Result
+                    {% endif %}
+                </button>
+
+
+                <a
+                    href="{% url 'grade-list' %}"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

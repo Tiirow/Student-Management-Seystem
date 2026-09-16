@@ -1,0 +1,1536 @@
+{% extends "students/student_base.html" %}
+
+{% block title %}
+Student Portal
+{% endblock %}
+
+{% block navbar_title %}
+Student Portal
+{% endblock %}
+
+{% block dashboard_active %}
+active
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    /* ============================================================
+       STUDENT PORTAL
+    ============================================================ */
+
+    .portal-page {
+        min-height: calc(100vh - 70px);
+
+        background:
+            radial-gradient(
+                circle at 10% 10%,
+                rgba(154, 82, 67, 0.07),
+                transparent 25%
+            ),
+            radial-gradient(
+                circle at 90% 5%,
+                rgba(214, 168, 95, 0.08),
+                transparent 22%
+            ),
+            #f5f7fa;
+
+        padding: 24px;
+
+        font-family:
+            Arial,
+            Helvetica,
+            sans-serif;
+    }
+
+
+    .portal-layout {
+        width: 100%;
+        max-width: 1380px;
+
+        margin: 0 auto;
+
+        display: grid;
+
+        grid-template-columns:
+            minmax(0, 1fr);
+
+        gap: 22px;
+
+        align-items: start;
+    }
+
+
+    /* ============================================================
+       CONTENT
+    ============================================================ */
+
+    .portal-content {
+        min-width: 0;
+        width: 100%;
+    }
+
+
+    /* ============================================================
+       GENERIC PAGE HEADER
+    ============================================================ */
+
+    .portal-page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 18px;
+
+        margin-bottom: 18px;
+    }
+
+
+    .portal-page-header-left {
+        min-width: 0;
+    }
+
+
+    .portal-page-header h1 {
+        margin: 0;
+
+        color: #172033;
+
+        font-size: 27px;
+
+        line-height: 1.2;
+
+        font-weight: 850;
+
+        letter-spacing: -0.55px;
+    }
+
+
+    .portal-page-header p {
+        margin:
+            6px 0 0;
+
+        color: #8c95a4;
+
+        font-size: 10px;
+
+        line-height: 1.5;
+    }
+
+
+    /* ============================================================
+       WELCOME CARD
+    ============================================================ */
+
+    .portal-welcome-card {
+        position: relative;
+
+        overflow: hidden;
+
+        padding: 26px;
+
+        border-radius: 18px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #9a5243 0%,
+                #874638 55%,
+                #743b31 100%
+            );
+
+        color: #ffffff;
+
+        box-shadow:
+            0 14px 35px
+            rgba(154, 82, 67, .18);
+
+        margin-bottom: 20px;
+    }
+
+
+    .portal-welcome-card::before {
+        content: "";
+
+        position: absolute;
+
+        width: 180px;
+        height: 180px;
+
+        right: -70px;
+        top: -80px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(255,255,255,.08);
+    }
+
+
+    .portal-welcome-card::after {
+        content: "";
+
+        position: absolute;
+
+        width: 120px;
+        height: 120px;
+
+        right: 80px;
+        bottom: -80px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(255,255,255,.05);
+    }
+
+
+    .portal-welcome-content {
+        position: relative;
+        z-index: 2;
+    }
+
+
+    .portal-welcome-label {
+        display: inline-block;
+
+        margin-bottom: 8px;
+
+        color:
+            rgba(255,255,255,.72);
+
+        font-size: 10px;
+
+        font-weight: 800;
+
+        letter-spacing: .08em;
+
+        text-transform: uppercase;
+    }
+
+
+    .portal-welcome-card h2 {
+        margin: 0;
+
+        font-size: 24px;
+
+        line-height: 1.25;
+
+        font-weight: 850;
+    }
+
+
+    .portal-welcome-card p {
+        margin:
+            8px 0 0;
+
+        max-width: 650px;
+
+        color:
+            rgba(255,255,255,.78);
+
+        font-size: 12px;
+
+        line-height: 1.6;
+    }
+
+
+    /* ============================================================
+       STAT GRID
+    ============================================================ */
+
+    .portal-stat-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        gap: 16px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .portal-stat-card {
+        background: #ffffff;
+
+        border:
+            1px solid #e8ebf1;
+
+        border-radius: 16px;
+
+        padding: 19px;
+
+        box-shadow:
+            0 8px 25px
+            rgba(31, 41, 55, .045);
+
+        transition:
+            transform .2s ease,
+            box-shadow .2s ease;
+    }
+
+
+    .portal-stat-card:hover {
+        transform:
+            translateY(-2px);
+
+        box-shadow:
+            0 12px 30px
+            rgba(31, 41, 55, .08);
+    }
+
+
+    .portal-stat-top {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 10px;
+
+        margin-bottom: 13px;
+    }
+
+
+    .portal-stat-icon {
+        width: 39px;
+        height: 39px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 11px;
+
+        background:
+            rgba(154,82,67,.10);
+
+        color: #9a5243;
+
+        font-size: 18px;
+    }
+
+
+    .portal-stat-label {
+        color: #8c95a4;
+
+        font-size: 10px;
+
+        font-weight: 700;
+
+        text-transform: uppercase;
+
+        letter-spacing: .05em;
+    }
+
+
+    .portal-stat-value {
+        color: #172033;
+
+        font-size: 24px;
+
+        line-height: 1;
+
+        font-weight: 850;
+    }
+
+
+    .portal-stat-description {
+        margin-top: 7px;
+
+        color: #9aa2b2;
+
+        font-size: 9px;
+    }
+
+
+    /* ============================================================
+       MAIN GRID
+    ============================================================ */
+
+    .portal-main-grid {
+        display: grid;
+
+        grid-template-columns:
+            minmax(0, 1.45fr)
+            minmax(280px, .75fr);
+
+        gap: 20px;
+
+        align-items: start;
+    }
+
+
+    /* ============================================================
+       PANEL
+    ============================================================ */
+
+    .portal-panel {
+        background: #ffffff;
+
+        border:
+            1px solid #e8ebf1;
+
+        border-radius: 18px;
+
+        padding: 22px;
+
+        box-shadow:
+            0 8px 30px
+            rgba(31, 41, 55, .05);
+    }
+
+
+    .portal-panel-header {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 15px;
+
+        margin-bottom: 18px;
+    }
+
+
+    .portal-panel-title {
+        min-width: 0;
+    }
+
+
+    .portal-panel-title h3 {
+        margin: 0;
+
+        color: #172033;
+
+        font-size: 15px;
+
+        font-weight: 850;
+    }
+
+
+    .portal-panel-title p {
+        margin:
+            5px 0 0;
+
+        color: #929aaa;
+
+        font-size: 10px;
+    }
+
+
+    /* ============================================================
+       QUICK ACTIONS
+    ============================================================ */
+
+    .portal-actions {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+    }
+
+
+    .portal-action {
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+        padding: 13px;
+
+        border-radius: 12px;
+
+        background: #f8f9fc;
+
+        border:
+            1px solid #edf0f4;
+
+        color: #344054;
+
+        transition:
+            background .2s ease,
+            border-color .2s ease,
+            transform .2s ease;
+    }
+
+
+    .portal-action:hover {
+        background: #ffffff;
+
+        border-color:
+            rgba(154,82,67,.25);
+
+        transform:
+            translateY(-1px);
+    }
+
+
+    .portal-action-icon {
+        width: 36px;
+        height: 36px;
+
+        min-width: 36px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background:
+            rgba(154,82,67,.09);
+
+        font-size: 17px;
+    }
+
+
+    .portal-action-text {
+        min-width: 0;
+    }
+
+
+    .portal-action-text strong {
+        display: block;
+
+        color: #273043;
+
+        font-size: 11px;
+
+        font-weight: 800;
+    }
+
+
+    .portal-action-text span {
+        display: block;
+
+        margin-top: 3px;
+
+        color: #929aaa;
+
+        font-size: 8px;
+    }
+
+
+    /* ============================================================
+       STUDENT INFORMATION
+    ============================================================ */
+
+    .portal-info-list {
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 11px;
+    }
+
+
+    .portal-info-row {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 15px;
+
+        padding-bottom: 11px;
+
+        border-bottom:
+            1px solid #eef0f4;
+    }
+
+
+    .portal-info-row:last-child {
+        padding-bottom: 0;
+
+        border-bottom: none;
+    }
+
+
+    .portal-info-label {
+        color: #929aaa;
+
+        font-size: 10px;
+    }
+
+
+    .portal-info-value {
+        color: #273043;
+
+        font-size: 10px;
+
+        font-weight: 750;
+
+        text-align: right;
+    }
+
+
+    /* ============================================================
+       RECENT ACTIVITY
+    ============================================================ */
+
+    .portal-activity-list {
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+
+    .portal-activity-item {
+        display: flex;
+
+        align-items: center;
+
+        gap: 11px;
+
+        padding: 11px;
+
+        border-radius: 11px;
+
+        background: #f8f9fc;
+    }
+
+
+    .portal-activity-icon {
+        width: 34px;
+        height: 34px;
+
+        min-width: 34px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 9px;
+
+        background:
+            rgba(154,82,67,.09);
+
+        font-size: 15px;
+    }
+
+
+    .portal-activity-text {
+        min-width: 0;
+    }
+
+
+    .portal-activity-text strong {
+        display: block;
+
+        color: #273043;
+
+        font-size: 10px;
+
+        font-weight: 800;
+    }
+
+
+    .portal-activity-text span {
+        display: block;
+
+        margin-top: 3px;
+
+        color: #949cab;
+
+        font-size: 8px;
+    }
+
+
+    /* ============================================================
+       EMPTY STATE
+    ============================================================ */
+
+    .portal-empty {
+        padding: 24px 15px;
+
+        text-align: center;
+
+        border-radius: 12px;
+
+        background: #f8f9fc;
+
+        border:
+            1px dashed #dfe3ea;
+    }
+
+
+    .portal-empty-icon {
+        font-size: 28px;
+
+        margin-bottom: 8px;
+    }
+
+
+    .portal-empty h4 {
+        margin: 0;
+
+        color: #344054;
+
+        font-size: 12px;
+
+        font-weight: 800;
+    }
+
+
+    .portal-empty p {
+        margin:
+            5px 0 0;
+
+        color: #929aaa;
+
+        font-size: 9px;
+
+        line-height: 1.5;
+    }
+
+
+    /* ============================================================
+       DARK MODE
+    ============================================================ */
+
+    body.dark-mode .portal-page {
+        background:
+            radial-gradient(
+                circle at 10% 10%,
+                rgba(154, 82, 67, 0.10),
+                transparent 25%
+            ),
+            #111521;
+    }
+
+
+    body.dark-mode .portal-page-header h1 {
+        color: #f1f4f8;
+    }
+
+
+    body.dark-mode .portal-page-header p {
+        color: #949eae;
+    }
+
+
+    body.dark-mode .portal-stat-card,
+    body.dark-mode .portal-panel {
+        background: #181c2a;
+
+        border-color: #292e3d;
+
+        box-shadow:
+            0 8px 30px
+            rgba(0, 0, 0, .18);
+    }
+
+
+    body.dark-mode .portal-stat-value {
+        color: #f3f5fa;
+    }
+
+
+    body.dark-mode .portal-stat-label,
+    body.dark-mode .portal-stat-description {
+        color: #929bad;
+    }
+
+
+    body.dark-mode .portal-panel-title h3 {
+        color: #f3f5fa;
+    }
+
+
+    body.dark-mode .portal-panel-title p {
+        color: #929bad;
+    }
+
+
+    body.dark-mode .portal-action,
+    body.dark-mode .portal-activity-item,
+    body.dark-mode .portal-empty {
+        background: #202535;
+
+        border-color: #303648;
+    }
+
+
+    body.dark-mode .portal-action-text strong,
+    body.dark-mode .portal-activity-text strong,
+    body.dark-mode .portal-info-value {
+        color: #f0f2f6;
+    }
+
+
+    body.dark-mode .portal-action-text span,
+    body.dark-mode .portal-activity-text span,
+    body.dark-mode .portal-info-label {
+        color: #929bad;
+    }
+
+
+    body.dark-mode .portal-info-row {
+        border-color: #303648;
+    }
+
+
+    body.dark-mode .portal-empty {
+        border-color: #3a4152;
+    }
+
+
+    body.dark-mode .portal-empty h4 {
+        color: #f0f2f6;
+    }
+
+
+    body.dark-mode .portal-empty p {
+        color: #929bad;
+    }
+
+
+    /* ============================================================
+       TABLET
+    ============================================================ */
+
+    @media (max-width: 1050px) {
+
+        .portal-stat-grid {
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+        }
+
+        .portal-main-grid {
+            grid-template-columns:
+                minmax(0, 1fr);
+        }
+    }
+
+
+    /* ============================================================
+       MOBILE
+    ============================================================ */
+
+    @media (max-width: 700px) {
+
+        .portal-page {
+            padding: 14px;
+        }
+
+        .portal-page-header {
+            align-items: flex-start;
+        }
+
+        .portal-page-header h1 {
+            font-size: 23px;
+        }
+
+        .portal-welcome-card {
+            padding: 21px;
+        }
+
+        .portal-welcome-card h2 {
+            font-size: 21px;
+        }
+
+        .portal-stat-grid {
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 10px;
+        }
+
+        .portal-stat-card {
+            padding: 15px;
+        }
+
+        .portal-stat-value {
+            font-size: 21px;
+        }
+
+        .portal-actions {
+            grid-template-columns:
+                1fr;
+        }
+    }
+
+
+    /* ============================================================
+       SMALL MOBILE
+    ============================================================ */
+
+    @media (max-width: 430px) {
+
+        .portal-page {
+            padding: 9px;
+        }
+
+        .portal-stat-grid {
+            grid-template-columns:
+                1fr;
+        }
+
+        .portal-welcome-card h2 {
+            font-size: 19px;
+        }
+
+        .portal-panel {
+            padding: 17px;
+        }
+    }
+
+</style>
+
+<div class="portal-page">
+
+```
+<div class="portal-layout">
+
+    <main class="portal-content">
+
+
+        <!-- ====================================================
+             PAGE HEADER
+        ==================================================== -->
+
+        <div class="portal-page-header">
+
+            <div class="portal-page-header-left">
+
+                <h1>
+                    Student Dashboard
+                </h1>
+
+                <p>
+                    Manage your academic information and monitor your progress.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ====================================================
+             WELCOME
+        ==================================================== -->
+
+        <div class="portal-welcome-card">
+
+            <div class="portal-welcome-content">
+
+                <span class="portal-welcome-label">
+                    Welcome Back
+                </span>
+
+                <h2>
+
+                    {% if student %}
+
+                        Hello,
+                        {{ student.first_name }}
+
+                    {% elif request.user.first_name %}
+
+                        Hello,
+                        {{ request.user.first_name }}
+
+                    {% else %}
+
+                        Welcome, Student
+
+                    {% endif %}
+
+                </h2>
+
+                <p>
+                    Welcome to your Student Portal.
+                    Here you can view your classes, subjects,
+                    grades, results, attendance and profile.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ====================================================
+             STATISTICS
+        ==================================================== -->
+
+        <div class="portal-stat-grid">
+
+
+            <!-- CLASSES -->
+
+            <div class="portal-stat-card">
+
+                <div class="portal-stat-top">
+
+                    <div class="portal-stat-icon">
+                        🏫
+                    </div>
+
+                    <span class="portal-stat-label">
+                        Class
+                    </span>
+
+                </div>
+
+                <div class="portal-stat-value">
+
+                    {% if student and student.class_room %}
+                        1
+                    {% else %}
+                        0
+                    {% endif %}
+
+                </div>
+
+                <div class="portal-stat-description">
+                    Current class
+                </div>
+
+            </div>
+
+
+            <!-- SUBJECTS -->
+
+            <div class="portal-stat-card">
+
+                <div class="portal-stat-top">
+
+                    <div class="portal-stat-icon">
+                        📚
+                    </div>
+
+                    <span class="portal-stat-label">
+                        Subjects
+                    </span>
+
+                </div>
+
+                <div class="portal-stat-value">
+
+                    {% if subjects %}
+                        {{ subjects|length }}
+                    {% else %}
+                        0
+                    {% endif %}
+
+                </div>
+
+                <div class="portal-stat-description">
+                    Enrolled subjects
+                </div>
+
+            </div>
+
+
+            <!-- GRADES -->
+
+            <div class="portal-stat-card">
+
+                <div class="portal-stat-top">
+
+                    <div class="portal-stat-icon">
+                        📊
+                    </div>
+
+                    <span class="portal-stat-label">
+                        Grades
+                    </span>
+
+                </div>
+
+                <div class="portal-stat-value">
+
+                    {% if grades %}
+                        {{ grades|length }}
+                    {% else %}
+                        0
+                    {% endif %}
+
+                </div>
+
+                <div class="portal-stat-description">
+                    Recorded grades
+                </div>
+
+            </div>
+
+
+            <!-- ATTENDANCE -->
+
+            <div class="portal-stat-card">
+
+                <div class="portal-stat-top">
+
+                    <div class="portal-stat-icon">
+                        📝
+                    </div>
+
+                    <span class="portal-stat-label">
+                        Attendance
+                    </span>
+
+                </div>
+
+                <div class="portal-stat-value">
+
+                    {% if attendance %}
+                        {{ attendance|length }}
+                    {% else %}
+                        0
+                    {% endif %}
+
+                </div>
+
+                <div class="portal-stat-description">
+                    Attendance records
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ====================================================
+             MAIN CONTENT GRID
+        ==================================================== -->
+
+        <div class="portal-main-grid">
+
+
+            <!-- ==================================================
+                 LEFT PANEL
+            ================================================== -->
+
+            <div class="portal-panel">
+
+                <div class="portal-panel-header">
+
+                    <div class="portal-panel-title">
+
+                        <h3>
+                            Quick Actions
+                        </h3>
+
+                        <p>
+                            Access your academic information quickly.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="portal-actions">
+
+
+                    <!-- MY CLASS -->
+
+                    <a
+                        href="{% url 'student-class' %}"
+                        class="portal-action"
+                    >
+
+                        <div class="portal-action-icon">
+                            🏫
+                        </div>
+
+                        <div class="portal-action-text">
+
+                            <strong>
+                                My Class
+                            </strong>
+
+                            <span>
+                                View your current class
+                            </span>
+
+                        </div>
+
+                    </a>
+
+
+                    <!-- MY SUBJECTS -->
+
+                    <a
+                        href="{% url 'student-subjects' %}"
+                        class="portal-action"
+                    >
+
+                        <div class="portal-action-icon">
+                            📚
+                        </div>
+
+                        <div class="portal-action-text">
+
+                            <strong>
+                                My Subjects
+                            </strong>
+
+                            <span>
+                                View enrolled subjects
+                            </span>
+
+                        </div>
+
+                    </a>
+
+
+                    <!-- MY GRADES -->
+
+                    <a
+                        href="{% url 'student-grades' %}"
+                        class="portal-action"
+                    >
+
+                        <div class="portal-action-icon">
+                            📊
+                        </div>
+
+                        <div class="portal-action-text">
+
+                            <strong>
+                                My Grades
+                            </strong>
+
+                            <span>
+                                View your academic grades
+                            </span>
+
+                        </div>
+
+                    </a>
+
+
+                    <!-- MY RESULTS -->
+
+                    <a
+                        href="{% url 'student-results' %}"
+                        class="portal-action"
+                    >
+
+                        <div class="portal-action-icon">
+                            📝
+                        </div>
+
+                        <div class="portal-action-text">
+
+                            <strong>
+                                My Results
+                            </strong>
+
+                            <span>
+                                View your academic results
+                            </span>
+
+                        </div>
+
+                    </a>
+
+
+                    <!-- ATTENDANCE -->
+
+                    <a
+                        href="{% url 'student-attendance' %}"
+                        class="portal-action"
+                    >
+
+                        <div class="portal-action-icon">
+                            📅
+                        </div>
+
+                        <div class="portal-action-text">
+
+                            <strong>
+                                My Attendance
+                            </strong>
+
+                            <span>
+                                Monitor attendance records
+                            </span>
+
+                        </div>
+
+                    </a>
+
+
+                    <!-- PROFILE -->
+
+                    <a
+                        href="{% url 'student-profile' %}"
+                        class="portal-action"
+                    >
+
+                        <div class="portal-action-icon">
+                            👤
+                        </div>
+
+                        <div class="portal-action-text">
+
+                            <strong>
+                                My Profile
+                            </strong>
+
+                            <span>
+                                View your personal information
+                            </span>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 RIGHT PANEL
+            ================================================== -->
+
+            <div class="portal-panel">
+
+                <div class="portal-panel-header">
+
+                    <div class="portal-panel-title">
+
+                        <h3>
+                            Student Information
+                        </h3>
+
+                        <p>
+                            Your current academic details.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="portal-info-list">
+
+
+                    <!-- NAME -->
+
+                    <div class="portal-info-row">
+
+                        <span class="portal-info-label">
+                            Full Name
+                        </span>
+
+                        <span class="portal-info-value">
+
+                            {% if student %}
+
+                                {{ student.first_name }}
+                                {{ student.last_name }}
+
+                            {% elif request.user.first_name %}
+
+                                {{ request.user.first_name }}
+                                {{ request.user.last_name }}
+
+                            {% else %}
+
+                                {{ request.user.username }}
+
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- STUDENT ID -->
+
+                    <div class="portal-info-row">
+
+                        <span class="portal-info-label">
+                            Student ID
+                        </span>
+
+                        <span class="portal-info-value">
+
+                            {% if student %}
+                                {{ student.student_id }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- CLASS -->
+
+                    <div class="portal-info-row">
+
+                        <span class="portal-info-label">
+                            Class
+                        </span>
+
+                        <span class="portal-info-value">
+
+                            {% if student and student.class_room %}
+                                {{ student.class_room }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- USERNAME -->
+
+                    <div class="portal-info-row">
+
+                        <span class="portal-info-label">
+                            Username
+                        </span>
+
+                        <span class="portal-info-value">
+                            {{ request.user.username }}
+                        </span>
+
+                    </div>
+
+
+                    <!-- ROLE -->
+
+                    <div class="portal-info-row">
+
+                        <span class="portal-info-label">
+                            Role
+                        </span>
+
+                        <span class="portal-info-value">
+                            Student
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ====================================================
+             RECENT ACTIVITY
+        ==================================================== -->
+
+        <div
+            class="portal-panel"
+            style="margin-top: 20px;"
+        >
+
+            <div class="portal-panel-header">
+
+                <div class="portal-panel-title">
+
+                    <h3>
+                        Recent Academic Activity
+                    </h3>
+
+                    <p>
+                        Your latest academic records.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if grades %}
+
+                <div class="portal-activity-list">
+
+                    {% for grade in grades|slice:":5" %}
+
+                        <div class="portal-activity-item">
+
+                            <div class="portal-activity-icon">
+                                📊
+                            </div>
+
+                            <div class="portal-activity-text">
+
+                                <strong>
+
+                                    {% if grade.subject %}
+                                        {{ grade.subject.name }}
+                                    {% else %}
+                                        Grade Record
+                                    {% endif %}
+
+                                </strong>
+
+                                <span>
+
+                                    Score:
+
+                                    {% if grade.score != None %}
+                                        {{ grade.score }}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="portal-empty">
+
+                    <div class="portal-empty-icon">
+                        📚
+                    </div>
+
+                    <h4>
+                        No Academic Activity Yet
+                    </h4>
+
+                    <p>
+                        Your recent grades and academic records
+                        will appear here when they are available.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+    </main>
+
+</div>
+
+
+</div>
+
+{% endblock %}

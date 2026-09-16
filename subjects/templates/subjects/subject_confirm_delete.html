@@ -1,0 +1,844 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+<style>
+
+/* ============================================================
+   SUBJECT DELETE PAGE
+============================================================ */
+
+.delete-page {
+    min-height: calc(100vh - 70px);
+    background: #f5f6f8;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.delete-container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 24px 55px;
+}
+
+
+/* ============================================================
+   BACK LINK
+============================================================ */
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 20px;
+
+    color: #697386;
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    transition: all 0.2s ease;
+}
+
+.back-link:hover {
+    color: #9a5243;
+    transform: translateX(-3px);
+}
+
+
+/* ============================================================
+   DELETE CARD
+============================================================ */
+
+.delete-card {
+    background: #ffffff;
+
+    border:
+        1px solid #eeeeee;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 10px 30px
+        rgba(0,0,0,0.06);
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.delete-header {
+    padding: 26px 28px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #172033 0%,
+            #24304a 70%,
+            #8a493d 145%
+        );
+
+    color: #ffffff;
+}
+
+.delete-icon {
+    width: 54px;
+    height: 54px;
+
+    min-width: 54px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background:
+        rgba(255,255,255,0.12);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.17);
+
+    font-size: 24px;
+}
+
+.delete-title h1 {
+    margin: 0;
+
+    font-size: 25px;
+
+    font-weight: 850;
+}
+
+.delete-title p {
+    margin: 5px 0 0;
+
+    color:
+        rgba(255,255,255,0.70);
+
+    font-size: 12px;
+}
+
+
+/* ============================================================
+   BODY
+============================================================ */
+
+.delete-body {
+    padding: 28px;
+}
+
+.warning-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+
+    margin-bottom: 22px;
+
+    padding: 14px 15px;
+
+    background: #fff6e8;
+
+    border:
+        1px solid #f1d49b;
+
+    border-radius: 10px;
+
+    color: #855d16;
+
+    font-size: 11px;
+
+    line-height: 1.6;
+}
+
+.warning-icon {
+    font-size: 16px;
+
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   SUBJECT PREVIEW
+============================================================ */
+
+.subject-preview {
+    border:
+        1px solid #e7e9ed;
+
+    border-radius: 14px;
+
+    background: #fafbfc;
+
+    padding: 18px;
+}
+
+.subject-preview-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 18px;
+}
+
+.subject-avatar {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 12px;
+
+    background: #f5e9e6;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 21px;
+}
+
+.subject-preview-title strong {
+    display: block;
+
+    color: #222222;
+
+    font-size: 15px;
+
+    font-weight: 850;
+}
+
+.subject-preview-title span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #8b93a1;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   DETAILS
+============================================================ */
+
+.subject-details {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 12px;
+}
+
+.detail-item {
+    padding: 12px;
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    border:
+        1px solid #eceef1;
+}
+
+.detail-label {
+    margin-bottom: 5px;
+
+    color: #959ca7;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+.detail-value {
+    color: #333333;
+
+    font-size: 12px;
+
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   STATUS
+============================================================ */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 5px 8px;
+
+    border-radius: 18px;
+
+    font-size: 9px;
+
+    font-weight: 800;
+}
+
+.status-active {
+    background: #eaf8ef;
+    color: #22824a;
+}
+
+.status-inactive {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: currentColor;
+}
+
+
+/* ============================================================
+   DESCRIPTION
+============================================================ */
+
+.description {
+    margin-top: 14px;
+
+    padding-top: 14px;
+
+    border-top:
+        1px solid #eceef1;
+}
+
+.description-label {
+    margin-bottom: 6px;
+
+    color: #959ca7;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: .5px;
+}
+
+.description p {
+    margin: 0;
+
+    color: #626b79;
+
+    font-size: 11px;
+
+    line-height: 1.7;
+}
+
+
+/* ============================================================
+   ACTIONS
+============================================================ */
+
+.delete-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 9px;
+
+    margin-top: 24px;
+
+    padding-top: 20px;
+
+    border-top:
+        1px solid #eeeeee;
+}
+
+.action-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    min-height: 42px;
+
+    padding: 0 15px;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        all .2s ease;
+}
+
+
+/* ============================================================
+   CANCEL
+============================================================ */
+
+.cancel-btn {
+    background: #f3f4f6;
+
+    border:
+        1px solid #e5e7eb;
+
+    color: #555555;
+}
+
+.cancel-btn:hover {
+    background: #e7e9ed;
+
+    color: #333333;
+}
+
+
+/* ============================================================
+   DELETE
+============================================================ */
+
+.confirm-delete-btn {
+    border:
+        1px solid #b42318;
+
+    background:
+        linear-gradient(
+            135deg,
+            #c13b32,
+            #a62b23
+        );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 5px 14px
+        rgba(180,35,24,0.18);
+}
+
+.confirm-delete-btn:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #d34c41,
+            #951f18
+        );
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(180,35,24,0.25);
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 650px) {
+
+    .delete-container {
+        padding:
+            22px 14px 40px;
+    }
+
+    .delete-header {
+        padding: 21px;
+    }
+
+    .delete-title h1 {
+        font-size: 22px;
+    }
+
+    .delete-body {
+        padding: 20px;
+    }
+
+    .subject-details {
+        grid-template-columns: 1fr;
+    }
+
+    .delete-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .action-btn {
+        width: 100%;
+    }
+}
+
+
+/* ============================================================
+   DARK MODE
+============================================================ */
+
+body.dark-mode .delete-page {
+    background: #111521;
+}
+
+body.dark-mode .delete-card {
+    background: #181c2a;
+    border-color: #292e3d;
+}
+
+body.dark-mode .warning-box {
+    background: #28251d;
+    border-color: #51462b;
+    color: #d7bd74;
+}
+
+body.dark-mode .subject-preview {
+    background: #202431;
+    border-color: #303545;
+}
+
+body.dark-mode .subject-preview-title strong,
+body.dark-mode .detail-value {
+    color: #f2f4f8;
+}
+
+body.dark-mode .subject-preview-title span,
+body.dark-mode .detail-label,
+body.dark-mode .description-label {
+    color: #929bad;
+}
+
+body.dark-mode .detail-item {
+    background: #181c2a;
+    border-color: #303545;
+}
+
+body.dark-mode .description {
+    border-color: #303545;
+}
+
+body.dark-mode .description p {
+    color: #c9ced8;
+}
+
+body.dark-mode .delete-actions {
+    border-color: #303545;
+}
+
+body.dark-mode .cancel-btn {
+    background: #202431;
+    border-color: #303545;
+    color: #d5d9e2;
+}
+
+</style>
+
+
+<!-- ============================================================
+     PAGE
+============================================================ -->
+
+<div class="delete-page">
+
+    <div class="delete-container">
+
+
+        <!-- ====================================================
+             BACK
+        ==================================================== -->
+
+        <a
+            href="{% url 'subject-detail' subject.id %}"
+            class="back-link"
+        >
+            ← Back to Subject
+        </a>
+
+
+        <!-- ====================================================
+             CARD
+        ==================================================== -->
+
+        <section class="delete-card">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <div class="delete-header">
+
+                <div class="delete-icon">
+                    🗑️
+                </div>
+
+                <div class="delete-title">
+
+                    <h1>
+                        Delete Subject
+                    </h1>
+
+                    <p>
+                        This action cannot be undone.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 BODY
+            ================================================== -->
+
+            <div class="delete-body">
+
+
+                <!-- =================================================
+                     WARNING
+                ================================================== -->
+
+                <div class="warning-box">
+
+                    <div class="warning-icon">
+                        ⚠️
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Warning:
+                        </strong>
+
+                        You are about to permanently delete this subject
+                        from the Student Management System.
+
+                        Any related enrollment records may also be affected
+                        according to your database relationships.
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     SUBJECT PREVIEW
+                ================================================== -->
+
+                <div class="subject-preview">
+
+
+                    <div class="subject-preview-top">
+
+                        <div class="subject-avatar">
+                            📚
+                        </div>
+
+                        <div class="subject-preview-title">
+
+                            <strong>
+                                {{ subject.name }}
+                            </strong>
+
+                            <span>
+                                Subject Code: {{ subject.code }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         DETAILS
+                    ================================================== -->
+
+                    <div class="subject-details">
+
+
+                        <!-- CODE -->
+
+                        <div class="detail-item">
+
+                            <div class="detail-label">
+                                Code
+                            </div>
+
+                            <div class="detail-value">
+                                {{ subject.code }}
+                            </div>
+
+                        </div>
+
+
+                        <!-- CREDIT HOURS -->
+
+                        <div class="detail-item">
+
+                            <div class="detail-label">
+                                Credit Hours
+                            </div>
+
+                            <div class="detail-value">
+                                {{ subject.credit_hours }}
+                            </div>
+
+                        </div>
+
+
+                        <!-- STATUS -->
+
+                        <div class="detail-item">
+
+                            <div class="detail-label">
+                                Status
+                            </div>
+
+                            <div class="detail-value">
+
+                                {% if subject.status == "Active" %}
+
+                                    <span class="status-badge status-active">
+
+                                        <span class="status-dot"></span>
+
+                                        Active
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-badge status-inactive">
+
+                                        <span class="status-dot"></span>
+
+                                        {{ subject.status }}
+
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         DESCRIPTION
+                    ================================================== -->
+
+                    <div class="description">
+
+                        <div class="description-label">
+                            Description
+                        </div>
+
+                        <p>
+
+                            {% if subject.description %}
+
+                                {{ subject.description }}
+
+                            {% else %}
+
+                                No description available.
+
+                            {% endif %}
+
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =================================================
+                     ACTIONS
+                ================================================== -->
+
+                <div class="delete-actions">
+
+
+                    <!-- CANCEL -->
+
+                    <a
+                        href="{% url 'subject-detail' subject.id %}"
+                        class="action-btn cancel-btn"
+                    >
+                        ← Cancel
+                    </a>
+
+
+                    <!-- DELETE -->
+
+                    <form
+                        method="POST"
+                        style="display: inline;"
+                        onsubmit="return confirmSubjectDelete();"
+                    >
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="action-btn confirm-delete-btn"
+                        >
+                            🗑️ Yes, Delete Subject
+                        </button>
+
+                    </form>
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function confirmSubjectDelete() {
+
+    return confirm(
+        "Are you sure you want to permanently delete '{{ subject.name|escapejs }}'?"
+    );
+
+}
+
+</script>
+
+{% endblock content %}
+

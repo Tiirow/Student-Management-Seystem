@@ -1,0 +1,3180 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+    Classes | Student Management System
+</title>
+
+<style>
+
+    /* ============================================================
+       GLOBAL
+       ============================================================ */
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        min-height: 100vh;
+
+        font-family:
+            Inter,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            Roboto,
+            Arial,
+            sans-serif;
+
+        background: #f4f5f7;
+
+        color: #25282d;
+
+        -webkit-font-smoothing: antialiased;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+        font-family: inherit;
+    }
+
+    button {
+        outline: none;
+    }
+
+
+    /* ============================================================
+       SIDEBAR
+       ============================================================ */
+
+    .sidebar {
+        position: fixed;
+
+        top: 0;
+        left: 0;
+
+        width: 285px;
+        height: 100vh;
+
+        z-index: 9999;
+
+        display: flex;
+        flex-direction: column;
+
+        overflow-y: auto;
+
+        background:
+            linear-gradient(
+                180deg,
+                #17191d 0%,
+                #121418 100%
+            );
+
+        color: #ffffff;
+
+        border-right:
+            1px solid rgba(255, 255, 255, 0.04);
+
+        box-shadow:
+            12px 0 35px rgba(0, 0, 0, 0.08);
+    }
+
+    .sidebar::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.10);
+        border-radius: 20px;
+    }
+
+
+    /* ============================================================
+       BRAND
+       ============================================================ */
+
+    .brand {
+        padding: 26px 21px 22px;
+
+        border-bottom:
+            1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .brand-top {
+        display: flex;
+        align-items: center;
+
+        gap: 12px;
+    }
+
+    .brand-icon {
+        width: 44px;
+        height: 44px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background:
+            linear-gradient(
+                135deg,
+                #9a5243,
+                #c17865
+            );
+
+        border-radius: 13px;
+
+        font-size: 21px;
+
+        box-shadow:
+            0 8px 20px rgba(154, 82, 67, 0.28);
+    }
+
+    .brand-text {
+        min-width: 0;
+    }
+
+    .brand-title {
+        color: #ffffff;
+
+        font-size: 15px;
+        font-weight: 800;
+
+        line-height: 1.25;
+    }
+
+    .brand-subtitle {
+        margin-top: 4px;
+
+        color: #858a93;
+
+        font-size: 9px;
+        font-weight: 500;
+
+        letter-spacing: 0.25px;
+    }
+
+
+    /* ============================================================
+       SIDEBAR USER
+       ============================================================ */
+
+    .sidebar-user {
+        margin: 17px 15px 9px;
+
+        padding: 12px;
+
+        display: flex;
+        align-items: center;
+
+        gap: 11px;
+
+        background:
+            rgba(255, 255, 255, 0.045);
+
+        border:
+            1px solid rgba(255, 255, 255, 0.055);
+
+        border-radius: 12px;
+    }
+
+    .sidebar-avatar {
+        width: 39px;
+        height: 39px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #9a5243,
+                #b96f5e
+            );
+
+        color: #ffffff;
+
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+    .sidebar-user-info {
+        min-width: 0;
+    }
+
+    .sidebar-user-name {
+        color: #ffffff;
+
+        font-size: 12px;
+        font-weight: 700;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .sidebar-user-role {
+        margin-top: 3px;
+
+        color: #858a93;
+
+        font-size: 9px;
+    }
+
+
+    /* ============================================================
+       NAVIGATION
+       ============================================================ */
+
+    .sidebar-nav {
+        padding: 13px 13px 20px;
+    }
+
+    .nav-section {
+        margin-bottom: 18px;
+    }
+
+    .nav-section-title {
+        padding: 0 10px 8px;
+
+        color: #656a73;
+
+        font-size: 9px;
+        font-weight: 800;
+
+        text-transform: uppercase;
+
+        letter-spacing: 1.05px;
+    }
+
+    .nav-link {
+        min-height: 42px;
+
+        margin-bottom: 4px;
+
+        padding: 0 11px;
+
+        display: flex;
+        align-items: center;
+
+        gap: 11px;
+
+        color: #aeb2ba;
+
+        text-decoration: none;
+
+        border-radius: 10px;
+
+        font-size: 11px;
+        font-weight: 600;
+
+        transition:
+            background 0.2s ease,
+            color 0.2s ease,
+            transform 0.2s ease;
+    }
+
+    .nav-link:hover {
+        color: #ffffff;
+
+        background:
+            rgba(255, 255, 255, 0.055);
+
+        transform: translateX(2px);
+    }
+
+    .nav-link.active {
+        color: #ffffff;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(154, 82, 67, 0.95),
+                rgba(193, 120, 101, 0.84)
+            );
+
+        box-shadow:
+            0 7px 20px rgba(154, 82, 67, 0.18);
+    }
+
+    .nav-icon {
+        width: 20px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 14px;
+    }
+
+    .nav-text {
+        flex: 1;
+    }
+
+
+    /* ============================================================
+       SIDEBAR FOOTER
+       ============================================================ */
+
+    .sidebar-footer {
+        margin-top: auto;
+
+        padding: 15px;
+
+        border-top:
+            1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .logout-button {
+        width: 100%;
+        height: 42px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        border:
+            1px solid rgba(255, 255, 255, 0.08);
+
+        border-radius: 10px;
+
+        background:
+            rgba(255, 255, 255, 0.035);
+
+        color: #aeb2ba;
+
+        font-size: 11px;
+        font-weight: 700;
+
+        cursor: pointer;
+
+        transition: all 0.2s ease;
+    }
+
+    .logout-button:hover {
+        color: #ffffff;
+
+        background:
+            rgba(154, 82, 67, 0.16);
+
+        border-color:
+            rgba(154, 82, 67, 0.28);
+    }
+
+
+    /* ============================================================
+       MAIN
+       ============================================================ */
+
+    .main-wrapper {
+        margin-left: 285px;
+
+        width:
+            calc(100% - 285px);
+
+        min-height: 100vh;
+    }
+
+    .class-management-page {
+        min-height: 100vh;
+
+        padding: 34px;
+    }
+
+    .class-management-container {
+        width: 100%;
+        max-width: 1550px;
+
+        margin: 0 auto;
+    }
+
+
+    /* ============================================================
+       TOP HEADER
+       ============================================================ */
+
+    .page-header {
+        margin-bottom: 28px;
+
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+
+        gap: 25px;
+    }
+
+    .page-header-left {
+        min-width: 0;
+    }
+
+    .breadcrumb {
+        margin-bottom: 9px;
+
+        display: flex;
+        align-items: center;
+
+        gap: 7px;
+
+        color: #a0a4ab;
+
+        font-size: 9px;
+        font-weight: 600;
+    }
+
+    .breadcrumb-current {
+        color: #9a5243;
+    }
+
+    .page-title-row {
+        display: flex;
+        align-items: center;
+
+        gap: 13px;
+    }
+
+    .page-title-icon {
+        width: 48px;
+        height: 48px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background:
+            linear-gradient(
+                135deg,
+                #9a5243,
+                #c17865
+            );
+
+        border-radius: 14px;
+
+        font-size: 21px;
+
+        box-shadow:
+            0 9px 22px rgba(154, 82, 67, 0.18);
+    }
+
+    .page-title {
+        color: #24272d;
+
+        font-size: 26px;
+        font-weight: 850;
+
+        line-height: 1.2;
+
+        letter-spacing: -0.5px;
+    }
+
+    .page-description {
+        margin-top: 7px;
+        margin-left: 61px;
+
+        color: #92969e;
+
+        font-size: 11px;
+
+        line-height: 1.6;
+    }
+
+    .role-badge {
+        margin-top: 11px;
+        margin-left: 61px;
+
+        display: inline-flex;
+        align-items: center;
+
+        padding: 6px 10px;
+
+        background: #f6e9e6;
+
+        border:
+            1px solid #ead6d1;
+
+        border-radius: 7px;
+
+        color: #8c493e;
+
+        font-size: 9px;
+        font-weight: 800;
+
+        text-transform: uppercase;
+        letter-spacing: 0.65px;
+    }
+
+    .add-class-btn {
+        min-height: 45px;
+
+        padding: 0 17px;
+
+        flex-shrink: 0;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        border: none;
+
+        border-radius: 11px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #9a5243,
+                #b96f5d
+            );
+
+        color: #ffffff;
+
+        text-decoration: none;
+
+        font-size: 11px;
+        font-weight: 750;
+
+        box-shadow:
+            0 8px 20px rgba(154, 82, 67, 0.20);
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .add-class-btn span:first-child {
+        font-size: 17px;
+        line-height: 1;
+    }
+
+    .add-class-btn:hover {
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 12px 26px rgba(154, 82, 67, 0.27);
+    }
+
+
+    /* ============================================================
+       STATISTICS
+       ============================================================ */
+
+    .stats-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 17px;
+
+        margin-bottom: 22px;
+    }
+
+    .stat-card {
+        position: relative;
+
+        min-height: 124px;
+
+        padding: 21px;
+
+        overflow: hidden;
+
+        display: flex;
+        align-items: center;
+
+        gap: 15px;
+
+        background: #ffffff;
+
+        border:
+            1px solid #e8e9ec;
+
+        border-radius: 15px;
+
+        box-shadow:
+            0 5px 22px rgba(28, 32, 38, 0.035);
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 10px 28px rgba(28, 32, 38, 0.07);
+    }
+
+    .stat-card::after {
+        content: "";
+
+        position: absolute;
+
+        width: 100px;
+        height: 100px;
+
+        right: -38px;
+        bottom: -55px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(154, 82, 67, 0.045);
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 13px;
+
+        background: #f7ebe8;
+
+        font-size: 20px;
+    }
+
+    .stat-info {
+        min-width: 0;
+    }
+
+    .stat-label {
+        color: #979ba2;
+
+        font-size: 10px;
+        font-weight: 650;
+    }
+
+    .stat-value {
+        margin-top: 4px;
+
+        color: #272a30;
+
+        font-size: 25px;
+        font-weight: 850;
+
+        letter-spacing: -0.5px;
+    }
+
+    .stat-caption {
+        margin-top: 3px;
+
+        color: #b0b3b9;
+
+        font-size: 8px;
+    }
+
+
+    /* ============================================================
+       ALL CLASSES CARD
+       ============================================================ */
+
+    .classes-card {
+        overflow: hidden;
+
+        background: #ffffff;
+
+        border:
+            1px solid #e6e8eb;
+
+        border-radius: 17px;
+
+        box-shadow:
+            0 8px 28px rgba(28, 32, 38, 0.045);
+    }
+
+    .classes-card-header {
+        padding: 20px 23px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 20px;
+
+        border-bottom:
+            1px solid #eeeeef;
+    }
+
+    .classes-heading-left {
+        display: flex;
+        align-items: center;
+
+        gap: 12px;
+    }
+
+    .classes-heading-icon {
+        width: 40px;
+        height: 40px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #f8eeeb;
+
+        border-radius: 11px;
+
+        font-size: 17px;
+    }
+
+    .classes-card-title {
+        color: #292c31;
+
+        font-size: 14px;
+        font-weight: 850;
+    }
+
+    .classes-card-subtitle {
+        margin-top: 3px;
+
+        color: #9a9ea5;
+
+        font-size: 9px;
+    }
+
+    .classes-card-count {
+        padding: 7px 11px;
+
+        background: #f5f6f7;
+
+        border:
+            1px solid #ececee;
+
+        border-radius: 8px;
+
+        color: #777c84;
+
+        font-size: 9px;
+        font-weight: 750;
+    }
+
+
+    /* ============================================================
+       TABLE
+       ============================================================ */
+
+    .table-wrapper {
+        width: 100%;
+
+        overflow-x: auto;
+    }
+
+    .classes-table {
+        width: 100%;
+
+        min-width: 940px;
+
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .classes-table thead th {
+        padding: 13px 19px;
+
+        background: #fafbfb;
+
+        color: #90949b;
+
+        font-size: 8px;
+        font-weight: 800;
+
+        text-align: left;
+
+        text-transform: uppercase;
+
+        letter-spacing: 0.8px;
+
+        border-bottom:
+            1px solid #ebedef;
+    }
+
+    .classes-table thead th:first-child {
+        padding-left: 23px;
+    }
+
+    .classes-table thead th:last-child {
+        padding-right: 23px;
+    }
+
+    .classes-table tbody tr {
+        transition:
+            background 0.18s ease;
+    }
+
+    .classes-table tbody tr:hover {
+        background: #fcfcfd;
+    }
+
+    .classes-table tbody td {
+        padding: 17px 19px;
+
+        border-bottom:
+            1px solid #f0f1f2;
+
+        vertical-align: middle;
+    }
+
+    .classes-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .classes-table tbody td:first-child {
+        padding-left: 23px;
+    }
+
+    .classes-table tbody td:last-child {
+        padding-right: 23px;
+    }
+
+
+    /* ============================================================
+       CLASS INFORMATION
+       ============================================================ */
+
+    .class-info {
+        min-width: 220px;
+
+        display: flex;
+        align-items: center;
+
+        gap: 12px;
+    }
+
+    .class-avatar {
+        width: 42px;
+        height: 42px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background:
+            linear-gradient(
+                135deg,
+                #f5e5e1,
+                #faefec
+            );
+
+        border:
+            1px solid #efdad5;
+
+        border-radius: 11px;
+
+        color: #9a5243;
+
+        font-size: 17px;
+    }
+
+    .class-info-text {
+        min-width: 0;
+    }
+
+    .class-name {
+        color: #292c31;
+
+        font-size: 12px;
+        font-weight: 800;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .class-description {
+        max-width: 280px;
+
+        margin-top: 4px;
+
+        color: #a0a4ab;
+
+        font-size: 9px;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+
+    /* ============================================================
+       NUMBER CELLS
+       ============================================================ */
+
+    .metric-cell {
+        min-width: 95px;
+    }
+
+    .metric-wrap {
+        display: flex;
+        align-items: center;
+
+        gap: 9px;
+    }
+
+    .metric-icon {
+        width: 29px;
+        height: 29px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #f7f7f8;
+
+        border-radius: 8px;
+
+        font-size: 12px;
+    }
+
+    .metric-number {
+        color: #383c42;
+
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+    .metric-label {
+        margin-top: 2px;
+
+        color: #a4a7ad;
+
+        font-size: 8px;
+    }
+
+
+    /* ============================================================
+       STATUS
+       ============================================================ */
+
+    .status-badge {
+        min-width: 77px;
+
+        padding: 6px 9px;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 6px;
+
+        border-radius: 8px;
+
+        font-size: 8px;
+        font-weight: 800;
+
+        text-transform: uppercase;
+
+        letter-spacing: 0.45px;
+    }
+
+    .status-dot {
+        width: 5px;
+        height: 5px;
+
+        border-radius: 50%;
+
+        background: currentColor;
+    }
+
+    .status-badge.active {
+        background: #edf8f1;
+
+        color: #39835a;
+
+        border:
+            1px solid #d8efdf;
+    }
+
+    .status-badge.inactive {
+        background: #f8eeee;
+
+        color: #9c5b5b;
+
+        border:
+            1px solid #f0dddd;
+    }
+
+
+    /* ============================================================
+       ACTIONS
+       ============================================================ */
+
+    .actions-cell {
+        min-width: 315px;
+
+        white-space: nowrap;
+    }
+
+    .actions {
+        display: flex;
+        align-items: center;
+
+        gap: 6px;
+    }
+
+    .action-btn {
+        min-height: 31px;
+
+        padding: 0 10px;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 5px;
+
+        border-radius: 7px;
+
+        font-size: 8px;
+        font-weight: 750;
+
+        text-decoration: none;
+
+        cursor: pointer;
+
+        transition:
+            background 0.18s ease,
+            color 0.18s ease,
+            border-color 0.18s ease,
+            transform 0.18s ease;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .view-btn {
+        background: #f3f7fb;
+
+        border:
+            1px solid #e0e9f1;
+
+        color: #58758e;
+    }
+
+    .view-btn:hover {
+        background: #e8f0f7;
+
+        border-color: #d3e0ea;
+    }
+
+    .curriculum-btn {
+        background: #f7f3fa;
+
+        border:
+            1px solid #e8dff0;
+
+        color: #765c89;
+    }
+
+    .curriculum-btn:hover {
+        background: #f0e8f5;
+    }
+
+    .edit-btn {
+        background: #faf6f2;
+
+        border:
+            1px solid #eadfd7;
+
+        color: #8d654f;
+    }
+
+    .edit-btn:hover {
+        background: #f4ebe5;
+    }
+
+    .delete-btn {
+        background: #fff5f3;
+
+        border:
+            1px solid #efd9d5;
+
+        color: #a04f46;
+    }
+
+    .delete-btn:hover {
+        background: #fbe8e5;
+
+        border-color: #e8c6c0;
+
+        color: #8d4038;
+    }
+
+    .delete-form {
+        display: inline-flex;
+
+        margin: 0;
+        padding: 0;
+    }
+
+
+    /* ============================================================
+       EMPTY STATE
+       ============================================================ */
+
+    .empty-state {
+        padding: 75px 25px;
+
+        text-align: center;
+    }
+
+    .empty-state-icon {
+        width: 72px;
+        height: 72px;
+
+        margin: 0 auto 17px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background:
+            linear-gradient(
+                135deg,
+                #f6e8e4,
+                #fbf2ef
+            );
+
+        border:
+            1px solid #eedbd6;
+
+        border-radius: 20px;
+
+        font-size: 30px;
+    }
+
+    .empty-state-title {
+        color: #303339;
+
+        font-size: 17px;
+        font-weight: 850;
+    }
+
+    .empty-state-text {
+        max-width: 430px;
+
+        margin: 8px auto 21px;
+
+        color: #989ca3;
+
+        font-size: 10px;
+
+        line-height: 1.7;
+    }
+
+    .empty-state-btn {
+        min-height: 39px;
+
+        padding: 0 15px;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #9a5243;
+
+        border-radius: 9px;
+
+        color: #ffffff;
+
+        text-decoration: none;
+
+        font-size: 10px;
+        font-weight: 750;
+    }
+
+    .empty-state-btn:hover {
+        background: #86483c;
+    }
+
+
+    /* ============================================================
+       TEACHER NOTICE
+       ============================================================ */
+
+    .teacher-notice {
+        margin-top: 17px;
+
+        padding: 13px 16px;
+
+        display: flex;
+        align-items: center;
+
+        gap: 10px;
+
+        background: #f8f4f2;
+
+        border:
+            1px solid #eaded9;
+
+        border-radius: 10px;
+
+        color: #7f6c64;
+
+        font-size: 10px;
+
+        line-height: 1.6;
+    }
+
+    .teacher-notice-icon {
+        width: 27px;
+        height: 27px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #ffffff;
+
+        border-radius: 8px;
+
+        font-size: 13px;
+    }
+
+
+    /* ============================================================
+       DELETE WARNING TOAST
+       ============================================================ */
+
+    .delete-guard-message {
+        position: fixed;
+
+        top: 25px;
+        right: 27px;
+
+        z-index: 10001;
+
+        width:
+            min(
+                490px,
+                calc(100vw - 40px)
+            );
+
+        display: flex;
+        align-items: flex-start;
+
+        gap: 14px;
+
+        padding: 17px;
+
+        background:
+            rgba(255, 255, 255, 0.98);
+
+        border:
+            1px solid #ead8d4;
+
+        border-left:
+            4px solid #9a5243;
+
+        border-radius: 15px;
+
+        box-shadow:
+            0 25px 70px rgba(20, 23, 28, 0.18),
+            0 7px 20px rgba(154, 82, 67, 0.08);
+
+        opacity: 0;
+        visibility: hidden;
+
+        transform:
+            translateX(115%)
+            scale(0.97);
+
+        pointer-events: none;
+
+        transition:
+            opacity 0.28s ease,
+            transform 0.28s ease,
+            visibility 0.28s ease;
+    }
+
+    .delete-guard-message.show {
+        opacity: 1;
+        visibility: visible;
+
+        transform:
+            translateX(0)
+            scale(1);
+
+        pointer-events: auto;
+    }
+
+    .delete-guard-icon {
+        width: 43px;
+        height: 43px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background:
+            linear-gradient(
+                135deg,
+                #fff1ee,
+                #fce5e1
+            );
+
+        border:
+            1px solid #f1d5d0;
+
+        border-radius: 12px;
+
+        font-size: 20px;
+    }
+
+    .delete-guard-content {
+        flex: 1;
+
+        min-width: 0;
+
+        padding-top: 1px;
+    }
+
+    .delete-guard-label {
+        margin-bottom: 3px;
+
+        color: #b06a5e;
+
+        font-size: 8px;
+        font-weight: 850;
+
+        text-transform: uppercase;
+
+        letter-spacing: 0.9px;
+    }
+
+    .delete-guard-title {
+        margin-bottom: 5px;
+
+        color: #282b30;
+
+        font-size: 14px;
+        font-weight: 850;
+    }
+
+    .delete-guard-text {
+        color: #73777f;
+
+        font-size: 10px;
+
+        line-height: 1.65;
+    }
+
+    .delete-guard-close {
+        width: 28px;
+        height: 28px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: none;
+
+        border-radius: 8px;
+
+        background: #f5f6f7;
+
+        color: #81858c;
+
+        font-size: 19px;
+
+        cursor: pointer;
+
+        transition:
+            background 0.18s ease,
+            color 0.18s ease;
+    }
+
+    .delete-guard-close:hover {
+        background: #f9e9e6;
+
+        color: #9a5243;
+    }
+
+
+    /* ============================================================
+       DELETE CONFIRMATION MODAL
+       ============================================================ */
+
+    .delete-confirm-overlay {
+        position: fixed;
+
+        inset: 0;
+
+        z-index: 10002;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 20px;
+
+        background:
+            rgba(13, 16, 20, 0.58);
+
+        backdrop-filter:
+            blur(7px);
+
+        opacity: 0;
+        visibility: hidden;
+
+        pointer-events: none;
+
+        transition:
+            opacity 0.25s ease,
+            visibility 0.25s ease;
+    }
+
+    .delete-confirm-overlay.show {
+        opacity: 1;
+        visibility: visible;
+
+        pointer-events: auto;
+    }
+
+    .delete-confirm-box {
+        position: relative;
+
+        width:
+            min(
+                430px,
+                100%
+            );
+
+        padding: 30px;
+
+        background:
+            linear-gradient(
+                180deg,
+                #ffffff 0%,
+                #fcfcfd 100%
+            );
+
+        border:
+            1px solid rgba(255, 255, 255, 0.8);
+
+        border-radius: 21px;
+
+        text-align: center;
+
+        box-shadow:
+            0 35px 90px rgba(0, 0, 0, 0.28);
+
+        transform:
+            translateY(18px)
+            scale(0.94);
+
+        transition:
+            transform 0.25s ease;
+    }
+
+    .delete-confirm-overlay.show
+    .delete-confirm-box {
+        transform:
+            translateY(0)
+            scale(1);
+    }
+
+    .delete-confirm-icon {
+        width: 66px;
+        height: 66px;
+
+        margin:
+            0 auto 17px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background:
+            linear-gradient(
+                135deg,
+                #fff0ed,
+                #fbe1dc
+            );
+
+        border:
+            1px solid #f0d4cf;
+
+        border-radius: 19px;
+
+        font-size: 28px;
+
+        box-shadow:
+            0 9px 24px rgba(154, 82, 67, 0.10);
+    }
+
+    .delete-confirm-label {
+        margin-bottom: 6px;
+
+        color: #a46156;
+
+        font-size: 8px;
+        font-weight: 850;
+
+        text-transform: uppercase;
+
+        letter-spacing: 1px;
+    }
+
+    .delete-confirm-title {
+        color: #272a30;
+
+        font-size: 20px;
+        font-weight: 850;
+
+        letter-spacing: -0.3px;
+    }
+
+    .delete-confirm-text {
+        margin:
+            9px auto 25px;
+
+        max-width: 340px;
+
+        color: #777b82;
+
+        font-size: 11px;
+
+        line-height: 1.7;
+    }
+
+    .delete-confirm-actions {
+        display: grid;
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 10px;
+    }
+
+    .confirm-cancel-btn,
+    .confirm-delete-btn {
+        min-height: 42px;
+
+        border-radius: 10px;
+
+        font-size: 10px;
+        font-weight: 800;
+
+        cursor: pointer;
+
+        transition:
+            background 0.18s ease,
+            border-color 0.18s ease,
+            transform 0.18s ease;
+    }
+
+    .confirm-cancel-btn {
+        border:
+            1px solid #e2e4e7;
+
+        background: #f7f8f9;
+
+        color: #696e76;
+    }
+
+    .confirm-cancel-btn:hover {
+        background: #eef0f2;
+
+        transform: translateY(-1px);
+    }
+
+    .confirm-delete-btn {
+        border:
+            1px solid #9a5243;
+
+        background:
+            linear-gradient(
+                135deg,
+                #9a5243,
+                #b56655
+            );
+
+        color: #ffffff;
+
+        box-shadow:
+            0 7px 17px rgba(154, 82, 67, 0.19);
+    }
+
+    .confirm-delete-btn:hover {
+        background:
+            linear-gradient(
+                135deg,
+                #88483d,
+                #a85c4e
+            );
+
+        transform: translateY(-1px);
+
+        box-shadow:
+            0 10px 22px rgba(154, 82, 67, 0.25);
+    }
+
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+
+    @media (max-width: 1100px) {
+
+        .sidebar {
+            width: 255px;
+        }
+
+        .main-wrapper {
+            margin-left: 255px;
+
+            width:
+                calc(100% - 255px);
+        }
+
+        .class-management-page {
+            padding: 27px;
+        }
+
+    }
+
+
+    @media (max-width: 900px) {
+
+        .sidebar {
+            width: 230px;
+        }
+
+        .main-wrapper {
+            margin-left: 230px;
+
+            width:
+                calc(100% - 230px);
+        }
+
+        .page-header {
+            align-items: flex-start;
+
+            flex-direction: column;
+        }
+
+        .add-class-btn {
+            width: auto;
+        }
+
+        .stats-grid {
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+        }
+
+    }
+
+
+    @media (max-width: 700px) {
+
+        .sidebar {
+            width: 210px;
+        }
+
+        .main-wrapper {
+            margin-left: 210px;
+
+            width:
+                calc(100% - 210px);
+        }
+
+        .class-management-page {
+            padding: 18px;
+        }
+
+        .page-title {
+            font-size: 22px;
+        }
+
+        .page-description,
+        .role-badge {
+            margin-left: 0;
+        }
+
+        .page-title-row {
+            align-items: flex-start;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .delete-guard-message {
+            top: 18px;
+            right: 18px;
+
+            width:
+                calc(100vw - 36px);
+        }
+
+    }
+
+
+    @media (max-width: 520px) {
+
+        .sidebar {
+            width: 195px;
+        }
+
+        .main-wrapper {
+            margin-left: 195px;
+
+            width:
+                calc(100% - 195px);
+        }
+
+        .brand {
+            padding-left: 14px;
+            padding-right: 14px;
+        }
+
+        .sidebar-user {
+            margin-left: 9px;
+            margin-right: 9px;
+        }
+
+        .sidebar-nav {
+            padding-left: 7px;
+            padding-right: 7px;
+        }
+
+        .nav-link {
+            padding-left: 7px;
+            padding-right: 7px;
+        }
+
+        .brand-subtitle {
+            display: none;
+        }
+
+        .page-title-icon {
+            width: 43px;
+            height: 43px;
+        }
+
+        .page-title-row {
+            gap: 10px;
+        }
+
+        .add-class-btn {
+            width: 100%;
+        }
+
+        .delete-confirm-box {
+            padding: 25px 20px;
+        }
+
+        .delete-confirm-actions {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+```
+<!-- ============================================================
+     DELETE WARNING MESSAGE
+     ============================================================ -->
+
+<div
+    id="deleteGuardMessage"
+    class="delete-guard-message"
+    role="alert"
+    aria-live="assertive"
+    aria-hidden="true"
+>
+
+    <div class="delete-guard-icon">
+        ⚠️
+    </div>
+
+    <div class="delete-guard-content">
+
+        <div class="delete-guard-label">
+            Action blocked
+        </div>
+
+        <div class="delete-guard-title">
+            Cannot Delete Class
+        </div>
+
+        <div
+            id="deleteGuardText"
+            class="delete-guard-text"
+        ></div>
+
+    </div>
+
+    <button
+        type="button"
+        class="delete-guard-close"
+        onclick="hideDeleteGuard()"
+        aria-label="Close"
+    >
+        ×
+    </button>
+
+</div>
+
+
+
+<!-- ============================================================
+     DELETE CONFIRMATION MODAL
+     ============================================================ -->
+
+<div
+    id="deleteConfirmModal"
+    class="delete-confirm-overlay"
+    aria-hidden="true"
+>
+
+    <div class="delete-confirm-box">
+
+        <div class="delete-confirm-icon">
+            🗑️
+        </div>
+
+        <div class="delete-confirm-label">
+            Permanent Action
+        </div>
+
+        <div class="delete-confirm-title">
+            Delete Class?
+        </div>
+
+        <div
+            id="deleteConfirmText"
+            class="delete-confirm-text"
+        ></div>
+
+        <div class="delete-confirm-actions">
+
+            <button
+                type="button"
+                class="confirm-cancel-btn"
+                onclick="closeDeleteConfirm()"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                class="confirm-delete-btn"
+                onclick="submitDeleteForm()"
+            >
+                Delete Class
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ============================================================
+     SIDEBAR
+     ============================================================ -->
+
+<aside class="sidebar">
+
+
+    <!-- BRAND -->
+
+    <div class="brand">
+
+        <div class="brand-top">
+
+            <div class="brand-icon">
+                🎓
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-title">
+                    Student Management
+                </div>
+
+                <div class="brand-subtitle">
+                    Academic Administration
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- USER -->
+
+    <div class="sidebar-user">
+
+        <div class="sidebar-avatar">
+
+            {{ request.user.first_name|default:request.user.username|first|upper }}
+
+        </div>
+
+        <div class="sidebar-user-info">
+
+            <div class="sidebar-user-name">
+
+                {{ request.user.get_full_name|default:request.user.username }}
+
+            </div>
+
+            <div class="sidebar-user-role">
+
+                {% if request.user.is_superuser %}
+                    Administrator
+                {% else %}
+                    {{ request.user.profile.role|default:"User" }}
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="sidebar-nav">
+
+
+        <!-- MAIN -->
+
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                Main
+            </div>
+
+            <a
+                href="{% url 'student-home' %}"
+                class="nav-link"
+            >
+                <span class="nav-icon">
+                    🏠
+                </span>
+
+                <span class="nav-text">
+                    Dashboard
+                </span>
+            </a>
+
+
+            <a
+                href="{% url 'student-list' %}"
+                class="nav-link"
+            >
+                <span class="nav-icon">
+                    👨‍🎓
+                </span>
+
+                <span class="nav-text">
+                    Students
+                </span>
+            </a>
+
+        </div>
+
+
+
+        <!-- MANAGEMENT -->
+
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                Management
+            </div>
+
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                <a
+                    href="{% url 'teacherapp:teacher-list' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">
+                        👨‍🏫
+                    </span>
+
+                    <span class="nav-text">
+                        Teachers
+                    </span>
+                </a>
+
+            {% elif request.user.profile.role == "Teacher" %}
+
+                <a
+                    href="{% url 'teacherapp:teacher-dashboard' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">
+                        👨‍🏫
+                    </span>
+
+                    <span class="nav-text">
+                        Teacher Area
+                    </span>
+                </a>
+
+            {% endif %}
+
+
+            <a
+                href="{% url 'class-list' %}"
+                class="nav-link active"
+            >
+                <span class="nav-icon">
+                    🏫
+                </span>
+
+                <span class="nav-text">
+                    Classes
+                </span>
+            </a>
+
+
+            <a
+                href="{% url 'subject-list' %}"
+                class="nav-link"
+            >
+                <span class="nav-icon">
+                    📚
+                </span>
+
+                <span class="nav-text">
+                    Subjects
+                </span>
+            </a>
+
+        </div>
+
+
+
+        <!-- ACADEMIC -->
+
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                Academic
+            </div>
+
+
+            <a
+                href="{% url 'student-enrollment' %}"
+                class="nav-link"
+            >
+                <span class="nav-icon">
+                    📝
+                </span>
+
+                <span class="nav-text">
+                    Enrollment
+                </span>
+            </a>
+
+
+            {% if request.user.profile.role == "Teacher" %}
+
+                <a
+                    href="{% url 'teacherapp:assignment-list' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">
+                        📋
+                    </span>
+
+                    <span class="nav-text">
+                        My Assignments
+                    </span>
+                </a>
+
+            {% endif %}
+
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Teacher" %}
+
+                <a
+                    href="{% url 'attendance-list' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">
+                        🕘
+                    </span>
+
+                    <span class="nav-text">
+                        Attendance
+                    </span>
+                </a>
+
+
+                <a
+                    href="{% url 'grade-list' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">
+                        📊
+                    </span>
+
+                    <span class="nav-text">
+                        Grades
+                    </span>
+                </a>
+
+            {% endif %}
+
+        </div>
+
+
+
+        <!-- SYSTEM -->
+
+        <div class="nav-section">
+
+            <div class="nav-section-title">
+                System
+            </div>
+
+
+            <a
+                href="/dashboard/logs/"
+                class="nav-link"
+            >
+                <span class="nav-icon">
+                    🛡️
+                </span>
+
+                <span class="nav-text">
+                    System Logs
+                </span>
+            </a>
+
+
+            <a
+                href="/conversations/"
+                class="nav-link"
+            >
+                <span class="nav-icon">
+                    💬
+                </span>
+
+                <span class="nav-text">
+                    Conversations
+                </span>
+            </a>
+
+
+            {% if request.user.is_superuser or request.user.profile.role == "Administrator" %}
+
+                <a
+                    href="{% url 'users:manage-users' %}"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">
+                        👥
+                    </span>
+
+                    <span class="nav-text">
+                        Manage Users
+                    </span>
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- SIDEBAR FOOTER -->
+
+    <div class="sidebar-footer">
+
+        <form
+            method="POST"
+            action="{% url 'users:logout' %}"
+            onsubmit="return confirmLogout();"
+        >
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="logout-button"
+            >
+                <span>
+                    🚪
+                </span>
+
+                <span>
+                    Logout
+                </span>
+            </button>
+
+        </form>
+
+    </div>
+
+</aside>
+
+
+
+<!-- ============================================================
+     MAIN CONTENT
+     ============================================================ -->
+
+<main class="main-wrapper">
+
+    <div class="class-management-page">
+
+        <div class="class-management-container">
+
+
+            <!-- ====================================================
+                 PAGE HEADER
+                 ==================================================== -->
+
+            <div class="page-header">
+
+                <div class="page-header-left">
+
+                    <div class="breadcrumb">
+
+                        <span>
+                            Academic
+                        </span>
+
+                        <span>
+                            /
+                        </span>
+
+                        <span class="breadcrumb-current">
+                            Classes
+                        </span>
+
+                    </div>
+
+
+                    <div class="page-title-row">
+
+                        <div class="page-title-icon">
+                            🏫
+                        </div>
+
+                        <h1 class="page-title">
+                            Class Management
+                        </h1>
+
+                    </div>
+
+
+                    <p class="page-description">
+                        Manage academic classes, student enrollment,
+                        subjects, and class information from one place.
+                    </p>
+
+
+                    <div class="role-badge">
+
+                        {% if request.user.is_superuser %}
+                            Administrator
+                        {% else %}
+                            {{ request.user.profile.role|default:"User" }}
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                    <a
+                        href="{% url 'class-create' %}"
+                        class="add-class-btn"
+                    >
+
+                        <span>
+                            ＋
+                        </span>
+
+                        <span>
+                            Add New Class
+                        </span>
+
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- ====================================================
+                 STATISTICS
+                 ==================================================== -->
+
+            <div class="stats-grid">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        🏫
+                    </div>
+
+                    <div class="stat-info">
+
+                        <div class="stat-label">
+                            Total Classes
+                        </div>
+
+                        <div class="stat-value">
+                            {{ total_classes }}
+                        </div>
+
+                        <div class="stat-caption">
+                            Registered academic classes
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        ✓
+                    </div>
+
+                    <div class="stat-info">
+
+                        <div class="stat-label">
+                            Active Classes
+                        </div>
+
+                        <div class="stat-value">
+                            {{ active_classes }}
+                        </div>
+
+                        <div class="stat-caption">
+                            Currently active
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        👨‍🎓
+                    </div>
+
+                    <div class="stat-info">
+
+                        <div class="stat-label">
+                            Total Students
+                        </div>
+
+                        <div class="stat-value">
+                            {{ total_students }}
+                        </div>
+
+                        <div class="stat-caption">
+                            Students across all classes
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ====================================================
+                 ALL CLASSES
+                 ==================================================== -->
+
+            <div class="classes-card">
+
+
+                <div class="classes-card-header">
+
+                    <div class="classes-heading-left">
+
+                        <div class="classes-heading-icon">
+                            🏫
+                        </div>
+
+                        <div>
+
+                            <div class="classes-card-title">
+                                All Classes
+                            </div>
+
+                            <div class="classes-card-subtitle">
+                                Academic classes and their current enrollment.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="classes-card-count">
+                        {{ total_classes }} Classes
+                    </div>
+
+                </div>
+
+
+
+                {% if classes %}
+
+                    <div class="table-wrapper">
+
+                        <table class="classes-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Class
+                                    </th>
+
+                                    <th>
+                                        Students
+                                    </th>
+
+                                    <th>
+                                        Subjects
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                    <th>
+                                        Actions
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                {% for classroom in classes %}
+
+                                    <tr>
+
+
+                                        <!-- CLASS -->
+
+                                        <td>
+
+                                            <div class="class-info">
+
+                                                <div class="class-avatar">
+                                                    🏫
+                                                </div>
+
+                                                <div class="class-info-text">
+
+                                                    <div class="class-name">
+                                                        {{ classroom.name }}
+                                                    </div>
+
+
+                                                    {% if classroom.description %}
+
+                                                        <div class="class-description">
+                                                            {{ classroom.description }}
+                                                        </div>
+
+                                                    {% else %}
+
+                                                        <div class="class-description">
+                                                            Academic class
+                                                        </div>
+
+                                                    {% endif %}
+
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+
+
+
+                                        <!-- STUDENTS -->
+
+                                        <td class="metric-cell">
+
+                                            <div class="metric-wrap">
+
+                                                <div class="metric-icon">
+                                                    👨‍🎓
+                                                </div>
+
+                                                <div>
+
+                                                    <div class="metric-number">
+                                                        {{ classroom.student_count }}
+                                                    </div>
+
+                                                    <div class="metric-label">
+                                                        Students
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+
+
+
+                                        <!-- SUBJECTS -->
+
+                                        <td class="metric-cell">
+
+                                            <div class="metric-wrap">
+
+                                                <div class="metric-icon">
+                                                    📚
+                                                </div>
+
+                                                <div>
+
+                                                    <div class="metric-number">
+                                                        {{ classroom.subject_count }}
+                                                    </div>
+
+                                                    <div class="metric-label">
+                                                        Subjects
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+
+
+
+                                        <!-- STATUS -->
+
+                                        <td>
+
+                                            {% if classroom.is_active %}
+
+                                                <span class="status-badge active">
+
+                                                    <span class="status-dot"></span>
+
+                                                    Active
+
+                                                </span>
+
+                                            {% else %}
+
+                                                <span class="status-badge inactive">
+
+                                                    <span class="status-dot"></span>
+
+                                                    Inactive
+
+                                                </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+
+
+                                        <!-- ACTIONS -->
+
+                                        <td class="actions-cell">
+
+                                            <div class="actions">
+
+
+                                                <!-- VIEW -->
+
+                                                <a
+                                                    href="{% url 'class-view' classroom.id %}"
+                                                    class="action-btn view-btn"
+                                                >
+                                                    View
+                                                </a>
+
+
+                                                <!-- CURRICULUM -->
+
+                                                <a
+                                                    href="{% url 'class-curriculum' classroom.id %}"
+                                                    class="action-btn curriculum-btn"
+                                                >
+                                                    Curriculum
+                                                </a>
+
+
+                                                {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+
+                                                    <!-- EDIT -->
+
+                                                    <a
+                                                        href="{% url 'class-update' classroom.id %}"
+                                                        class="action-btn edit-btn"
+                                                    >
+                                                        Edit
+                                                    </a>
+
+
+                                                    <!-- DELETE -->
+
+                                                    <form
+                                                        method="POST"
+                                                        action="{% url 'class-delete' classroom.id %}"
+                                                        class="delete-form"
+                                                        data-student-count="{{ classroom.student_count }}"
+                                                        data-class-name="{{ classroom.name|escape }}"
+                                                    >
+
+                                                        {% csrf_token %}
+
+                                                        <button
+                                                            type="button"
+                                                            class="action-btn delete-btn"
+                                                            onclick="handleDeleteClick(this)"
+                                                        >
+                                                            Delete
+                                                        </button>
+
+                                                    </form>
+
+                                                {% endif %}
+
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                {% else %}
+
+
+                    <!-- EMPTY -->
+
+                    <div class="empty-state">
+
+                        <div class="empty-state-icon">
+                            🏫
+                        </div>
+
+                        <div class="empty-state-title">
+                            No Classes Found
+                        </div>
+
+                        <div class="empty-state-text">
+                            There are currently no academic classes
+                            registered in the system.
+                        </div>
+
+
+                        {% if request.user.is_superuser or request.user.profile.role == "Administrator" or request.user.profile.role == "Manager" %}
+
+                            <a
+                                href="{% url 'class-create' %}"
+                                class="empty-state-btn"
+                            >
+                                ＋ Create First Class
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- ====================================================
+                 TEACHER NOTICE
+                 ==================================================== -->
+
+            {% if request.user.profile.role == "Teacher" %}
+
+                <div class="teacher-notice">
+
+                    <div class="teacher-notice-icon">
+                        ℹ️
+                    </div>
+
+                    <div>
+                        You can only view classes assigned to you.
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+
+        </div>
+
+    </div>
+
+</main>
+
+
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+
+<script>
+
+    /* ============================================================
+       LOGOUT
+       ============================================================ */
+
+    function confirmLogout() {
+
+        return window.confirm(
+            "Are you sure you want to logout?"
+        );
+
+    }
+
+
+
+    /* ============================================================
+       DELETE VARIABLES
+       ============================================================ */
+
+    let activeDeleteForm = null;
+
+    let deleteGuardTimer = null;
+
+
+
+    /* ============================================================
+       DELETE CLICK
+       ============================================================ */
+
+    function handleDeleteClick(button) {
+
+        const form =
+            button.closest(".delete-form");
+
+
+        if (!form) {
+            return;
+        }
+
+
+        const studentCount =
+            parseInt(
+                form.dataset.studentCount || "0",
+                10
+            );
+
+
+        const className =
+            form.dataset.className ||
+            "this class";
+
+
+        /*
+         * STUDENTS EXIST
+         */
+
+        if (studentCount > 0) {
+
+            showDeleteGuard(
+                studentCount
+            );
+
+            return;
+        }
+
+
+        /*
+         * EMPTY CLASS
+         */
+
+        activeDeleteForm = form;
+
+
+        const confirmText =
+            document.getElementById(
+                "deleteConfirmText"
+            );
+
+
+        if (confirmText) {
+
+            confirmText.textContent =
+                'You are about to permanently delete "' +
+                className +
+                '". This action cannot be undone.';
+        }
+
+
+        const modal =
+            document.getElementById(
+                "deleteConfirmModal"
+            );
+
+
+        if (modal) {
+
+            modal.classList.add(
+                "show"
+            );
+
+            modal.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+
+        }
+
+    }
+
+
+
+    /* ============================================================
+       SHOW DELETE GUARD
+       ============================================================ */
+
+    function showDeleteGuard(
+        studentCount
+    ) {
+
+        const messageBox =
+            document.getElementById(
+                "deleteGuardMessage"
+            );
+
+
+        const messageText =
+            document.getElementById(
+                "deleteGuardText"
+            );
+
+
+        if (
+            !messageBox ||
+            !messageText
+        ) {
+            return;
+        }
+
+
+        const studentWord =
+            studentCount === 1
+                ? "student"
+                : "students";
+
+
+        messageText.textContent =
+            "This class currently has " +
+            studentCount +
+            " " +
+            studentWord +
+            ". Please transfer or remove all students from this class before deleting it.";
+
+
+        messageBox.classList.add(
+            "show"
+        );
+
+
+        messageBox.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+
+        clearTimeout(
+            deleteGuardTimer
+        );
+
+
+        deleteGuardTimer =
+            setTimeout(
+                function() {
+
+                    hideDeleteGuard();
+
+                },
+                8000
+            );
+
+    }
+
+
+
+    /* ============================================================
+       HIDE DELETE GUARD
+       ============================================================ */
+
+    function hideDeleteGuard() {
+
+        const messageBox =
+            document.getElementById(
+                "deleteGuardMessage"
+            );
+
+
+        if (!messageBox) {
+            return;
+        }
+
+
+        messageBox.classList.remove(
+            "show"
+        );
+
+
+        messageBox.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+
+        clearTimeout(
+            deleteGuardTimer
+        );
+
+    }
+
+
+
+    /* ============================================================
+       CLOSE CONFIRM MODAL
+       ============================================================ */
+
+    function closeDeleteConfirm() {
+
+        const modal =
+            document.getElementById(
+                "deleteConfirmModal"
+            );
+
+
+        if (!modal) {
+            return;
+        }
+
+
+        modal.classList.remove(
+            "show"
+        );
+
+
+        modal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+
+        activeDeleteForm = null;
+
+    }
+
+
+
+    /* ============================================================
+       SUBMIT DELETE
+       ============================================================ */
+
+    function submitDeleteForm() {
+
+        if (!activeDeleteForm) {
+            return;
+        }
+
+
+        const form =
+            activeDeleteForm;
+
+
+        activeDeleteForm = null;
+
+
+        const modal =
+            document.getElementById(
+                "deleteConfirmModal"
+            );
+
+
+        if (modal) {
+
+            modal.classList.remove(
+                "show"
+            );
+
+            modal.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
+        }
+
+
+        form.submit();
+
+    }
+
+
+
+    /* ============================================================
+       CLICK OUTSIDE MODAL
+       ============================================================ */
+
+    document.addEventListener(
+        "click",
+        function(event) {
+
+            const modal =
+                document.getElementById(
+                    "deleteConfirmModal"
+                );
+
+
+            if (!modal) {
+                return;
+            }
+
+
+            if (
+                event.target === modal &&
+                modal.classList.contains("show")
+            ) {
+
+                closeDeleteConfirm();
+
+            }
+
+        }
+    );
+
+
+
+    /* ============================================================
+       ESC KEY
+       ============================================================ */
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key !== "Escape"
+            ) {
+                return;
+            }
+
+
+            closeDeleteConfirm();
+
+            hideDeleteGuard();
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

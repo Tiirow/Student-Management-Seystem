@@ -1,0 +1,732 @@
+{% extends "students/student_base.html" %}
+
+{% block title %}Delete Class{% endblock %}
+
+{% block content %}
+
+<style>
+
+    /* ============================================================
+       CLASS DELETE PAGE
+       ============================================================ */
+
+    .delete-wrapper {
+        min-height: calc(100vh - 145px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+
+    .delete-card {
+        width: min(590px, 100%);
+        background: #ffffff;
+        border: 1px solid #e8ebf1;
+        border-radius: 22px;
+        padding: 40px;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(23, 32, 51, 0.10);
+    }
+
+    /* ============================================================
+       ICON
+       ============================================================ */
+
+    .delete-icon {
+        width: 76px;
+        height: 76px;
+        margin: 0 auto 22px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 21px;
+
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+
+        font-size: 32px;
+    }
+
+    /* ============================================================
+       TITLE
+       ============================================================ */
+
+    .delete-card h1 {
+        margin: 0;
+
+        color: #172033;
+
+        font-size: 27px;
+        font-weight: 800;
+        letter-spacing: -0.3px;
+    }
+
+    .delete-subtitle {
+        margin: 10px 0 28px;
+
+        color: #6b7280;
+
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    /* ============================================================
+       CLASS INFORMATION
+       ============================================================ */
+
+    .class-info {
+        margin: 0 auto 24px;
+
+        padding: 18px 20px;
+
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+
+        background: #f8fafc;
+
+        text-align: left;
+    }
+
+    .class-info-row {
+        display: flex;
+
+        justify-content: space-between;
+        align-items: center;
+
+        gap: 20px;
+
+        padding: 10px 0;
+    }
+
+    .class-info-row + .class-info-row {
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .class-info-label {
+        color: #6b7280;
+
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .class-info-value {
+        color: #172033;
+
+        font-size: 13px;
+        font-weight: 750;
+
+        text-align: right;
+    }
+
+    /* ============================================================
+       STUDENT COUNT
+       ============================================================ */
+
+    .count-badge {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        min-width: 38px;
+        min-height: 28px;
+
+        padding: 4px 10px;
+
+        border-radius: 8px;
+
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    .count-danger {
+        background: #fee2e2;
+        color: #b42318;
+
+        border: 1px solid #fecaca;
+    }
+
+    .count-safe {
+        background: #ecfdf3;
+        color: #027a48;
+
+        border: 1px solid #abefc6;
+    }
+
+    /* ============================================================
+       CANNOT DELETE MESSAGE
+       ============================================================ */
+
+    .cannot-delete-box {
+        margin: 0 0 25px;
+
+        padding: 18px 18px;
+
+        border-radius: 14px;
+
+        background: #fff7f7;
+
+        border: 1px solid #f1b5b5;
+
+        color: #b42318;
+
+        text-align: left;
+
+        display: flex;
+        align-items: flex-start;
+
+        gap: 12px;
+    }
+
+    .cannot-delete-icon {
+        width: 30px;
+        height: 30px;
+
+        flex: 0 0 30px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 9px;
+
+        background: #fee2e2;
+
+        font-size: 15px;
+    }
+
+    .cannot-delete-content {
+        flex: 1;
+    }
+
+    .cannot-delete-title {
+        margin-bottom: 5px;
+
+        font-size: 13px;
+        font-weight: 800;
+    }
+
+    .cannot-delete-text {
+        font-size: 12px;
+        line-height: 1.6;
+        color: #8f1d18;
+    }
+
+    /* ============================================================
+       SAFE DELETE WARNING
+       ============================================================ */
+
+    .warning-message {
+        margin-bottom: 28px;
+
+        padding: 13px 16px;
+
+        border-radius: 11px;
+
+        background: #fff7f7;
+
+        border: 1px solid #f1b5b5;
+
+        color: #b42318;
+
+        font-size: 12px;
+
+        line-height: 1.5;
+
+        text-align: left;
+    }
+
+    /* ============================================================
+       SUCCESS / SAFE STATUS
+       ============================================================ */
+
+    .safe-message {
+        margin-bottom: 28px;
+
+        padding: 14px 16px;
+
+        border-radius: 11px;
+
+        background: #f0fdf4;
+
+        border: 1px solid #bbf7d0;
+
+        color: #166534;
+
+        font-size: 12px;
+
+        line-height: 1.5;
+
+        text-align: left;
+    }
+
+    /* ============================================================
+       ACTIONS
+       ============================================================ */
+
+    .delete-actions {
+        display: flex;
+
+        justify-content: center;
+
+        gap: 12px;
+    }
+
+    .delete-btn,
+    .cancel-btn,
+    .back-btn {
+
+        min-height: 46px;
+
+        padding: 0 21px;
+
+        border-radius: 10px;
+
+        font-family: inherit;
+
+        font-size: 13px;
+
+        font-weight: 750;
+
+        cursor: pointer;
+
+        text-decoration: none;
+
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        transition: all 0.2s ease;
+    }
+
+    /* ============================================================
+       DELETE BUTTON
+       ============================================================ */
+
+    .delete-btn {
+
+        border: 1px solid #dc2626;
+
+        background: linear-gradient(
+            135deg,
+            #dc2626,
+            #b91c1c
+        );
+
+        color: #ffffff;
+
+        box-shadow:
+            0 7px 18px rgba(220, 38, 38, 0.20);
+    }
+
+    .delete-btn:hover {
+
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 11px 25px rgba(220, 38, 38, 0.28);
+    }
+
+    /* ============================================================
+       CANCEL BUTTON
+       ============================================================ */
+
+    .cancel-btn {
+
+        border: 1px solid #d9dee5;
+
+        background: #ffffff;
+
+        color: #596273;
+    }
+
+    .cancel-btn:hover {
+
+        transform: translateY(-2px);
+
+        border-color: #9a5243;
+
+        color: #9a5243;
+
+        background: #fff9f7;
+    }
+
+    /* ============================================================
+       DARK MODE
+       ============================================================ */
+
+    body.dark-mode .delete-card {
+
+        background: #181c2a;
+
+        border-color: #292e3d;
+
+        box-shadow:
+            0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+
+    body.dark-mode .delete-card h1 {
+        color: #f3f5fa;
+    }
+
+    body.dark-mode .delete-subtitle {
+        color: #929bad;
+    }
+
+    body.dark-mode .class-info {
+
+        background: #222738;
+
+        border-color: #33394b;
+    }
+
+    body.dark-mode .class-info-row + .class-info-row {
+        border-color: #33394b;
+    }
+
+    body.dark-mode .class-info-label {
+        color: #929bad;
+    }
+
+    body.dark-mode .class-info-value {
+        color: #f3f5fa;
+    }
+
+    body.dark-mode .cannot-delete-box {
+
+        background: #2a1b1d;
+
+        border-color: #633438;
+
+        color: #fca5a5;
+    }
+
+    body.dark-mode .cannot-delete-icon {
+        background: #3a2326;
+    }
+
+    body.dark-mode .cannot-delete-text {
+        color: #fca5a5;
+    }
+
+    body.dark-mode .warning-message {
+
+        background: #2a1b1d;
+
+        border-color: #633438;
+
+        color: #fca5a5;
+    }
+
+    body.dark-mode .safe-message {
+
+        background: #14251b;
+
+        border-color: #245c3b;
+
+        color: #86efac;
+    }
+
+    body.dark-mode .count-danger {
+
+        background: #3a2326;
+
+        border-color: #633438;
+
+        color: #fca5a5;
+    }
+
+    body.dark-mode .count-safe {
+
+        background: #14251b;
+
+        border-color: #245c3b;
+
+        color: #86efac;
+    }
+
+    body.dark-mode .cancel-btn {
+
+        background: #222738;
+
+        border-color: #33394b;
+
+        color: #d5d9e2;
+    }
+
+    body.dark-mode .cancel-btn:hover {
+
+        border-color: #9a5243;
+
+        color: #e7a99b;
+
+        background: #2a2020;
+    }
+
+    /* ============================================================
+       MOBILE
+       ============================================================ */
+
+    @media (max-width: 600px) {
+
+        .delete-wrapper {
+            padding: 25px 14px;
+        }
+
+        .delete-card {
+            padding: 28px 20px;
+        }
+
+        .delete-card h1 {
+            font-size: 23px;
+        }
+
+        .class-info-row {
+            flex-direction: column;
+
+            align-items: flex-start;
+
+            gap: 4px;
+        }
+
+        .class-info-value {
+            text-align: left;
+        }
+
+        .delete-actions {
+            flex-direction: column-reverse;
+        }
+
+        .delete-btn,
+        .cancel-btn {
+            width: 100%;
+        }
+    }
+
+</style>
+
+
+<div class="delete-wrapper">
+
+    <div class="delete-card">
+
+        <!-- ======================================================
+             ICON
+             ====================================================== -->
+
+        <div class="delete-icon">
+            🏫
+        </div>
+
+
+        <!-- ======================================================
+             TITLE
+             ====================================================== -->
+
+        {% if student_count > 0 %}
+
+            <h1>Cannot Delete Class</h1>
+
+            <p class="delete-subtitle">
+                This class cannot be deleted because it still
+                contains enrolled students.
+            </p>
+
+        {% else %}
+
+            <h1>Delete Class?</h1>
+
+            <p class="delete-subtitle">
+                You are about to permanently remove this class
+                from the Student Management System.
+            </p>
+
+        {% endif %}
+
+
+        <!-- ======================================================
+             CLASS INFORMATION
+             ====================================================== -->
+
+        <div class="class-info">
+
+            <div class="class-info-row">
+
+                <span class="class-info-label">
+                    Class Name
+                </span>
+
+                <span class="class-info-value">
+                    {{ classroom.name }}
+                </span>
+
+            </div>
+
+
+            {% if classroom.code %}
+
+            <div class="class-info-row">
+
+                <span class="class-info-label">
+                    Class Code
+                </span>
+
+                <span class="class-info-value">
+                    {{ classroom.code }}
+                </span>
+
+            </div>
+
+            {% endif %}
+
+
+            <div class="class-info-row">
+
+                <span class="class-info-label">
+                    Students
+                </span>
+
+                <span class="class-info-value">
+
+                    {% if student_count > 0 %}
+
+                        <span class="count-badge count-danger">
+                            {{ student_count }}
+                        </span>
+
+                    {% else %}
+
+                        <span class="count-badge count-safe">
+                            0
+                        </span>
+
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+
+            {% if subject_count is not None %}
+
+            <div class="class-info-row">
+
+                <span class="class-info-label">
+                    Active Subjects
+                </span>
+
+                <span class="class-info-value">
+                    {{ subject_count }}
+                </span>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- ======================================================
+             CANNOT DELETE MESSAGE
+             ====================================================== -->
+
+        {% if student_count > 0 %}
+
+        <div class="cannot-delete-box">
+
+            <div class="cannot-delete-icon">
+                ⚠️
+            </div>
+
+            <div class="cannot-delete-content">
+
+                <div class="cannot-delete-title">
+                    Class deletion is not allowed
+                </div>
+
+                <div class="cannot-delete-text">
+
+                    This class currently has
+                    <strong>{{ student_count }} student{{ student_count|pluralize }}</strong>.
+
+                    Please transfer or remove all students
+                    from this class before deleting it.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ======================================================
+             BACK BUTTON
+             ====================================================== -->
+
+        <div class="delete-actions">
+
+            <a
+                href="{% url 'class-view' classroom.id %}"
+                class="cancel-btn"
+            >
+                ← Back to Class
+            </a>
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- ======================================================
+             SAFE DELETE WARNING
+             ====================================================== -->
+
+        <div class="warning-message">
+
+            <strong>Warning:</strong>
+
+            This action cannot be undone.
+            The class record will be permanently deleted.
+
+        </div>
+
+
+        <!-- ======================================================
+             DELETE FORM
+             ====================================================== -->
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="delete-actions">
+
+                <a
+                    href="{% url 'class-view' classroom.id %}"
+                    class="cancel-btn"
+                >
+                    ← Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="delete-btn"
+                >
+                    🗑️ Yes, Delete Class
+                </button>
+
+            </div>
+
+        </form>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock content %}

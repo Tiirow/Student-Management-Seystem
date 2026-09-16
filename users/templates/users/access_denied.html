@@ -1,0 +1,204 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Access Denied | Student Management System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8f5f3 0%,
+                    #ffffff 50%,
+                    #f5efed 100%
+                );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 520px;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 48px 40px;
+            text-align: center;
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.10);
+
+            border: 1px solid rgba(154, 82, 67, 0.10);
+        }
+
+        .icon {
+            width: 82px;
+            height: 82px;
+            margin: 0 auto 26px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(154, 82, 67, 0.10);
+            color: #9A5243;
+
+            font-size: 38px;
+            font-weight: 700;
+        }
+
+        .code {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #9A5243;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #202020;
+            font-size: 32px;
+            line-height: 1.2;
+            margin-bottom: 14px;
+        }
+
+        .somali {
+            color: #9A5243;
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .description {
+            color: #6b6b6b;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-width: 180px;
+            padding: 13px 24px;
+
+            border-radius: 12px;
+
+            background: #9A5243;
+            color: #ffffff;
+
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .button:hover {
+            background: #824638;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 10px 25px rgba(154, 82, 67, 0.25);
+        }
+
+        .footer {
+            margin-top: 28px;
+            color: #999;
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 38px 24px;
+                border-radius: 20px;
+            }
+
+            h1 {
+                font-size: 27px;
+            }
+
+            .somali {
+                font-size: 17px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+
+        <div class="icon">
+            !
+        </div>
+
+        <div class="code">
+            Access Restricted
+        </div>
+
+        <h1>
+            Access Denied
+        </h1>
+
+        <div class="somali">
+            Shaqadaada ma aha.
+        </div>
+
+        <p class="description">
+            Ma lihid permission aad ku geli karto
+            system-ka hadda.
+            <br><br>
+            Account-kaaga wuxuu u baahan yahay
+            oggolaansho Administrator ka hor intaadan
+            helin system access.
+        </p>
+
+        <a
+            href="{% url 'users:login' %}"
+            class="button"
+        >
+            ← Dib u laabo
+        </a>
+
+        <div class="footer">
+            Student Management System
+        </div>
+
+    </div>
+
+</body>
+</html>

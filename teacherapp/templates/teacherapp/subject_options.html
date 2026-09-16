@@ -1,0 +1,7 @@
+{% for subject in subjects %}
+
+<option value="{{ subject.id }}">
+    {{ subject.code }} - {{ subject.name }}
+</option>
+
+{% endfor %}

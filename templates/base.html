@@ -1,0 +1,443 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+            Student Management System
+        {% endblock %}
+    </title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f5f6f8;
+            color: #202738;
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        /* =====================================================
+           GLOBAL HEADER
+        ===================================================== */
+
+        .main-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            width: 100%;
+
+            background: #ffffff;
+
+            border-bottom:
+                1px solid #e8ebf0;
+
+            box-shadow:
+                0 4px 20px rgba(31, 41, 55, 0.05);
+        }
+
+        .main-header-inner {
+            width: min(1400px, calc(100% - 40px));
+
+            min-height: 70px;
+
+            margin: 0 auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 25px;
+        }
+
+        /* =====================================================
+           BRAND
+        ===================================================== */
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+
+            color: #202738;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #9a5243,
+                    #7c4035
+                );
+
+            color: #ffffff;
+
+            font-size: 20px;
+
+            box-shadow:
+                0 7px 18px
+                rgba(154, 82, 67, 0.20);
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-title {
+            color: #202738;
+
+            font-size: 14px;
+            font-weight: 850;
+
+            line-height: 1.2;
+        }
+
+        .brand-subtitle {
+            margin-top: 3px;
+
+            color: #9098a8;
+
+            font-size: 9px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        /* =====================================================
+           HEADER RIGHT
+        ===================================================== */
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .system-label {
+            padding: 8px 11px;
+
+            border-radius: 8px;
+
+            background: #fafbfc;
+
+            border:
+                1px solid #edf0f4;
+
+            color: #737d90;
+
+            font-size: 10px;
+            font-weight: 750;
+        }
+
+        /* =====================================================
+           PAGE CONTENT
+        ===================================================== */
+
+        .main-content {
+            min-height:
+                calc(100vh - 70px);
+        }
+
+        /* =====================================================
+           MESSAGES
+        ===================================================== */
+
+        .messages-container {
+            width: min(1180px, calc(100% - 40px));
+
+            margin: 20px auto 0;
+        }
+
+        .message {
+            padding: 13px 16px;
+
+            margin-bottom: 10px;
+
+            border-radius: 10px;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .message.success {
+            color: #237a45;
+            background: #edf9f1;
+
+            border:
+                1px solid #d8f0df;
+        }
+
+        .message.error {
+            color: #b42318;
+            background: #fff0ef;
+
+            border:
+                1px solid #f7d8d5;
+        }
+
+        .message.warning {
+            color: #9a6700;
+            background: #fff7df;
+
+            border:
+                1px solid #f5e8b8;
+        }
+
+        .message.info {
+            color: #315b9c;
+            background: #eef5ff;
+
+            border:
+                1px solid #dce9fb;
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .main-footer {
+            width: min(1400px, calc(100% - 40px));
+
+            margin: 0 auto;
+
+            padding:
+                20px 0 25px;
+
+            text-align: center;
+
+            color: #9aa2b2;
+
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        /* =====================================================
+           DARK MODE
+        ===================================================== */
+
+        body.dark-mode {
+            background: #111521;
+            color: #e8ebf1;
+        }
+
+        body.dark-mode .main-header {
+            background: #181c2a;
+            border-color: #292e3d;
+        }
+
+        body.dark-mode .brand,
+        body.dark-mode .brand-title {
+            color: #f2f4f8;
+        }
+
+        body.dark-mode .brand-subtitle {
+            color: #929bad;
+        }
+
+        body.dark-mode .system-label {
+            background: #202431;
+            border-color: #303545;
+            color: #aeb5c3;
+        }
+
+        body.dark-mode .main-footer {
+            color: #71798b;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .main-header-inner {
+                width: calc(100% - 24px);
+
+                min-height: 62px;
+            }
+
+            .brand-icon {
+                width: 38px;
+                height: 38px;
+
+                font-size: 18px;
+            }
+
+            .brand-title {
+                font-size: 13px;
+            }
+
+            .brand-subtitle {
+                font-size: 8px;
+            }
+
+            .system-label {
+                display: none;
+            }
+
+            .messages-container {
+                width: calc(100% - 24px);
+            }
+
+            .main-footer {
+                width: calc(100% - 24px);
+            }
+        }
+
+        @media (max-width: 430px) {
+
+            .brand-text {
+                display: none;
+            }
+
+            .brand-icon {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+
+    {% block extra_css %}
+    {% endblock %}
+</head>
+
+<body>
+
+    <!-- =====================================================
+         GLOBAL HEADER
+    ====================================================== -->
+
+    <header class="main-header">
+
+        <div class="main-header-inner">
+
+            <a href="/" class="brand">
+
+                <div class="brand-icon">
+                    🎓
+                </div>
+
+                <div class="brand-text">
+
+                    <div class="brand-title">
+                        Student Management System
+                    </div>
+
+                    <div class="brand-subtitle">
+                        Academic Management Platform
+                    </div>
+
+                </div>
+
+            </a>
+
+            <div class="header-right">
+
+                <div class="system-label">
+                    Academic Management System
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MESSAGES
+    ====================================================== -->
+
+    {% if messages %}
+
+        <div class="messages-container">
+
+            {% for message in messages %}
+
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main-content">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="main-footer">
+
+        Student Management System
+        &nbsp;•&nbsp;
+        Academic Management System
+        &nbsp;•&nbsp;
+        © 2026
+
+    </footer>
+
+
+    {% block extra_js %}
+    {% endblock %}
+
+</body>
+</html>
+

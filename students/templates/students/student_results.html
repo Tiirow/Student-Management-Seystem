@@ -1,0 +1,1288 @@
+{% extends "students/student_base.html" %}
+
+{% block title %}
+My Results
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ============================================================
+   STUDENT RESULTS PAGE
+============================================================ */
+
+.results-page {
+    width: 100%;
+    min-width: 0;
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.results-header {
+    position: relative;
+    overflow: hidden;
+
+    margin-bottom: 20px;
+
+    padding: 28px 30px;
+
+    border-radius: 20px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #172033 0%,
+            #24304a 65%,
+            #9a5243 145%
+        );
+
+    box-shadow:
+        0 15px 35px rgba(23,32,51,0.14);
+}
+
+.results-header::after {
+    content: "📝";
+
+    position: absolute;
+
+    right: 30px;
+    top: 15px;
+
+    font-size: 80px;
+
+    opacity: 0.08;
+}
+
+.results-header-content {
+    position: relative;
+
+    z-index: 2;
+}
+
+.results-header-label {
+    margin-bottom: 6px;
+
+    color:
+        rgba(255,255,255,0.55);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+}
+
+.results-header h1 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 27px;
+
+    font-weight: 850;
+}
+
+.results-header p {
+    margin: 7px 0 0;
+
+    max-width: 680px;
+
+    color:
+        rgba(255,255,255,0.68);
+
+    font-size: 10px;
+
+    line-height: 1.6;
+}
+
+.results-meta {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 15px;
+}
+
+.results-meta span {
+    display: inline-flex;
+
+    align-items: center;
+
+    min-height: 28px;
+
+    padding: 0 10px;
+
+    border-radius: 8px;
+
+    background:
+        rgba(255,255,255,0.08);
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    color:
+        rgba(255,255,255,0.82);
+
+    font-size: 8px;
+
+    font-weight: 750;
+}
+
+
+/* ============================================================
+   SEMESTER FILTER
+============================================================ */
+
+.results-filter {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+
+    padding: 16px 20px;
+
+    background: #ffffff;
+
+    border:
+        1px solid #e8ebf1;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 6px 20px rgba(31,41,55,0.035);
+}
+
+.filter-copy strong {
+    display: block;
+
+    color: #303846;
+
+    font-size: 11px;
+
+    font-weight: 850;
+}
+
+.filter-copy span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #969eac;
+
+    font-size: 8px;
+}
+
+.semester-form {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+.semester-select {
+    min-width: 160px;
+
+    height: 38px;
+
+    padding:
+        0 11px;
+
+    border:
+        1px solid #dfe3e9;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #303846;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    outline: none;
+}
+
+.semester-select:focus {
+    border-color: #9a5243;
+
+    box-shadow:
+        0 0 0 3px rgba(154,82,67,0.08);
+}
+
+.filter-button {
+    height: 38px;
+
+    padding:
+        0 13px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #9a5243;
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    font-size: 9px;
+
+    font-weight: 800;
+}
+
+.filter-button:hover {
+    background: #7f4034;
+}
+
+
+/* ============================================================
+   SUMMARY
+============================================================ */
+
+.results-summary {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap: 13px;
+
+    margin-bottom: 20px;
+}
+
+.summary-card {
+    padding: 17px;
+
+    background: #ffffff;
+
+    border:
+        1px solid #e8ebf1;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 6px 20px rgba(31,41,55,0.035);
+}
+
+.summary-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 11px;
+
+    font-size: 17px;
+}
+
+.summary-average .summary-icon {
+    background: #fff5df;
+}
+
+.summary-grade .summary-icon {
+    background: #eef3ff;
+}
+
+.summary-result .summary-icon {
+    background: #e8f7ee;
+}
+
+.summary-label {
+    margin-top: 11px;
+
+    color: #929aa8;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.6px;
+}
+
+.summary-value {
+    margin-top: 4px;
+
+    color: #202735;
+
+    font-size: 20px;
+
+    font-weight: 850;
+}
+
+
+/* ============================================================
+   RESULT CARD
+============================================================ */
+
+.results-card {
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border:
+        1px solid #e8ebf1;
+
+    border-radius: 17px;
+
+    box-shadow:
+        0 6px 20px rgba(31,41,55,0.035);
+}
+
+.card-header {
+    padding:
+        18px 20px;
+
+    border-bottom:
+        1px solid #edf0f3;
+}
+
+.card-header h2 {
+    margin: 0;
+
+    color: #29313e;
+
+    font-size: 15px;
+
+    font-weight: 850;
+}
+
+.card-header p {
+    margin: 4px 0 0;
+
+    color: #969eac;
+
+    font-size: 8px;
+}
+
+
+/* ============================================================
+   RESULT TABLE
+============================================================ */
+
+.table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+.results-table {
+    width: 100%;
+
+    min-width: 700px;
+
+    border-collapse: collapse;
+}
+
+.results-table th {
+    padding:
+        13px 18px;
+
+    background: #fafbfc;
+
+    color: #8d96a4;
+
+    border-bottom:
+        1px solid #edf0f3;
+
+    font-size: 8px;
+
+    font-weight: 850;
+
+    text-align: left;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.6px;
+}
+
+.results-table td {
+    padding:
+        14px 18px;
+
+    color: #4f5968;
+
+    border-bottom:
+        1px solid #f0f2f5;
+
+    font-size: 9px;
+}
+
+.results-table tbody tr:hover {
+    background: #fcfaf9;
+}
+
+.results-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* ============================================================
+   SUBJECT
+============================================================ */
+
+.subject-cell {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+}
+
+.subject-icon {
+    width: 34px;
+    height: 34px;
+
+    min-width: 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: #eef3ff;
+
+    font-size: 13px;
+}
+
+.subject-text strong {
+    display: block;
+
+    color: #303846;
+
+    font-size: 10px;
+
+    font-weight: 850;
+}
+
+.subject-text span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #9ba3af;
+
+    font-size: 7px;
+}
+
+
+/* ============================================================
+   SCORE
+============================================================ */
+
+.score-value {
+    color: #29313e;
+
+    font-size: 11px;
+
+    font-weight: 850;
+}
+
+
+/* ============================================================
+   GRADE
+============================================================ */
+
+.grade-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 32px;
+
+    min-height: 27px;
+
+    padding:
+        0 8px;
+
+    border-radius: 7px;
+
+    background: #eef3ff;
+
+    color: #3159b7;
+
+    font-size: 8px;
+
+    font-weight: 850;
+}
+
+
+/* ============================================================
+   RESULT
+============================================================ */
+
+.result-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 27px;
+
+    padding:
+        0 9px;
+
+    border-radius: 7px;
+
+    font-size: 7px;
+
+    font-weight: 850;
+}
+
+.result-pass {
+    color: #22824a;
+
+    background: #e8f7ee;
+}
+
+.result-reexam {
+    color: #9a6200;
+
+    background: #fff5df;
+}
+
+.result-fail {
+    color: #b42318;
+
+    background: #fff0ef;
+}
+
+.result-pending {
+    color: #697386;
+
+    background: #f0f2f5;
+}
+
+
+/* ============================================================
+   OVERALL RESULTS
+============================================================ */
+
+.overall-section {
+    padding:
+        20px;
+
+    border-top:
+        1px solid #edf0f3;
+}
+
+.overall-title {
+    margin-bottom: 12px;
+
+    color: #343c49;
+
+    font-size: 11px;
+
+    font-weight: 850;
+}
+
+.overall-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap: 10px;
+}
+
+.overall-box {
+    padding:
+        14px 10px;
+
+    border:
+        1px solid #edf0f3;
+
+    border-radius: 10px;
+
+    background: #f8f9fb;
+
+    text-align: center;
+}
+
+.overall-box span {
+    display: block;
+
+    color: #979fab;
+
+    font-size: 7px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+}
+
+.overall-box strong {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #303846;
+
+    font-size: 17px;
+
+    font-weight: 850;
+}
+
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+
+.empty-state {
+    padding:
+        55px 20px;
+
+    text-align: center;
+}
+
+.empty-icon {
+    width: 62px;
+    height: 62px;
+
+    margin:
+        0 auto 13px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 17px;
+
+    background: #f5e9e6;
+
+    font-size: 26px;
+}
+
+.empty-state h3 {
+    margin: 0;
+
+    color: #343c49;
+
+    font-size: 16px;
+
+    font-weight: 850;
+}
+
+.empty-state p {
+    max-width: 450px;
+
+    margin:
+        7px auto 0;
+
+    color: #969eac;
+
+    font-size: 9px;
+
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   DARK MODE
+============================================================ */
+
+body.dark-mode .results-filter,
+body.dark-mode .summary-card,
+body.dark-mode .results-card {
+    background: #181c2a;
+
+    border-color: #292e3d;
+}
+
+body.dark-mode .filter-copy strong,
+body.dark-mode .summary-value,
+body.dark-mode .card-header h2,
+body.dark-mode .subject-text strong,
+body.dark-mode .score-value,
+body.dark-mode .overall-title,
+body.dark-mode .overall-box strong,
+body.dark-mode .empty-state h3 {
+    color: #f2f4f8;
+}
+
+body.dark-mode .filter-copy span,
+body.dark-mode .summary-label,
+body.dark-mode .card-header p,
+body.dark-mode .subject-text span,
+body.dark-mode .empty-state p {
+    color: #929bad;
+}
+
+body.dark-mode .semester-select {
+    background: #202431;
+
+    border-color: #303545;
+
+    color: #f2f4f8;
+}
+
+body.dark-mode .results-table th {
+    background: #202431;
+
+    border-color: #303545;
+
+    color: #929bad;
+}
+
+body.dark-mode .results-table td {
+    border-color: #292e3d;
+
+    color: #d5d9e2;
+}
+
+body.dark-mode .results-table tbody tr:hover {
+    background: #202431;
+}
+
+body.dark-mode .overall-section {
+    border-color: #292e3d;
+}
+
+body.dark-mode .overall-box {
+    background: #202431;
+
+    border-color: #303545;
+}
+
+body.dark-mode .overall-box span {
+    color: #929bad;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 800px) {
+
+    .results-summary {
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .results-filter {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .semester-form {
+        width: 100%;
+    }
+
+    .semester-select {
+        flex: 1;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .results-header {
+        padding:
+            23px 20px;
+    }
+
+    .results-header h1 {
+        font-size: 23px;
+    }
+
+    .results-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .semester-form {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .semester-select,
+    .filter-button {
+        width: 100%;
+    }
+
+    .overall-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+
+<div class="results-page">
+
+
+    <!-- ========================================================
+         HEADER
+    ========================================================= -->
+
+    <section class="results-header">
+
+        <div class="results-header-content">
+
+            <div class="results-header-label">
+                STUDENT PORTAL
+            </div>
+
+            <h1>
+                📝 My Results
+            </h1>
+
+            <p>
+                Review your academic performance, subject results,
+                semester average and overall result.
+            </p>
+
+
+            <div class="results-meta">
+
+                <span>
+                    👤 {{ student.student_id }}
+                </span>
+
+                <span>
+                    🎓
+                    {{ student.first_name }}
+                    {{ student.last_name }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================================
+         SEMESTER FILTER
+    ========================================================= -->
+
+    <section class="results-filter">
+
+        <div class="filter-copy">
+
+            <strong>
+                Select Semester
+            </strong>
+
+            <span>
+                Choose the semester you want to review.
+            </span>
+
+        </div>
+
+
+        {% if semesters %}
+
+            <form
+                method="get"
+                class="semester-form"
+            >
+
+                <select
+                    name="semester"
+                    class="semester-select"
+                >
+
+                    {% for semester in semesters %}
+
+                        <option
+                            value="{{ semester.name }}"
+                            {% if selected_semester == semester.name %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ semester.name }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+
+                <button
+                    type="submit"
+                    class="filter-button"
+                >
+                    View Results
+                </button>
+
+            </form>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- ========================================================
+         SUMMARY
+    ========================================================= -->
+
+    <div class="results-summary">
+
+
+        <div class="summary-card summary-average">
+
+            <div class="summary-icon">
+                📈
+            </div>
+
+            <div class="summary-label">
+                Average
+            </div>
+
+            <div class="summary-value">
+
+                {% if average %}
+                    {{ average }}
+                {% else %}
+                    —
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card summary-grade">
+
+            <div class="summary-icon">
+                🏆
+            </div>
+
+            <div class="summary-label">
+                Overall Grade
+            </div>
+
+            <div class="summary-value">
+                {{ overall_grade|default:"—" }}
+            </div>
+
+        </div>
+
+
+        <div class="summary-card summary-result">
+
+            <div class="summary-icon">
+                ✅
+            </div>
+
+            <div class="summary-label">
+                Overall Result
+            </div>
+
+            <div class="summary-value">
+                {{ overall_result|default:"PENDING" }}
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ========================================================
+         RESULT TABLE
+    ========================================================= -->
+
+    <section class="results-card">
+
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    📊 Semester Results
+                </h2>
+
+                <p>
+                    Your result for
+                    {{ selected_semester|default:"the selected semester" }}.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {% if rows %}
+
+
+            <div class="table-wrapper">
+
+                <table class="results-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Subject
+                            </th>
+
+                            <th>
+                                Score
+                            </th>
+
+                            <th>
+                                Grade
+                            </th>
+
+                            <th>
+                                Result
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        {% for row in rows %}
+
+                            <tr>
+
+
+                                <!-- SUBJECT -->
+
+                                <td>
+
+                                    <div class="subject-cell">
+
+                                        <div class="subject-icon">
+                                            📚
+                                        </div>
+
+                                        <div class="subject-text">
+
+                                            <strong>
+                                                {{ row.grade.subject.name }}
+                                            </strong>
+
+                                            <span>
+
+                                                {% if row.grade.subject.code %}
+                                                    {{ row.grade.subject.code }}
+                                                {% else %}
+                                                    Subject
+                                                {% endif %}
+
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- SCORE -->
+
+                                <td>
+
+                                    {% if row.score != None %}
+
+                                        <span class="score-value">
+                                            {{ row.score }}
+                                        </span>
+
+                                    {% else %}
+
+                                        —
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- GRADE -->
+
+                                <td>
+
+                                    {% if row.letter %}
+
+                                        <span class="grade-badge">
+                                            {{ row.letter }}
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="result-badge result-pending">
+                                            PENDING
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- RESULT -->
+
+                                <td>
+
+                                    {% if row.result == "PASS" %}
+
+                                        <span class="result-badge result-pass">
+                                            PASS
+                                        </span>
+
+                                    {% elif row.result == "RE-EXAM" %}
+
+                                        <span class="result-badge result-reexam">
+                                            RE-EXAM
+                                        </span>
+
+                                    {% elif row.result == "FAIL" %}
+
+                                        <span class="result-badge result-fail">
+                                            FAIL
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="result-badge result-pending">
+                                            PENDING
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                            </tr>
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- ==================================================
+                 OVERALL SUMMARY
+            =================================================== -->
+
+            <div class="overall-section">
+
+                <div class="overall-title">
+                    Final Academic Summary
+                </div>
+
+
+                <div class="overall-grid">
+
+
+                    <div class="overall-box">
+
+                        <span>
+                            Average
+                        </span>
+
+                        <strong>
+                            {{ average|default:"—" }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="overall-box">
+
+                        <span>
+                            Overall Grade
+                        </span>
+
+                        <strong>
+                            {{ overall_grade|default:"—" }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="overall-box">
+
+                        <span>
+                            Overall Result
+                        </span>
+
+                        <strong>
+                            {{ overall_result|default:"PENDING" }}
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        {% else %}
+
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    📝
+                </div>
+
+                <h3>
+                    No Results Available
+                </h3>
+
+                <p>
+                    There are no published results for
+                    {{ selected_semester|default:"the selected semester" }}
+                    yet.
+                </p>
+
+            </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+</div>
+
+{% endblock content %}
+

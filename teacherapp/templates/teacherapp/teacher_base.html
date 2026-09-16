@@ -1,0 +1,1195 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}
+            Teacher Portal
+        {% endblock %}
+    </title>
+
+    <style>
+
+        /* =====================================================
+           ROOT
+        ===================================================== */
+
+        :root {
+            --primary: #9A5243;
+            --primary-dark: #7e4034;
+            --primary-light: #f6ebe8;
+
+            --sidebar: #17191d;
+            --sidebar-soft: #202329;
+            --sidebar-text: #aeb2ba;
+            --sidebar-active: #9A5243;
+
+            --background: #f5f6f8;
+            --card: #ffffff;
+            --text: #202124;
+            --muted: #858990;
+            --border: #e8e9ec;
+
+            --success: #2d8a58;
+            --success-bg: #eaf7ef;
+
+            --danger: #c94b4b;
+            --danger-bg: #fceeee;
+
+            --warning: #b67b20;
+            --warning-bg: #fff6e2;
+
+            --shadow:
+                0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+
+        /* =====================================================
+           LAYOUT
+        ===================================================== */
+
+        .teacher-layout {
+            min-height: 100vh;
+            display: flex;
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+            position: fixed;
+
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            width: 270px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #17191d 0%,
+                    #121417 100%
+                );
+
+            color: white;
+
+            display: flex;
+            flex-direction: column;
+
+            z-index: 1000;
+
+            box-shadow:
+                8px 0 30px rgba(0, 0, 0, .08);
+        }
+
+
+        /* =====================================================
+           SIDEBAR BRAND
+        ===================================================== */
+
+        .sidebar-brand {
+            height: 88px;
+
+            padding: 0 23px;
+
+            display: flex;
+            align-items: center;
+
+            border-bottom:
+                1px solid rgba(255,255,255,.06);
+        }
+
+
+        .brand-logo {
+            width: 45px;
+            height: 45px;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #b96b59,
+                    #9A5243
+                );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+            font-weight: 900;
+
+            box-shadow:
+                0 8px 20px rgba(154,82,67,.28);
+        }
+
+
+        .brand-content {
+            margin-left: 12px;
+        }
+
+
+        .brand-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: white;
+        }
+
+
+        .brand-subtitle {
+            margin-top: 3px;
+
+            font-size: 10px;
+
+            color: #858991;
+
+            letter-spacing: .03em;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .sidebar-nav {
+            flex: 1;
+
+            overflow-y: auto;
+
+            padding: 22px 14px;
+        }
+
+
+        .nav-section {
+            margin-bottom: 25px;
+        }
+
+
+        .nav-section-title {
+            padding: 0 12px;
+
+            margin-bottom: 9px;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: .12em;
+
+            text-transform: uppercase;
+
+            color: #686d76;
+        }
+
+
+        .nav-item {
+            margin-bottom: 4px;
+        }
+
+
+        .nav-link {
+            position: relative;
+
+            min-height: 46px;
+
+            padding: 0 13px;
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+
+            text-decoration: none;
+
+            color: var(--sidebar-text);
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            transition:
+                background .2s ease,
+                color .2s ease,
+                transform .2s ease;
+        }
+
+
+        .nav-link:hover {
+            background:
+                rgba(255,255,255,.055);
+
+            color: white;
+
+            transform: translateX(2px);
+        }
+
+
+        .nav-link.active {
+            background:
+                linear-gradient(
+                    135deg,
+                    #9A5243,
+                    #824333
+                );
+
+            color: white;
+
+            box-shadow:
+                0 7px 18px rgba(154,82,67,.25);
+        }
+
+
+        .nav-icon {
+            width: 24px;
+            min-width: 24px;
+
+            margin-right: 11px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 15px;
+        }
+
+
+        .nav-link.active .nav-icon {
+            color: white;
+        }
+
+
+        /* =====================================================
+           SIDEBAR USER
+        ===================================================== */
+
+        .sidebar-user {
+            margin: 0 14px 12px;
+
+            padding: 13px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,255,255,.045);
+
+            border:
+                1px solid rgba(255,255,255,.055);
+
+            display: flex;
+            align-items: center;
+        }
+
+
+        .sidebar-user-avatar {
+            width: 37px;
+            height: 37px;
+
+            border-radius: 10px;
+
+            background: var(--primary);
+
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+
+        .sidebar-user-info {
+            margin-left: 10px;
+
+            min-width: 0;
+        }
+
+
+        .sidebar-user-name {
+            font-size: 11px;
+
+            font-weight: 700;
+
+            color: white;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
+
+
+        .sidebar-user-role {
+            margin-top: 3px;
+
+            font-size: 9px;
+
+            color: #7f848c;
+        }
+
+
+        /* =====================================================
+           LOGOUT
+        ===================================================== */
+
+        .sidebar-footer {
+            padding: 0 14px 18px;
+        }
+
+
+        .logout-link {
+            min-height: 44px;
+
+            padding: 0 13px;
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+
+            text-decoration: none;
+
+            color: #a8abb1;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            transition: .2s ease;
+        }
+
+
+        .logout-link:hover {
+            background:
+                rgba(201,75,75,.12);
+
+            color: #e77b7b;
+        }
+
+
+        .logout-icon {
+            width: 24px;
+
+            margin-right: 11px;
+
+            text-align: center;
+        }
+
+
+        /* =====================================================
+           MAIN AREA
+        ===================================================== */
+
+        .main-area {
+            margin-left: 270px;
+
+            width: calc(100% - 270px);
+
+            min-height: 100vh;
+        }
+
+
+        /* =====================================================
+           TOPBAR
+        ===================================================== */
+
+        .topbar {
+            height: 82px;
+
+            padding: 0 32px;
+
+            background: white;
+
+            border-bottom:
+                1px solid var(--border);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 900;
+        }
+
+
+        .topbar-left h1 {
+            font-size: 20px;
+
+            font-weight: 800;
+
+            color: #242529;
+        }
+
+
+        .topbar-left p {
+            margin-top: 4px;
+
+            font-size: 11px;
+
+            color: var(--muted);
+        }
+
+
+        /* =====================================================
+           TOP PROFILE
+        ===================================================== */
+
+        .top-profile {
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+        }
+
+
+        .top-avatar {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 50%;
+
+            background:
+                var(--primary-light);
+
+            color: var(--primary);
+
+            border:
+                1px solid #ead7d2;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+
+        .top-profile-name {
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+
+        .top-profile-role {
+            margin-top: 2px;
+
+            font-size: 10px;
+
+            color: #999;
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
+
+        .content {
+            padding: 30px;
+        }
+
+
+        /* =====================================================
+           COMMON CARD
+        ===================================================== */
+
+        .card {
+            background: white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 15px;
+
+            box-shadow: var(--shadow);
+        }
+
+
+        /* =====================================================
+           MESSAGES
+        ===================================================== */
+
+        .messages {
+            margin-bottom: 20px;
+        }
+
+
+        .message {
+            padding: 13px 16px;
+
+            background: white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 10px;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           SCROLLBAR
+        ===================================================== */
+
+        .sidebar-nav::-webkit-scrollbar {
+            width: 4px;
+        }
+
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: #34373d;
+
+            border-radius: 10px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 225px;
+            }
+
+            .main-area {
+                margin-left: 225px;
+
+                width: calc(100% - 225px);
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                width: 72px;
+            }
+
+
+            .sidebar-brand {
+                justify-content: center;
+
+                padding: 0;
+            }
+
+
+            .brand-content {
+                display: none;
+            }
+
+
+            .sidebar-user {
+                justify-content: center;
+
+                padding: 8px;
+            }
+
+
+            .sidebar-user-info {
+                display: none;
+            }
+
+
+            .nav-section-title {
+                display: none;
+            }
+
+
+            .nav-link {
+                justify-content: center;
+
+                padding: 0;
+            }
+
+
+            .nav-icon {
+                margin: 0;
+            }
+
+
+            .nav-link span:last-child {
+                display: none;
+            }
+
+
+            .logout-link {
+                justify-content: center;
+
+                padding: 0;
+            }
+
+
+            .logout-icon {
+                margin: 0;
+            }
+
+
+            .logout-link span:last-child {
+                display: none;
+            }
+
+
+            .main-area {
+                margin-left: 72px;
+
+                width: calc(100% - 72px);
+            }
+
+
+            .topbar {
+                padding: 0 15px;
+            }
+
+
+            .top-profile-info {
+                display: none;
+            }
+
+
+            .content {
+                padding: 15px;
+            }
+        }
+
+    </style>
+
+
+    {% block extra_css %}
+    {% endblock %}
+
+</head>
+
+
+<body>
+
+<div class="teacher-layout">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+
+        <!-- BRAND -->
+
+        <div class="sidebar-brand">
+
+            <div class="brand-logo">
+                T
+            </div>
+
+            <div class="brand-content">
+
+                <div class="brand-title">
+                    Teacher Portal
+                </div>
+
+                <div class="brand-subtitle">
+                    Academic Management
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             NAVIGATION
+        ================================================== -->
+
+        <nav class="sidebar-nav">
+
+
+            <!-- OVERVIEW -->
+
+            <div class="nav-section">
+
+                <div class="nav-section-title">
+                    Overview
+                </div>
+
+
+                <div class="nav-item">
+
+                    <a
+                        href="{% url 'teacherapp:teacher-dashboard' %}"
+                        class="nav-link {% block dashboard_active %}{% endblock %}"
+                    >
+
+                        <span class="nav-icon">
+                            ◈
+                        </span>
+
+                        <span>
+                            Dashboard
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- MY TEACHING -->
+
+            <div class="nav-section">
+
+                <div class="nav-section-title">
+                    My Teaching
+                </div>
+
+
+                <!-- CLASSES -->
+
+                <div class="nav-item">
+
+                    <a
+                        href="{% url 'teacherapp:teacher-dashboard' %}#my-classes"
+                        class="nav-link"
+                    >
+
+                        <span class="nav-icon">
+                            ▦
+                        </span>
+
+                        <span>
+                            My Classes
+                        </span>
+
+                    </a>
+
+                </div>
+
+
+                <!-- STUDENTS -->
+
+                <div class="nav-item">
+
+                    <a
+                        href="{% url 'teacherapp:teacher-dashboard' %}#my-students"
+                        class="nav-link"
+                    >
+
+                        <span class="nav-icon">
+                            ◎
+                        </span>
+
+                        <span>
+                            My Students
+                        </span>
+
+                    </a>
+
+                </div>
+
+
+                <!-- SUBJECTS -->
+
+                <div class="nav-item">
+
+                    <a
+                        href="{% url 'teacherapp:teacher-dashboard' %}#my-subjects"
+                        class="nav-link"
+                    >
+
+                        <span class="nav-icon">
+                            ▤
+                        </span>
+
+                        <span>
+                            My Subjects
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACADEMIC -->
+
+            <div class="nav-section">
+
+                <div class="nav-section-title">
+                    Academic
+                </div>
+
+
+                <!-- GRADES -->
+
+                <div class="nav-item">
+
+                    <a
+                        href="{% url 'teacherapp:teacher-grades' %}"
+                        class="nav-link {% block grades_active %}{% endblock %}"
+                    >
+
+                        <span class="nav-icon">
+                            ✓
+                        </span>
+
+                        <span>
+                            Grades
+                        </span>
+
+                    </a>
+
+                </div>
+
+
+                <!-- ATTENDANCE -->
+
+                <div class="nav-item">
+
+                    <a
+                        href="{% url 'teacherapp:teacher-attendance' %}"
+                        class="nav-link {% block attendance_active %}{% endblock %}"
+                    >
+
+                        <span class="nav-icon">
+                            ◷
+                        </span>
+
+                        <span>
+                            Attendance
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 COMMUNICATION
+                 ONLY NEW SECTION ADDED
+            ================================================== -->
+
+            <div class="nav-section">
+
+                <div class="nav-section-title">
+                    Communication
+                </div>
+
+
+                <div class="nav-item">
+
+                    <a
+                        href="{% url 'conversations:conversation-list' %}"
+                        class="nav-link {% block conversations_active %}{% endblock %}"
+                    >
+
+                        <span class="nav-icon">
+                            💬
+                        </span>
+
+                        <span>
+                            Conversations
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACCOUNT -->
+
+            <div class="nav-section">
+
+                <div class="nav-section-title">
+                    Account
+                </div>
+
+
+                <div class="nav-item">
+
+                    <a
+                        href="{% url 'teacherapp:teacher-dashboard' %}#my-profile"
+                        class="nav-link"
+                    >
+
+                        <span class="nav-icon">
+                            ●
+                        </span>
+
+                        <span>
+                            My Profile
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </nav>
+
+
+        <!-- =================================================
+             SIDEBAR USER
+        ================================================== -->
+
+        <div class="sidebar-user">
+
+            <div class="sidebar-user-avatar">
+
+                {% if request.user.first_name %}
+
+                    {{ request.user.first_name|first|upper }}
+
+                {% else %}
+
+                    {{ request.user.username|first|upper }}
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="sidebar-user-info">
+
+                <div class="sidebar-user-name">
+
+                    {% if request.user.get_full_name %}
+
+                        {{ request.user.get_full_name }}
+
+                    {% else %}
+
+                        {{ request.user.username }}
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="sidebar-user-role">
+                    Teacher
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- LOGOUT -->
+
+        <div class="sidebar-footer">
+
+            <a
+                href="{% url 'users:logout' %}"
+                class="logout-link"
+            >
+
+                <span class="logout-icon">
+                    ↪
+                </span>
+
+                <span>
+                    Sign out
+                </span>
+
+            </a>
+
+        </div>
+
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN AREA
+    ====================================================== -->
+
+    <main class="main-area">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <h1>
+
+                    {% block page_title %}
+                        Teacher Dashboard
+                    {% endblock %}
+
+                </h1>
+
+
+                <p>
+                    Manage your assigned academic responsibilities
+                </p>
+
+            </div>
+
+
+            <!-- TOP PROFILE -->
+
+            {% if request.user.is_authenticated %}
+
+                <div class="top-profile">
+
+                    <div class="top-avatar">
+
+                        {% if request.user.first_name %}
+
+                            {{ request.user.first_name|first|upper }}
+
+                        {% else %}
+
+                            {{ request.user.username|first|upper }}
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="top-profile-info">
+
+                        <div class="top-profile-name">
+
+                            {% if request.user.get_full_name %}
+
+                                {{ request.user.get_full_name }}
+
+                            {% else %}
+
+                                {{ request.user.username }}
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="top-profile-role">
+                            Teacher
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+        </header>
+
+
+        <!-- =================================================
+             PAGE CONTENT
+        ================================================== -->
+
+        <section class="content">
+
+
+            {% if messages %}
+
+                <div class="messages">
+
+                    {% for message in messages %}
+
+                        <div class="message">
+
+                            {{ message }}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+
+            {% block teacher_content %}
+            {% endblock %}
+
+
+            {% block content %}
+            {% endblock %}
+
+
+        </section>
+
+    </main>
+
+
+</div>
+
+
+{% block extra_js %}
+{% endblock %}
+
+
+</body>
+
+</html>

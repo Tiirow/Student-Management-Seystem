@@ -1,0 +1,1153 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+<style>
+
+/* ============================================================
+   CLASS FORM PAGE
+============================================================ */
+
+.class-form-page {
+    min-height: calc(100vh - 70px);
+    background: #f5f6f8;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.class-form-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 24px 55px;
+}
+
+
+/* ============================================================
+   BACK LINK
+============================================================ */
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 20px;
+
+    color: #697386;
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    transition: all 0.2s ease;
+}
+
+.back-link:hover {
+    color: #9a5243;
+    transform: translateX(-3px);
+}
+
+
+/* ============================================================
+   PAGE HEADER
+============================================================ */
+
+.page-header {
+    position: relative;
+
+    overflow: hidden;
+
+    margin-bottom: 22px;
+
+    padding: 25px 28px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #172033,
+            #24304a 65%,
+            #8a493d
+        );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 14px 35px
+        rgba(23, 32, 51, 0.14);
+}
+
+.page-header::before {
+    content: "";
+
+    position: absolute;
+
+    width: 170px;
+    height: 170px;
+
+    right: -55px;
+    top: -95px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(214, 168, 95, 0.14);
+}
+
+.page-header::after {
+    content: "";
+
+    position: absolute;
+
+    width: 90px;
+    height: 90px;
+
+    right: 125px;
+    bottom: -60px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(154, 82, 67, 0.20);
+}
+
+.page-header-content {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+.page-icon {
+    width: 54px;
+    height: 54px;
+
+    min-width: 54px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background:
+        rgba(255, 255, 255, 0.12);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.16);
+
+    font-size: 25px;
+}
+
+.page-header-text h1 {
+    margin: 0;
+
+    font-size: 27px;
+
+    font-weight: 850;
+
+    letter-spacing: -0.4px;
+}
+
+.page-header-text p {
+    margin: 5px 0 0;
+
+    color:
+        rgba(255, 255, 255, 0.70);
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   FORM CARD
+============================================================ */
+
+.form-card {
+    background: #ffffff;
+
+    border:
+        1px solid #eeeeee;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 6px 22px
+        rgba(0, 0, 0, 0.05);
+}
+
+
+/* ============================================================
+   FORM
+============================================================ */
+
+.class-form {
+    width: 100%;
+}
+
+
+/* ============================================================
+   FORM BODY
+============================================================ */
+
+.form-body {
+    padding: 30px;
+}
+
+
+/* ============================================================
+   SECTION
+============================================================ */
+
+.form-section {
+    margin-bottom: 27px;
+}
+
+.form-section:last-child {
+    margin-bottom: 0;
+}
+
+.section-heading {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    margin-bottom: 18px;
+
+    padding-bottom: 12px;
+
+    border-bottom:
+        1px solid #eeeeee;
+}
+
+.section-icon {
+    width: 38px;
+    height: 38px;
+
+    min-width: 38px;
+
+    border-radius: 10px;
+
+    background: #f5e9e6;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 17px;
+}
+
+.section-heading h2 {
+    margin: 0;
+
+    color: #292929;
+
+    font-size: 16px;
+
+    font-weight: 800;
+}
+
+.section-heading p {
+    margin: 4px 0 0;
+
+    color: #999999;
+
+    font-size: 10px;
+}
+
+
+/* ============================================================
+   FIELD GROUP
+============================================================ */
+
+.field-group {
+    margin-bottom: 19px;
+}
+
+.field-group:last-child {
+    margin-bottom: 0;
+}
+
+.field-label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #3f4652;
+
+    font-size: 11px;
+
+    font-weight: 800;
+}
+
+.required {
+    color: #b42318;
+}
+
+
+/* ============================================================
+   DJANGO FORM CONTROLS
+============================================================ */
+
+.class-form input[type="text"],
+.class-form input[type="email"],
+.class-form input[type="number"],
+.class-form select,
+.class-form textarea {
+    width: 100%;
+
+    border:
+        1px solid #dfe3e8;
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: #303744;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.class-form input[type="text"],
+.class-form input[type="email"],
+.class-form input[type="number"],
+.class-form select {
+    height: 44px;
+
+    padding: 0 12px;
+}
+
+.class-form textarea {
+    min-height: 120px;
+
+    padding: 11px 12px;
+
+    resize: vertical;
+
+    line-height: 1.6;
+}
+
+.class-form input:hover,
+.class-form select:hover,
+.class-form textarea:hover {
+    border-color: #c7cdd6;
+
+    background: #ffffff;
+}
+
+.class-form input:focus,
+.class-form select:focus,
+.class-form textarea:focus {
+    border-color: #9a5243;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(154, 82, 67, 0.09);
+
+    background: #ffffff;
+}
+
+
+/* ============================================================
+   PLACEHOLDER
+============================================================ */
+
+.class-form input::placeholder,
+.class-form textarea::placeholder {
+    color: #a6adb7;
+}
+
+
+/* ============================================================
+   HELP TEXT
+============================================================ */
+
+.help-text {
+    margin-top: 6px;
+
+    color: #999999;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   FIELD ERRORS
+============================================================ */
+
+.field-error {
+    margin-top: 6px;
+
+    color: #b42318;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+.field-errors-box {
+    margin-bottom: 20px;
+
+    padding: 12px 14px;
+
+    border:
+        1px solid #efb5b2;
+
+    border-radius: 9px;
+
+    background: #fff3f2;
+
+    color: #b42318;
+
+    font-size: 11px;
+
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   ERROR FIELD
+============================================================ */
+
+.has-error input,
+.has-error select,
+.has-error textarea {
+    border-color: #df9d9a;
+
+    background: #fff9f9;
+}
+
+
+/* ============================================================
+   CURRENT CLASS
+============================================================ */
+
+.current-class {
+    margin-bottom: 22px;
+
+    padding: 14px 16px;
+
+    border:
+        1px solid #eadbd6;
+
+    border-radius: 10px;
+
+    background: #fbf5f3;
+}
+
+.current-class-label {
+    margin-bottom: 4px;
+
+    color: #999999;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+.current-class-name {
+    color: #7f4236;
+
+    font-size: 13px;
+
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   INFORMATION BOX
+============================================================ */
+
+.info-box {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin-top: 18px;
+
+    padding: 13px 14px;
+
+    border:
+        1px solid #dce8f7;
+
+    border-radius: 10px;
+
+    background: #f7fbff;
+
+    color: #5f6f83;
+
+    font-size: 10px;
+
+    line-height: 1.6;
+}
+
+.info-box-icon {
+    font-size: 15px;
+
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   FORM FOOTER
+============================================================ */
+
+.form-footer {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 9px;
+
+    padding:
+        19px 30px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #fbfcfe,
+            #f7f8fa
+        );
+
+    border-top:
+        1px solid #eeeeee;
+}
+
+
+/* ============================================================
+   BUTTONS
+============================================================ */
+
+.form-btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    min-height: 41px;
+
+    padding: 0 15px;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        all 0.2s ease;
+}
+
+
+/* ============================================================
+   CANCEL
+============================================================ */
+
+.cancel-btn {
+    background: #f3f4f6;
+
+    border:
+        1px solid #e5e7eb;
+
+    color: #555555;
+}
+
+.cancel-btn:hover {
+    background: #e7e9ed;
+
+    color: #333333;
+}
+
+
+/* ============================================================
+   SAVE
+============================================================ */
+
+.save-btn {
+    border:
+        1px solid #9a5243;
+
+    background:
+        linear-gradient(
+            135deg,
+            #a85d4d,
+            #8b493c
+        );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 5px 14px
+        rgba(154, 82, 67, 0.18);
+}
+
+.save-btn:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #b46756,
+            #7c4035
+        );
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(154, 82, 67, 0.25);
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 700px) {
+
+    .class-form-container {
+        padding:
+            20px 14px 40px;
+    }
+
+    .page-header {
+        padding: 21px;
+    }
+
+    .page-header-text h1 {
+        font-size: 23px;
+    }
+
+    .form-body {
+        padding: 22px 20px;
+    }
+
+    .form-footer {
+        padding:
+            17px 20px;
+
+        flex-direction:
+            column-reverse;
+
+        align-items: stretch;
+    }
+
+    .form-btn {
+        width: 100%;
+    }
+}
+
+
+/* ============================================================
+   DARK MODE
+============================================================ */
+
+body.dark-mode .class-form-page {
+    background: #111521;
+}
+
+body.dark-mode .form-card {
+    background: #181c2a;
+
+    border-color: #292e3d;
+}
+
+body.dark-mode .section-heading {
+    border-color: #303545;
+}
+
+body.dark-mode .section-heading h2,
+body.dark-mode .field-label {
+    color: #f2f4f8;
+}
+
+body.dark-mode .section-heading p,
+body.dark-mode .help-text {
+    color: #929bad;
+}
+
+body.dark-mode .class-form input[type="text"],
+body.dark-mode .class-form input[type="email"],
+body.dark-mode .class-form input[type="number"],
+body.dark-mode .class-form select,
+body.dark-mode .class-form textarea {
+    background: #202431;
+
+    border-color: #303545;
+
+    color: #f2f4f8;
+}
+
+body.dark-mode .class-form input::placeholder,
+body.dark-mode .class-form textarea::placeholder {
+    color: #727a8d;
+}
+
+body.dark-mode .current-class {
+    background: #28212a;
+
+    border-color: #3a2f31;
+}
+
+body.dark-mode .current-class-name {
+    color: #df8d78;
+}
+
+body.dark-mode .info-box {
+    background: #202431;
+
+    border-color: #303545;
+
+    color: #aeb6c6;
+}
+
+body.dark-mode .form-footer {
+    background: #202431;
+
+    border-color: #303545;
+}
+
+body.dark-mode .cancel-btn {
+    background: #181c2a;
+
+    border-color: #303545;
+
+    color: #d5d9e2;
+}
+
+</style>
+
+
+<!-- ============================================================
+     CLASS FORM PAGE
+============================================================ -->
+
+<div class="class-form-page">
+
+    <div class="class-form-container">
+
+
+        <!-- ====================================================
+             BACK
+        ==================================================== -->
+
+        <a
+            href="{% url 'class-list' %}"
+            class="back-link"
+        >
+            ← Back to Classes
+        </a>
+
+
+        <!-- ====================================================
+             HEADER
+        ==================================================== -->
+
+        <div class="page-header">
+
+            <div class="page-header-content">
+
+                <div class="page-icon">
+
+                    {% if classroom %}
+                        ✏️
+                    {% else %}
+                        🏫
+                    {% endif %}
+
+                </div>
+
+                <div class="page-header-text">
+
+                    <h1>
+
+                        {% if classroom %}
+                            Edit Class
+                        {% else %}
+                            Add New Class
+                        {% endif %}
+
+                    </h1>
+
+                    <p>
+
+                        {% if classroom %}
+
+                            Update the class information
+                            and status.
+
+                        {% else %}
+
+                            Create a new school class
+                            for student assignment.
+
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ====================================================
+             FORM CARD
+        ==================================================== -->
+
+        <section class="form-card">
+
+
+            <!-- =================================================
+                 FORM
+            ================================================== -->
+
+            <form
+                method="POST"
+                class="class-form"
+                novalidate
+            >
+
+                {% csrf_token %}
+
+
+                <!-- =================================================
+                     FORM BODY
+                ================================================== -->
+
+                <div class="form-body">
+
+
+                    <!-- =============================================
+                         NON-FIELD ERRORS
+                    ============================================== -->
+
+                    {% if form.non_field_errors %}
+
+                        <div class="field-errors-box">
+
+                            {% for error in form.non_field_errors %}
+
+                                <div>
+                                    {{ error }}
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- =============================================
+                         CURRENT CLASS
+                    ============================================== -->
+
+                    {% if classroom %}
+
+                        <div class="current-class">
+
+                            <div class="current-class-label">
+                                Currently Editing
+                            </div>
+
+                            <div class="current-class-name">
+                                {{ classroom.name }}
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- =============================================
+                         CLASS INFORMATION
+                    ============================================== -->
+
+                    <div class="form-section">
+
+
+                        <div class="section-heading">
+
+                            <div class="section-icon">
+                                🏫
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Class Information
+                                </h2>
+
+                                <p>
+                                    Enter the basic details of the school class.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =========================================
+                             CLASS NAME
+                        ========================================== -->
+
+                        <div
+                            class="field-group {% if form.name.errors %}has-error{% endif %}"
+                        >
+
+                            <label
+                                for="{{ form.name.id_for_label }}"
+                                class="field-label"
+                            >
+
+                                Class Name
+
+                                <span class="required">
+                                    *
+                                </span>
+
+                            </label>
+
+
+                            {{ form.name }}
+
+
+                            {% if form.name.help_text %}
+
+                                <div class="help-text">
+                                    {{ form.name.help_text }}
+                                </div>
+
+                            {% else %}
+
+                                <div class="help-text">
+                                    Example: Grade 7A, Grade 8A, Grade 9A.
+                                </div>
+
+                            {% endif %}
+
+
+                            {% for error in form.name.errors %}
+
+                                <div class="field-error">
+                                    {{ error }}
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- =========================================
+                             DESCRIPTION
+                        ========================================== -->
+
+                        <div
+                            class="field-group {% if form.description.errors %}has-error{% endif %}"
+                        >
+
+                            <label
+                                for="{{ form.description.id_for_label }}"
+                                class="field-label"
+                            >
+                                Description
+                            </label>
+
+
+                            {{ form.description }}
+
+
+                            {% if form.description.help_text %}
+
+                                <div class="help-text">
+                                    {{ form.description.help_text }}
+                                </div>
+
+                            {% else %}
+
+                                <div class="help-text">
+                                    Optional description of the class.
+                                </div>
+
+                            {% endif %}
+
+
+                            {% for error in form.description.errors %}
+
+                                <div class="field-error">
+                                    {{ error }}
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- =========================================
+                             STATUS
+                        ========================================== -->
+
+                        <div
+                            class="field-group {% if form.status.errors %}has-error{% endif %}"
+                        >
+
+                            <label
+                                for="{{ form.status.id_for_label }}"
+                                class="field-label"
+                            >
+
+                                Status
+
+                                <span class="required">
+                                    *
+                                </span>
+
+                            </label>
+
+
+                            {{ form.status }}
+
+
+                            <div class="help-text">
+                                Active classes are available for student assignment.
+                            </div>
+
+
+                            {% for error in form.status.errors %}
+
+                                <div class="field-error">
+                                    {{ error }}
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- =============================================
+                         INFORMATION
+                    ============================================== -->
+
+                    <div class="info-box">
+
+                        <div class="info-box-icon">
+                            ℹ️
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Class Management
+                            </strong>
+
+                            <br>
+
+                            After saving this class, it will appear
+                            automatically in the Classes Management page
+                            and can be assigned to students through the
+                            Student form.
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =================================================
+                     FORM FOOTER
+                ================================================== -->
+
+                <div class="form-footer">
+
+
+                    <!-- CANCEL -->
+
+                    <a
+                        href="{% url 'class-list' %}"
+                        class="form-btn cancel-btn"
+                    >
+                        ← Cancel
+                    </a>
+
+
+                    <!-- SAVE / UPDATE -->
+
+                    <button
+                        type="submit"
+                        class="form-btn save-btn"
+                    >
+
+                        {% if classroom %}
+
+                            ✓ Update Class
+
+                        {% else %}
+
+                            ➕ Save Class
+
+                        {% endif %}
+
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+        </section>
+
+
+    </div>
+
+</div>
+
+{% endblock %}
+

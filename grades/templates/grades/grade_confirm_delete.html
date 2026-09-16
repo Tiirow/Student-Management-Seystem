@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Delete Result
+{% endblock %}
+
+
+{% block content %}
+
+<div style="
+    max-width: 600px;
+    margin: 70px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.08);
+    text-align: center;
+">
+
+    <div style="font-size: 48px;">
+        ⚠️
+    </div>
+
+    <h2>
+        Delete Student Result?
+    </h2>
+
+    <p style="color:#64748b;">
+
+        Are you sure you want to delete the result for
+
+        <strong>
+            {{ grade.student.first_name }}
+            {{ grade.student.last_name }}
+        </strong>
+
+        in
+
+        <strong>
+            {{ grade.subject.name }}
+        </strong>
+
+        for
+
+        <strong>
+            {{ grade.semester }}
+        </strong>?
+
+    </p>
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div style="
+            display:flex;
+            justify-content:center;
+            gap:12px;
+            margin-top:25px;
+        ">
+
+            <a
+                href="{% url 'grade-list' %}"
+                style="
+                    padding:12px 20px;
+                    border-radius:10px;
+                    background:#f1f5f9;
+                    color:#334155;
+                    text-decoration:none;
+                    font-weight:700;
+                "
+            >
+                Cancel
+            </a>
+
+
+            <button
+                type="submit"
+                style="
+                    padding:12px 20px;
+                    border-radius:10px;
+                    border:0;
+                    background:#dc2626;
+                    color:white;
+                    font-weight:700;
+                    cursor:pointer;
+                "
+            >
+                Delete Result
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
