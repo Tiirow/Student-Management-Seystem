@@ -51,7 +51,7 @@ It provides role-based dashboards and controlled access for administrators, mana
 ```text
 Backend       → Django
 Language      → Python
-Frontend      → HTML5 • CSS3 • JavaScript
+Frontend      → HTML5 • CSS3 • JavaScript, some react native
 Database      → SQLite
 Authentication→ Django Auth
 ORM           → Django ORM
