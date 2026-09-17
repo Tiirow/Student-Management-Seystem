@@ -1,394 +1,243 @@
 # 🎓 Student Management System
 
-> A modern web-based system for managing students, teachers, classes, subjects, enrollment, attendance, and academic grades.
+### A modern academic management platform built to simplify and centralize educational operations.
 
-[![Django](https://img.shields.io/badge/Django-6.x-092E20?style=flat-square\&logo=django\&logoColor=white)](https://www.djangoproject.com/)
-[![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=flat-square\&logo=python\&logoColor=white)](https://www.python.org/)
-[![SQLite](https://img.shields.io/badge/Database-SQLite-003B57?style=flat-square\&logo=sqlite\&logoColor=white)](https://www.sqlite.org/)
-[![License](https://img.shields.io/badge/License-Educational-9A5243?style=flat-square)](LICENSE)
+[![Django](https://img.shields.io/badge/Django-6.x-092E20?style=for-the-badge\&logo=django\&logoColor=white)](https://www.djangoproject.com/)
+[![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge\&logo=python\&logoColor=white)](https://www.python.org/)
+[![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge\&logo=sqlite\&logoColor=white)](https://www.sqlite.org/)
+[![React Native](https://img.shields.io/badge/React%20Native-2026-61DAFB?style=for-the-badge\&logo=react\&logoColor=black)](https://reactnative.dev/)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge\&logo=github\&logoColor=white)](https://github.com/Tiirow/Student-Management-Seystem)
 
----
 
 ## 📌 Overview
 
-Student Management System is a Django-based academic management platform designed to centralize student and educational operations in one secure system.
+Student Management System is a **Django-based academic management platform** designed to bring essential educational operations into one centralized system.
 
-It provides role-based dashboards and controlled access for administrators, managers, teachers, and students.
+It provides dedicated dashboards, role-based permissions, and organized modules for managing students, teachers, classes, subjects, enrollment, attendance, and grades.
 
----
+### 🎯 Built for
 
-## ✨ Features
+* 🏫 Schools & educational institutions
+* 👨‍💼 Administrators & managers
+* 👨‍🏫 Teachers
+* 👨‍🎓 Students
 
-| Module            | Description                                      |
-| ----------------- | ------------------------------------------------ |
-| 👨‍🎓 Students    | Manage student profiles and academic information |
-| 👨‍🏫 Teachers    | Manage teachers and their assignments            |
-| 🏫 Classes        | Create and manage classes                        |
-| 📚 Subjects       | Organize subjects and class assignments          |
-| 📝 Enrollment     | Manage student-class enrollment                  |
-| 📅 Attendance     | Track and manage student attendance              |
-| 📊 Grades         | Record and manage academic grades                |
-| 🔐 Authentication | Secure login and logout system                   |
-| 🛡️ Permissions   | Role-based access control                        |
-| 📈 Dashboards     | Dedicated dashboards for different users         |
 
----
 
-## 👥 User Roles
+## ✨ Core Features
 
-| Role              | Access                                          |
-| ----------------- | ----------------------------------------------- |
-| 👑 Superuser      | Full system access                              |
-| 🛡️ Administrator | Administrative management                       |
-| 📋 Manager        | Operational management                          |
-| 👨‍🏫 Teacher     | Assigned classes, subjects, attendance & grades |
-| 👨‍🎓 Student     | Personal academic information                   |
+|       | Module             | What it provides                        |
+| :---: | ------------------ | --------------------------------------- |
+| 👨‍🎓 | **Students**       | Student profiles & academic information |
+| 👨‍🏫 | **Teachers**       | Teacher accounts & assignments          |
+|   🏫  | **Classes**        | Class creation & management             |
+|   📚  | **Subjects**       | Subjects & class assignments            |
+|   📝  | **Enrollment**     | Student-class enrollment                |
+|   📅  | **Attendance**     | Attendance tracking                     |
+|   📊  | **Grades**         | Academic grade management               |
+|   🔐  | **Authentication** | Secure user authentication              |
+|  🛡️  | **Permissions**    | Role-based access control               |
+|   📈  | **Dashboards**     | Role-specific dashboards                |
 
----
 
-## 🛠️ Tech Stack
 
-```text
-Backend       → Django
-Language      → Python
-Frontend      → HTML5 • CSS3 • JavaScript, some react native
-Database      → SQLite
-Authentication→ Django Auth
-ORM           → Django ORM
-Version       → Git & GitHub
-```
+## 👥 Role-Based Access
 
----
+The system separates functionality according to user responsibilities.
 
-## 🏗️ System Structure
+| Role                   | Access                                          |
+| ---------------------  | ----------------------------------------------- |    
+| 🛡️ **Administrator**  | Complete system access            |
+| 📋 **Manager**        | Operational management                          |
+| 👨‍🏫 **Teacher**     | Assigned classes, subjects, attendance & grades |
+| 👨‍🎓 **Student**     | Personal academic information                   |
 
-```text
+
+
+## 🛠️ Technology Stack
+
+### 🌐 Web Application
+
+
+Backend        Django
+Language       Python
+Frontend       HTML5 • CSS3 • JavaScript,some react
+Database       SQLite
+Authentication Django Authentication
+ORM            Django ORM
+
+
+### 📱 Mobile Application
+
+
+Framework      React Native
+Platform       Android / Mobile
+API            Django Backend
+
+
+### 🔧 Development
+
+
+Version Control    Git & GitHub
+Environment        Virtual Environment
+Database Migration Django Migrations
+
+
+
+
+## 🏗️ System Architecture
+
+
+                         ┌──────────────────────┐
+                         │        USERS         │
+                         └──────────┬───────────┘
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │ Authentication &     │
+                         │ Role-Based Access    │
+                         └──────────┬───────────┘
+                                    │
+                ┌───────────────────┼───────────────────┐
+                ▼                   ▼                   ▼
+        ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+        │ Management   │    │   Teacher    │    │   Student    │
+        │ Dashboard    │    │  Dashboard   │    │  Dashboard   │
+        └──────┬───────┘    └──────┬───────┘    └──────┬───────┘
+               │                   │                   │
+               └───────────────────┼───────────────────┘
+                                   ▼
+                         ┌──────────────────────┐
+                         │   Django Backend     │
+                         └──────────┬───────────┘
+                                    ▼
+                         ┌──────────────────────┐
+                         │   Database / API     │
+                         └──────────────────────┘
+
+
+
+
+## 🧩 Main Modules
+
+
 Student Management System
 │
-├── Authentication
-├── User Management
-├── Student Management
-├── Teacher Management
-├── Class Management
-├── Subject Management
-├── Enrollment
-├── Attendance
-├── Grades
-└── Role & Permissions
-```
+├── 🔐 Authentication
+├── 👥 User Management
+├── 👨‍🎓 Student Management
+├── 👨‍🏫 Teacher Management
+├── 🏫 Class Management
+├── 📚 Subject Management
+├── 📝 Enrollment
+├── 📅 Attendance
+├── 📊 Grades
+├── 📈 Dashboards
+└── 🛡️ Role & Permissions
 
----
 
-## 🎨 Design
 
-The system uses a clean dashboard interface with a consistent visual identity.
+## 🎨 Design System
 
-| Design Element | Value     |
-| -------------- | --------- |
-| Primary        | `#9A5243` |
-| Secondary      | `#C17865` |
-| Sidebar        | `#17191D` |
-| Background     | `#121418` |
+The interface follows a consistent modern dashboard design.
 
----
+| Element       | Color     |
+| ------------- | --------- |
+| 🟤 Primary    | `#9A5243` |
+| 🟠 Secondary  | `#C17865` |
+| ⚫ Sidebar     | `#17191D` |
+| 🌑 Background | `#121418` |
 
-## ⚙️ Installation
+The design focuses on:
 
-```bash
+**Clean UI · Consistent Navigation · Responsive Layout · Clear Data Presentation · Role-Based Dashboards**
+
+
+
+## ⚙️ Getting Started
+
+### 1. Clone
+bash
 git clone https://github.com/Tiirow/Student-Management-Seystem.git
 cd Student-Management-Seystem
-```
 
-Create and activate a virtual environment:
 
-```bash
+### 2. Create Virtual Environment
+
+bash
 python -m venv env
-```
 
-Windows:
 
-```bash
+### 3. Activate — Windows
+
+bash
 env\Scripts\activate
-```
 
-Install dependencies:
 
-```bash
+### 4. Install Dependencies
+
+bash
 pip install -r requirements.txt
-```
 
-Run migrations:
+### 5. Apply Migrations
 
-```bash
+bash
 python manage.py migrate
-```
 
-Create an administrator:
 
-```bash
+### 6. Create Admin Account
+
+bash
 python manage.py createsuperuser
-```
 
-Start the server:
 
-```bash
+### 7. Run
+
+bash
 python manage.py runserver
-```
+
 
 Open:
 
-```text
 http://127.0.0.1:8000/
-```
-
----
-
-## 🔐 Access Control
-
-The system uses Django authentication and role-based permissions to control access to management features.
-
-Server-side authorization protects sensitive operations, while each role receives a dashboard and functionality appropriate to its responsibilities.
 
 
 
-# 🎓 Student Management System
+## 🚀 Roadmap
 
-> A modern web-based system for managing students, teachers, classes, subjects, enrollment, attendance, and academic grades.
-
-[![Django](https://img.shields.io/badge/Django-6.x-092E20?style=flat-square\&logo=django\&logoColor=white)](https://www.djangoproject.com/)
-[![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=flat-square\&logo=python\&logoColor=white)](https://www.python.org/)
-[![SQLite](https://img.shields.io/badge/Database-SQLite-003B57?style=flat-square\&logo=sqlite\&logoColor=white)](https://www.sqlite.org/)
-[![License](https://img.shields.io/badge/License-Educational-9A5243?style=flat-square)](LICENSE)
-
----
-
-## 📌 Overview
-
-Student Management System is a Django-based academic management platform designed to centralize student and educational operations in one secure system.
-
-It provides role-based dashboards and controlled access for administrators, managers, teachers, and students.
-
----
-
-## ✨ Features
-
-| Module            | Description                                      |
-| ----------------- | ------------------------------------------------ |
-| 👨‍🎓 Students    | Manage student profiles and academic information |
-| 👨‍🏫 Teachers    | Manage teachers and their assignments            |
-| 🏫 Classes        | Create and manage classes                        |
-| 📚 Subjects       | Organize subjects and class assignments          |
-| 📝 Enrollment     | Manage student-class enrollment                  |
-| 📅 Attendance     | Track and manage student attendance              |
-| 📊 Grades         | Record and manage academic grades                |
-| 🔐 Authentication | Secure login and logout system                   |
-| 🛡️ Permissions   | Role-based access control                        |
-| 📈 Dashboards     | Dedicated dashboards for different users         |
-
----
-
-## 👥 User Roles
-
-| Role              | Access                                          |
-| ----------------- | ----------------------------------------------- |
-| 👑 Superuser      | Full system access                              |
-| 🛡️ Administrator | Administrative management                       |
-| 📋 Manager        | Operational management                          |
-| 👨‍🏫 Teacher     | Assigned classes, subjects, attendance & grades |
-| 👨‍🎓 Student     | Personal academic information                   |
-
----
-
-## 🛠️ Tech Stack
-
-```text
-Backend       → Django
-Language      → Python
-Frontend      → HTML5 • CSS3 • JavaScript
-Database      → SQLite
-Authentication→ Django Auth
-ORM           → Django ORM
-Version       → Git & GitHub
-```
-
----
-
-## 🏗️ System Structure
-
-```text
-Student Management System
-│
-├── Authentication
-├── User Management
-├── Student Management
-├── Teacher Management
-├── Class Management
-├── Subject Management
-├── Enrollment
-├── Attendance
-├── Grades
-└── Role & Permissions
-```
-
----
-
-## 🎨 Design
-
-The system uses a clean dashboard interface with a consistent visual identity.
-
-| Design Element | Value     |
-| -------------- | --------- |
-| Primary        | `#9A5243` |
-| Secondary      | `#C17865` |
-| Sidebar        | `#17191D` |
-| Background     | `#121418` |
-
----
-
-## ⚙️ Installation
-
-```bash
-git clone https://github.com/Tiirow/Student-Management-Seystem.git
-cd Student-Management-Seystem
-```
-
-Create and activate a virtual environment:
-
-```bash
-python -m venv env
-```
-
-Windows:
-
-```bash
-env\Scripts\activate
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Run migrations:
-
-```bash
-python manage.py migrate
-```
-
-Create an administrator:
-
-```bash
-python manage.py createsuperuser
-```
-
-Start the server:
-
-```bash
-python manage.py runserver
-```
-
-Open:
-
-```text
-http://127.0.0.1:8000/
-```
-
----
-
-## 🔐 Access Control
-
-The system uses Django authentication and role-based permissions to control access to management features.
-
-Server-side authorization protects sensitive operations, while each role receives a dashboard and functionality appropriate to its responsibilities.
-
----
-
-## 📸 Screenshots
-
-Add your system screenshots here:
-
-```text
-screenshots/
-├── login.png
-├── dashboard.png
-├── students.png
-├── teachers.png
-├── classes.png
-├── subjects.png
-├── attendance.png
-└── grades.png
-```
-
----
-
-## 🚀 Future Improvements
-
-* 📱 Mobile application
+* 📱 Mobile application improvements
 * 📊 Advanced analytics
 * 📄 PDF & Excel reports
-* 🔔 Notifications
+* 🔔 Notification system
 * 📧 Email integration
 * 💰 Fee management
 * 🗓️ Timetable management
 * ☁️ Cloud deployment
-
----
-
-## 👨‍💻 Developer
-
-**Mohamed Adan Mohamed**
-
-Computer Application / Information Technology
-Jamhuriya University of Science and Technology (JUST)
-Mogadishu, Somalia
-
-🔗 [GitHub Repository](https://github.com/Tiirow/Student-Management-Seystem)
-
----
-
-## ⭐ Support
-
-If you find this project useful, consider giving the repository a ⭐.
-
----
-
-### 🎓 Student Management System
-
-> Manage Students • Empower Teachers • Organize Academic Data
+* 🐘 PostgreSQL production support
 
 
-## 🚀 Future Improvements
-
-* 📱 Mobile application
-* 📊 Advanced analytics
-* 📄 PDF & Excel reports
-* 🔔 Notifications
-* 📧 Email integration
-* 💰 Fee management
-* 🗓️ Timetable management
-* ☁️ Cloud deployment
-
----
 
 ## 👨‍💻 Developer
 
-**Mohamed Adan Mohamed**
+### Mohamed Adan Mohamed
 
-Computer Application / Information Technology
+**Computer Application / Information Technology**
 Jamhuriya University of Science and Technology (JUST)
 Mogadishu, Somalia
 
-🔗 [GitHub Repository](https://github.com/Tiirow/Student-Management-Seystem)
+[![GitHub](https://img.shields.io/badge/GitHub-Tiirow-181717?style=for-the-badge\&logo=github\&logoColor=white)](https://github.com/Tiirow)
 
----
+[![Repository](https://img.shields.io/badge/View%20Repository-9A5243?style=for-the-badge\&logo=github\&logoColor=white)](https://github.com/Tiirow/Student-Management-Seystem)
 
-## ⭐ Support
 
-If you find this project useful, consider giving the repository a ⭐.
 
----
+## ⭐ Support the Project
+
+If you find this project useful, consider giving it a ⭐ on GitHub.
+
 
 ### 🎓 Student Management System
 
-> Manage Students • Empower Teachers • Organize Academic Data
+**Manage Students · Empower Teachers · Organize Academic Data**
+
+Built with Django, Python & modern web technologies.
